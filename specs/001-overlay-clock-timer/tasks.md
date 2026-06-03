@@ -169,29 +169,29 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ### Tests for User Story 4 (MANDATORY)
 
-- [ ] T065 [P] [US4] Add persistence and clamping tests for theme, opacity, size, font, mode-switch action, and display mode in `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
-- [ ] T066 [P] [US4] Add hotkey uniqueness, reject, and explicit replacement tests in `OverlayClockTimerTests/PreferencesTests/HotkeyBindingTests.swift`
-- [ ] T067 [P] [US4] Add launch-at-login success and failure consistency tests with a mock service in `OverlayClockTimerTests/PreferencesTests/LaunchAtLoginControllerTests.swift`
-- [ ] T068 [P] [US4] Add visible status-item invariant and Dock visibility persistence tests in `OverlayClockTimerTests/PreferencesTests/AppVisibilityControllerTests.swift`
-- [ ] T069 [P] [US4] Add UI automation for opening the separate Settings window without hiding the overlay in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T065 [P] [US4] Add persistence and clamping tests for theme, opacity, size, font, mode-switch action, and display mode in `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
+- [X] T066 [P] [US4] Add hotkey uniqueness, reject, and explicit replacement tests in `OverlayClockTimerTests/PreferencesTests/HotkeyBindingTests.swift`
+- [X] T067 [P] [US4] Add launch-at-login success and failure consistency tests with a mock service in `OverlayClockTimerTests/PreferencesTests/LaunchAtLoginControllerTests.swift`
+- [X] T068 [P] [US4] Add visible status-item invariant and Dock visibility persistence tests in `OverlayClockTimerTests/PreferencesTests/AppVisibilityControllerTests.swift`
+- [X] T069 [P] [US4] Add UI automation for opening the separate Settings window without hiding the overlay in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 4
 
-- [ ] T070 [US4] Implement the separate settings window shell and sidebar categories in `OverlayClockTimer/Settings/SettingsWindowView.swift`
-- [ ] T071 [P] [US4] Implement theme, opacity, overlay size, and timer font controls in `OverlayClockTimer/Settings/AppearanceSettingsView.swift`
-- [ ] T072 [P] [US4] Implement timer-on-mode-switch behavior controls in `OverlayClockTimer/Settings/TimerSettingsView.swift`
-- [ ] T073 [P] [US4] Implement hotkey capture, conflict display, reject, and explicit replace UI in `OverlayClockTimer/Settings/HotkeySettingsView.swift`
-- [ ] T074 [P] [US4] Implement launch-at-login controls in `OverlayClockTimer/Settings/StartupSettingsView.swift`
-- [ ] T075 [P] [US4] Implement Dock visibility controls and status-item invariant messaging in `OverlayClockTimer/Settings/VisibilitySettingsView.swift`
-- [ ] T076 [US4] Implement ServiceManagement-backed launch-at-login adapter in `OverlayClockTimer/Support/LaunchAtLoginController.swift`
-- [ ] T077 [US4] Implement Dock activation policy while preserving the visible menu-bar status item in `OverlayClockTimer/App/AppVisibilityController.swift`
-- [ ] T078 [P] [US4] Implement shared hotkey command definitions for Start, Pause, Stop/Reset, Loop, and mode switch in `OverlayClockTimer/Hotkeys/HotkeyCommand.swift`
-- [ ] T079 [US4] Implement Apple-native hotkey registration wrapper and command dispatch in `OverlayClockTimer/Hotkeys/HotkeyRegistrar.swift`
-- [ ] T080 [US4] Add settings scene creation and presentation routing in `OverlayClockTimer/App/OverlayClockTimerApp.swift`
-- [ ] T081 [US4] Connect the Settings menu item to the settings window through `OverlayClockTimer/App/MenuBarContentView.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T082 [US4] Apply live preference updates to overlay frame, opacity, theme, and font through `OverlayClockTimer/Overlay/OverlayWindowController.swift` and `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T083 [US4] Register, unregister, and refresh persisted hotkeys on app launch and preference changes in `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T084 [US4] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US4 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T070 [US4] Implement the separate settings window shell and sidebar categories in `OverlayClockTimer/Settings/SettingsWindowView.swift`
+- [X] T071 [P] [US4] Implement theme, opacity, overlay size, and timer font controls in `OverlayClockTimer/Settings/AppearanceSettingsView.swift`
+- [X] T072 [P] [US4] Implement timer-on-mode-switch behavior controls in `OverlayClockTimer/Settings/TimerSettingsView.swift`
+- [X] T073 [P] [US4] Implement hotkey capture, conflict display, reject, and explicit replace UI in `OverlayClockTimer/Settings/HotkeySettingsView.swift`
+- [X] T074 [P] [US4] Implement launch-at-login controls in `OverlayClockTimer/Settings/StartupSettingsView.swift`
+- [X] T075 [P] [US4] Implement Dock visibility controls and status-item invariant messaging in `OverlayClockTimer/Settings/VisibilitySettingsView.swift`
+- [X] T076 [US4] Implement ServiceManagement-backed launch-at-login adapter in `OverlayClockTimer/Support/LaunchAtLoginController.swift`
+- [X] T077 [US4] Implement Dock activation policy while preserving the visible menu-bar status item in `OverlayClockTimer/App/AppVisibilityController.swift`
+- [X] T078 [P] [US4] Implement shared hotkey command definitions for Start, Pause, Stop/Reset, Loop, and mode switch in `OverlayClockTimer/Hotkeys/HotkeyCommand.swift`
+- [X] T079 [US4] Implement Apple-native hotkey registration wrapper and command dispatch in `OverlayClockTimer/Hotkeys/HotkeyRegistrar.swift`
+- [X] T080 [US4] Add settings scene creation and presentation routing in `OverlayClockTimer/App/OverlayClockTimerApp.swift`
+- [X] T081 [US4] Connect the Settings menu item to the settings window through `OverlayClockTimer/App/MenuBarContentView.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T082 [US4] Apply live preference updates to overlay frame, opacity, theme, and font through `OverlayClockTimer/Overlay/OverlayWindowController.swift` and `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T083 [US4] Register, unregister, and refresh persisted hotkeys on app launch and preference changes in `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T084 [US4] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US4 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
 
 **Checkpoint**: Preferences are separate, persistent, live-applied, and guarded against unrecoverable states.
 

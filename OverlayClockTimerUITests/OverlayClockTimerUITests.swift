@@ -106,4 +106,21 @@ final class OverlayClockTimerUITests: XCTestCase {
         XCTAssertTrue(timerModeSwitch.isEnabled)
         XCTAssertGreaterThan(timerModeSwitch.frame.minX, loopButton.frame.maxX + 12)
     }
+
+    @MainActor
+    func testSettingsWindowOpensSeparatelyWithoutHidingOverlay() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.settings"].click()
+
+        let settingsWindow = app.windows["Overlay Clock Timer Settings"]
+        XCTAssertTrue(settingsWindow.waitForExistence(timeout: 5))
+        XCTAssertTrue(overlayWindow.exists)
+        XCTAssertTrue(settingsWindow.staticTexts["settings.appearance.title"].exists)
+    }
 }

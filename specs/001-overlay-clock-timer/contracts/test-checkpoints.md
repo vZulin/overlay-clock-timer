@@ -46,6 +46,12 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
 - Evidence: App, unit test, and UI test targets built successfully; US3 coverage for mode-switch action defaults and corrupted stored values, continue/pause/stop-reset/default timer behavior on mode switch, app-level display-mode switching, and mode switch availability/separation in Clock and Timer layouts passed with 0 failures.
 
+### 2026-06-03 - Settings Preferences
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: App, unit test, and UI test targets built successfully; US4 coverage for preference persistence and clamping, hotkey conflict rejection and replacement, launch-at-login success/failure consistency, Dock visibility while preserving the menu-bar status item, and opening a separate settings window without hiding the overlay passed with 0 failures.
+
 ## Phase Checkpoints
 
 ### Setup
@@ -84,6 +90,8 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Menu-bar status item visibility remains enabled while Dock icon visibility is
   configurable.
 - Hotkey conflicts are rejected or replaced explicitly.
+- Launch-at-login failures keep persisted state consistent with system state.
+- Settings open in a separate window without hiding the overlay.
 
 ### Performance
 

@@ -34,6 +34,16 @@
 		000000000000000000000215 /* TimerSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000115 /* TimerSessionStore.swift */; };
 		000000000000000000000216 /* OverlayToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000116 /* OverlayToolbarView.swift */; };
 		000000000000000000000217 /* ModeSwitchAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000117 /* ModeSwitchAction.swift */; };
+		000000000000000000000230 /* SettingsWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000130 /* SettingsWindowView.swift */; };
+		000000000000000000000231 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000131 /* AppearanceSettingsView.swift */; };
+		000000000000000000000232 /* TimerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000132 /* TimerSettingsView.swift */; };
+		000000000000000000000233 /* HotkeySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000133 /* HotkeySettingsView.swift */; };
+		000000000000000000000234 /* StartupSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000134 /* StartupSettingsView.swift */; };
+		000000000000000000000235 /* VisibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000135 /* VisibilitySettingsView.swift */; };
+		000000000000000000000236 /* LaunchAtLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000136 /* LaunchAtLoginController.swift */; };
+		000000000000000000000237 /* AppVisibilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000137 /* AppVisibilityController.swift */; };
+		000000000000000000000238 /* HotkeyCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000138 /* HotkeyCommand.swift */; };
+		000000000000000000000239 /* HotkeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000139 /* HotkeyRegistrar.swift */; };
 		000000000000000000000220 /* TimeSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000120 /* TimeSourceTests.swift */; };
 		000000000000000000000221 /* ClockFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000121 /* ClockFormatterTests.swift */; };
 		000000000000000000000222 /* DisplayTickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000122 /* DisplayTickerTests.swift */; };
@@ -47,6 +57,9 @@
 		00000000000000000000022A /* TimerSessionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012A /* TimerSessionStoreTests.swift */; };
 		00000000000000000000022B /* ModeSwitchActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012B /* ModeSwitchActionTests.swift */; };
 		00000000000000000000022C /* AppCoordinatorModeSwitchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012C /* AppCoordinatorModeSwitchTests.swift */; };
+		00000000000000000000024A /* HotkeyBindingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014A /* HotkeyBindingTests.swift */; };
+		00000000000000000000024B /* LaunchAtLoginControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014B /* LaunchAtLoginControllerTests.swift */; };
+		00000000000000000000024C /* AppVisibilityControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014C /* AppVisibilityControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +110,16 @@
 		000000000000000000000115 /* TimerSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionStore.swift; sourceTree = "<group>"; };
 		000000000000000000000116 /* OverlayToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayToolbarView.swift; sourceTree = "<group>"; };
 		000000000000000000000117 /* ModeSwitchAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchAction.swift; sourceTree = "<group>"; };
+		000000000000000000000130 /* SettingsWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowView.swift; sourceTree = "<group>"; };
+		000000000000000000000131 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000132 /* TimerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000133 /* HotkeySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeySettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000134 /* StartupSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupSettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000135 /* VisibilitySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibilitySettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000136 /* LaunchAtLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginController.swift; sourceTree = "<group>"; };
+		000000000000000000000137 /* AppVisibilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVisibilityController.swift; sourceTree = "<group>"; };
+		000000000000000000000138 /* HotkeyCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyCommand.swift; sourceTree = "<group>"; };
+		000000000000000000000139 /* HotkeyRegistrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRegistrar.swift; sourceTree = "<group>"; };
 		000000000000000000000120 /* TimeSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSourceTests.swift; sourceTree = "<group>"; };
 		000000000000000000000121 /* ClockFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFormatterTests.swift; sourceTree = "<group>"; };
 		000000000000000000000122 /* DisplayTickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTickerTests.swift; sourceTree = "<group>"; };
@@ -110,6 +133,9 @@
 		00000000000000000000012A /* TimerSessionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionStoreTests.swift; sourceTree = "<group>"; };
 		00000000000000000000012B /* ModeSwitchActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchActionTests.swift; sourceTree = "<group>"; };
 		00000000000000000000012C /* AppCoordinatorModeSwitchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorModeSwitchTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014A /* HotkeyBindingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyBindingTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014B /* LaunchAtLoginControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginControllerTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014C /* AppVisibilityControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVisibilityControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +206,7 @@
 				000000000000000000000011 /* OverlayClockTimerApp.swift */,
 				000000000000000000000101 /* AppCoordinator.swift */,
 				000000000000000000000112 /* MenuBarContentView.swift */,
+				000000000000000000000137 /* AppVisibilityController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -221,6 +248,12 @@
 		000000000000000000000009 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				000000000000000000000130 /* SettingsWindowView.swift */,
+				000000000000000000000131 /* AppearanceSettingsView.swift */,
+				000000000000000000000132 /* TimerSettingsView.swift */,
+				000000000000000000000133 /* HotkeySettingsView.swift */,
+				000000000000000000000134 /* StartupSettingsView.swift */,
+				000000000000000000000135 /* VisibilitySettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -239,6 +272,8 @@
 		00000000000000000000000B /* Hotkeys */ = {
 			isa = PBXGroup;
 			children = (
+				000000000000000000000138 /* HotkeyCommand.swift */,
+				000000000000000000000139 /* HotkeyRegistrar.swift */,
 			);
 			path = Hotkeys;
 			sourceTree = "<group>";
@@ -257,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				00000000000000000000010A /* ScreenFrameValidator.swift */,
+				000000000000000000000136 /* LaunchAtLoginController.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -316,6 +352,9 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000124 /* PreferencesStoreTests.swift */,
+				00000000000000000000014A /* HotkeyBindingTests.swift */,
+				00000000000000000000014B /* LaunchAtLoginControllerTests.swift */,
+				00000000000000000000014C /* AppVisibilityControllerTests.swift */,
 				000000000000000000000125 /* ScreenFrameValidatorTests.swift */,
 			);
 			path = PreferencesTests;
@@ -492,6 +531,16 @@
 				000000000000000000000215 /* TimerSessionStore.swift in Sources */,
 				000000000000000000000216 /* OverlayToolbarView.swift in Sources */,
 				000000000000000000000217 /* ModeSwitchAction.swift in Sources */,
+				000000000000000000000230 /* SettingsWindowView.swift in Sources */,
+				000000000000000000000231 /* AppearanceSettingsView.swift in Sources */,
+				000000000000000000000232 /* TimerSettingsView.swift in Sources */,
+				000000000000000000000233 /* HotkeySettingsView.swift in Sources */,
+				000000000000000000000234 /* StartupSettingsView.swift in Sources */,
+				000000000000000000000235 /* VisibilitySettingsView.swift in Sources */,
+				000000000000000000000236 /* LaunchAtLoginController.swift in Sources */,
+				000000000000000000000237 /* AppVisibilityController.swift in Sources */,
+				000000000000000000000238 /* HotkeyCommand.swift in Sources */,
+				000000000000000000000239 /* HotkeyRegistrar.swift in Sources */,
 				000000000000000000000020 /* OverlayClockTimerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,6 +563,9 @@
 				00000000000000000000022A /* TimerSessionStoreTests.swift in Sources */,
 				00000000000000000000022B /* ModeSwitchActionTests.swift in Sources */,
 				00000000000000000000022C /* AppCoordinatorModeSwitchTests.swift in Sources */,
+				00000000000000000000024A /* HotkeyBindingTests.swift in Sources */,
+				00000000000000000000024B /* LaunchAtLoginControllerTests.swift in Sources */,
+				00000000000000000000024C /* AppVisibilityControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

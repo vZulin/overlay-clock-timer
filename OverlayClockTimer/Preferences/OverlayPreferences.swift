@@ -53,6 +53,7 @@ struct OverlayPreferences: Equatable {
     var timerOnModeSwitch: ModeSwitchAction
     var showDockIcon: Bool
     var launchAtLoginEnabled: Bool
+    var hotkeyBindings: [HotkeyBinding]
 
     var appVisibility: AppVisibilityPreference {
         AppVisibilityPreference(showDockIcon: showDockIcon)
@@ -67,7 +68,8 @@ struct OverlayPreferences: Equatable {
         lastDisplayMode: nil,
         timerOnModeSwitch: ModeSwitchAction.defaultValue,
         showDockIcon: false,
-        launchAtLoginEnabled: false
+        launchAtLoginEnabled: false,
+        hotkeyBindings: []
     )
 
     func validated() -> OverlayPreferences {
@@ -83,7 +85,8 @@ struct OverlayPreferences: Equatable {
             lastDisplayMode: lastDisplayMode,
             timerOnModeSwitch: timerOnModeSwitch,
             showDockIcon: showDockIcon,
-            launchAtLoginEnabled: launchAtLoginEnabled
+            launchAtLoginEnabled: launchAtLoginEnabled,
+            hotkeyBindings: HotkeyBindingSet.validated(hotkeyBindings)
         )
     }
 

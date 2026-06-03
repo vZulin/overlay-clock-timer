@@ -24,5 +24,13 @@ struct OverlayClockTimerApp: App {
         MenuBarExtra("Overlay Clock Timer", systemImage: "clock") {
             MenuBarContentView(coordinator: coordinator)
         }
+        .commands {
+            CommandGroup(replacing: .appSettings) {
+                Button("Settings") {
+                    coordinator.presentSettings()
+                }
+                .keyboardShortcut(",", modifiers: .command)
+            }
+        }
     }
 }

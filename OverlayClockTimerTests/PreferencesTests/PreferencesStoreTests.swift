@@ -77,4 +77,40 @@ final class PreferencesStoreTests: XCTestCase {
         XCTAssertTrue(reloaded.showDockIcon)
         XCTAssertTrue(reloaded.appVisibility.statusItemVisible)
     }
+
+    func testPersistsAppearanceModeSwitchAndDisplayModeAcrossReload() {
+        let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
+        var preferences = store.preferences
+        preferences.theme = .dark
+        preferences.backgroundOpacity = 0.72
+        preferences.windowSize = CGSize(width: 480, height: 244)
+        preferences.timerFontSize = 58
+        preferences.timerOnModeSwitch = .pause
+        preferences.lastDisplayMode = .timer
+
+        store.save(preferences)
+
+        let reloaded = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(reloaded.theme, .dark)
+        XCTAssertEqual(reloaded.backgroundOpacity, 0.72)
+        XCTAssertEqual(reloaded.windowSize, CGSize(width: 480, height: 244))
+        XCTAssertEqual(reloaded.timerFontSize, 58)
+        XCTAssertEqual(reloaded.timerOnModeSwitch, .pause)
+        XCTAssertEqual(reloaded.lastDisplayMode, .timer)
+    }
+
+    func testClampsPersistedAppearanceLowerBoundsAcrossReload() {
+        let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
+        var preferences = store.preferences
+        preferences.backgroundOpacity = 0.10
+        preferences.windowSize = CGSize(width: 80, height: 80)
+        preferences.timerFontSize = 4
+
+        store.save(preferences)
+
+        let reloaded = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(reloaded.backgroundOpacity, OverlayPreferences.minimumBackgroundOpacity)
+        XCTAssertEqual(reloaded.windowSize, OverlayPreferences.minimumWindowSize)
+        XCTAssertEqual(reloaded.timerFontSize, OverlayPreferences.minimumTimerFontSize)
+    }
 }

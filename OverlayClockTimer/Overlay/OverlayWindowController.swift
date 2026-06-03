@@ -15,7 +15,7 @@ final class OverlayWindowController: NSObject, NSWindowDelegate {
     private let geometryStore: OverlayGeometryStoring
     private let visibleScreenFramesProvider: () -> [CGRect]
     private let contentViewProvider: () -> NSView
-    private let defaultSize: CGSize
+    private var defaultSize: CGSize
 
     private(set) var window: NSWindow?
 
@@ -37,11 +37,15 @@ final class OverlayWindowController: NSObject, NSWindowDelegate {
         window?.isVisible == true
     }
 
-    func show() {
+    func show(defaultSize: CGSize? = nil) {
+        if let defaultSize {
+            self.defaultSize = defaultSize
+        }
+
         let overlayWindow = window ?? makeWindow()
         let restoredFrame = geometryStore.restoreFrame(
             visibleScreenFrames: visibleScreenFramesProvider(),
-            defaultSize: defaultSize
+            defaultSize: self.defaultSize
         )
 
         overlayWindow.setFrame(restoredFrame, display: true)
@@ -58,6 +62,25 @@ final class OverlayWindowController: NSObject, NSWindowDelegate {
         }
 
         geometryStore.save(frame: window.frame)
+    }
+
+    func apply(preferences: OverlayPreferences) {
+        defaultSize = preferences.windowSize
+        guard let window else {
+            return
+        }
+
+        window.minSize = OverlayPreferences.minimumWindowSize
+        window.maxSize = OverlayPreferences.maximumWindowSize
+
+        guard window.frame.size != preferences.windowSize else {
+            return
+        }
+
+        var frame = window.frame
+        frame.size = preferences.windowSize
+        window.setFrame(frame, display: true)
+        geometryStore.save(frame: frame)
     }
 
     func windowDidMove(_ notification: Notification) {

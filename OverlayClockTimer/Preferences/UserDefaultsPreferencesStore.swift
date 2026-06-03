@@ -17,6 +17,7 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         static let showDockIcon = "app.showDockIcon"
         static let launchAtLoginEnabled = "app.launchAtLoginEnabled"
         static let legacyStatusItemVisible = "app.statusItemVisible"
+        static let hotkeyBindings = "hotkeys.bindings"
     }
 
     private let userDefaults: UserDefaults
@@ -43,7 +44,8 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
             lastDisplayMode: optionalDisplayMode(),
             timerOnModeSwitch: ModeSwitchAction(storedValue: userDefaults.string(forKey: Keys.timerOnModeSwitch)),
             showDockIcon: boolValue(forKey: Keys.showDockIcon) ?? defaults.showDockIcon,
-            launchAtLoginEnabled: boolValue(forKey: Keys.launchAtLoginEnabled) ?? defaults.launchAtLoginEnabled
+            launchAtLoginEnabled: boolValue(forKey: Keys.launchAtLoginEnabled) ?? defaults.launchAtLoginEnabled,
+            hotkeyBindings: readHotkeyBindings()
         ).validated()
 
         userDefaults.removeObject(forKey: Keys.legacyStatusItemVisible)
@@ -61,6 +63,7 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         userDefaults.set(validated.timerOnModeSwitch.rawValue, forKey: Keys.timerOnModeSwitch)
         userDefaults.set(validated.showDockIcon, forKey: Keys.showDockIcon)
         userDefaults.set(validated.launchAtLoginEnabled, forKey: Keys.launchAtLoginEnabled)
+        writeHotkeyBindings(validated.hotkeyBindings)
 
         if let lastDisplayMode = validated.lastDisplayMode {
             userDefaults.set(lastDisplayMode.rawValue, forKey: Keys.lastDisplayMode)
@@ -126,5 +129,26 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
             return nil
         }
         return number.boolValue
+    }
+
+    private func readHotkeyBindings() -> [HotkeyBinding] {
+        guard let data = userDefaults.data(forKey: Keys.hotkeyBindings) else {
+            return []
+        }
+
+        do {
+            return try JSONDecoder().decode([HotkeyBinding].self, from: data)
+        } catch {
+            return []
+        }
+    }
+
+    private func writeHotkeyBindings(_ bindings: [HotkeyBinding]) {
+        do {
+            let data = try JSONEncoder().encode(bindings)
+            userDefaults.set(data, forKey: Keys.hotkeyBindings)
+        } catch {
+            userDefaults.removeObject(forKey: Keys.hotkeyBindings)
+        }
     }
 }

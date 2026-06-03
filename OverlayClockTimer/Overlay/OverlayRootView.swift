@@ -5,12 +5,14 @@ struct OverlayRootView: View {
     @ObservedObject var clockDisplayModel: ClockDisplayModel
     @ObservedObject var timerSessionStore: TimerSessionStore
 
-    let preferences: OverlayPreferences
-
     @Environment(\.colorScheme) private var colorScheme
 
     private var tokens: OverlayThemeTokens {
         OverlayTheme.tokens(for: preferences.theme, resolvedColorScheme: colorScheme)
+    }
+
+    private var preferences: OverlayPreferences {
+        coordinator.preferences
     }
 
     var body: some View {
