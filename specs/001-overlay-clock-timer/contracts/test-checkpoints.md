@@ -40,6 +40,12 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
 - Evidence: App, unit test, and UI test targets built successfully; US2 coverage for timer start, pause, resume, stop/reset, non-negative elapsed math, Loop capture/replacement, injected monotonic time, live elapsed formatting, button state derivation, Timer mode control enabled states, and secondary latest Loop display passed with 0 failures.
 
+### 2026-06-03 - Mode Switching
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: App, unit test, and UI test targets built successfully; US3 coverage for mode-switch action defaults and corrupted stored values, continue/pause/stop-reset/default timer behavior on mode switch, app-level display-mode switching, and mode switch availability/separation in Clock and Timer layouts passed with 0 failures.
+
 ## Phase Checkpoints
 
 ### Setup

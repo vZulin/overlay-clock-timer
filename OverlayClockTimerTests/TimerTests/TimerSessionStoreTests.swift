@@ -73,4 +73,63 @@ final class TimerSessionStoreTests: XCTestCase {
         XCTAssertNil(store.latestLoopDisplayText)
         XCTAssertEqual(store.elapsedDisplayText, "00:00:00.000")
     }
+
+    func testModeSwitchContinueKeepsRunningTimer() {
+        let timeSource = ManualMonotonicTimeSource()
+        let store = TimerSessionStore(timeSource: timeSource, ticker: DisplayTicker(maximumFramesPerSecond: 1))
+
+        store.start()
+        timeSource.advance(by: 1.25)
+        store.applyModeSwitchAction(.continue)
+        timeSource.advance(by: 0.75)
+        store.refresh()
+
+        XCTAssertTrue(store.session.isRunning)
+        XCTAssertEqual(store.elapsedDisplayText, "00:00:02.000")
+    }
+
+    func testModeSwitchPauseFreezesRunningTimer() {
+        let timeSource = ManualMonotonicTimeSource()
+        let store = TimerSessionStore(timeSource: timeSource, ticker: DisplayTicker(maximumFramesPerSecond: 1))
+
+        store.start()
+        timeSource.advance(by: 1.5)
+        store.applyModeSwitchAction(.pause)
+        timeSource.advance(by: 10)
+        store.refresh()
+
+        XCTAssertTrue(store.session.isPaused)
+        XCTAssertEqual(store.elapsedDisplayText, "00:00:01.500")
+        XCTAssertTrue(store.canStart)
+        XCTAssertFalse(store.canPause)
+    }
+
+    func testModeSwitchStopAndResetClearsRunningTimerAndLatestLoop() {
+        let timeSource = ManualMonotonicTimeSource()
+        let store = TimerSessionStore(timeSource: timeSource, ticker: DisplayTicker(maximumFramesPerSecond: 1))
+
+        store.start()
+        timeSource.advance(by: 0.5)
+        store.loop()
+        store.applyModeSwitchAction(.stopAndReset)
+
+        XCTAssertTrue(store.session.isReset)
+        XCTAssertEqual(store.elapsedDisplayText, "00:00:00.000")
+        XCTAssertNil(store.latestLoopDisplayText)
+        XCTAssertTrue(store.canStart)
+        XCTAssertFalse(store.canStopReset)
+        XCTAssertFalse(store.canLoop)
+    }
+
+    func testDefaultModeSwitchActionStopsAndResetsRunningTimer() {
+        let timeSource = ManualMonotonicTimeSource()
+        let store = TimerSessionStore(timeSource: timeSource, ticker: DisplayTicker(maximumFramesPerSecond: 1))
+
+        store.start()
+        timeSource.advance(by: 0.25)
+        store.applyModeSwitchAction(ModeSwitchAction.defaultValue)
+
+        XCTAssertTrue(store.session.isReset)
+        XCTAssertEqual(store.elapsedDisplayText, "00:00:00.000")
+    }
 }

@@ -143,19 +143,19 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ### Tests for User Story 3 (MANDATORY)
 
-- [ ] T055 [P] [US3] Add mode-switch action default and corrupted-value fallback tests in `OverlayClockTimerTests/TimerTests/ModeSwitchActionTests.swift`
-- [ ] T056 [P] [US3] Add timer store tests for continue, pause, stop/reset, and default behavior on mode switch in `OverlayClockTimerTests/TimerTests/TimerSessionStoreTests.swift`
-- [ ] T057 [P] [US3] Add UI automation proving the mode switch is always available and visually separate from timer controls in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T055 [P] [US3] Add mode-switch action default and corrupted-value fallback tests in `OverlayClockTimerTests/TimerTests/ModeSwitchActionTests.swift`
+- [X] T056 [P] [US3] Add timer store tests for continue, pause, stop/reset, and default behavior on mode switch in `OverlayClockTimerTests/TimerTests/TimerSessionStoreTests.swift`
+- [X] T057 [P] [US3] Add UI automation proving the mode switch is always available and visually separate from timer controls in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 3
 
-- [ ] T058 [P] [US3] Implement `continue`, `pause`, and `stopAndReset` mode-switch actions in `OverlayClockTimer/Timer/ModeSwitchAction.swift`
-- [ ] T059 [US3] Apply mode-switch actions to running timer state in `OverlayClockTimer/Timer/TimerSessionStore.swift`
-- [ ] T060 [US3] Persist default `stopAndReset` timer-on-mode-switch preference in `OverlayClockTimer/Preferences/OverlayPreferences.swift` and `OverlayClockTimer/Preferences/UserDefaultsPreferencesStore.swift`
-- [ ] T061 [US3] Implement app-level display mode switching through `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T062 [US3] Keep the mode button visually separated from timer controls in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
-- [ ] T063 [US3] Keep mode switching available in both Clock and Timer layouts in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T064 [US3] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US3 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T058 [P] [US3] Implement `continue`, `pause`, and `stopAndReset` mode-switch actions in `OverlayClockTimer/Timer/ModeSwitchAction.swift`
+- [X] T059 [US3] Apply mode-switch actions to running timer state in `OverlayClockTimer/Timer/TimerSessionStore.swift`
+- [X] T060 [US3] Persist default `stopAndReset` timer-on-mode-switch preference in `OverlayClockTimer/Preferences/OverlayPreferences.swift` and `OverlayClockTimer/Preferences/UserDefaultsPreferencesStore.swift`
+- [X] T061 [US3] Implement app-level display mode switching through `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T062 [US3] Keep the mode button visually separated from timer controls in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
+- [X] T063 [US3] Keep mode switching available in both Clock and Timer layouts in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T064 [US3] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US3 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
 
 **Checkpoint**: Mode switching is safe and configurable at the model level.
 

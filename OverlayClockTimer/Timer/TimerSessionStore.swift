@@ -64,6 +64,24 @@ final class TimerSessionStore: ObservableObject {
         refresh()
     }
 
+    func applyModeSwitchAction(_ action: ModeSwitchAction) {
+        guard session.isRunning else {
+            refresh()
+            updateTickerLifecycle()
+            return
+        }
+
+        switch action {
+        case .continue:
+            refresh()
+            updateTickerLifecycle()
+        case .pause:
+            pause()
+        case .stopAndReset:
+            stopReset()
+        }
+    }
+
     func refresh() {
         elapsedDisplayText = formatter.string(from: session.elapsed(at: timeSource.now))
         latestLoopDisplayText = session.latestLoop.map { formatter.string(from: $0.capturedElapsed) }

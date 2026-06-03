@@ -85,7 +85,8 @@ struct OverlayToolbarView: View {
         toolbarButton(
             systemName: coordinator.displayMode == .clock ? "timer" : "clock",
             label: coordinator.displayMode == .clock ? "Switch to Timer Mode" : "Switch to Clock Mode",
-            identifier: identifier
+            identifier: identifier,
+            isModeSwitch: true
         ) {
             coordinator.switchDisplayMode(
                 to: coordinator.displayMode == .clock ? .timer : .clock
@@ -98,6 +99,7 @@ struct OverlayToolbarView: View {
         label: String,
         identifier: String,
         isEnabled: Bool = true,
+        isModeSwitch: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
@@ -107,10 +109,16 @@ struct OverlayToolbarView: View {
         }
         .buttonStyle(
             SymbolButtonStyle(
-                backgroundColor: tokens.controlColor,
+                backgroundColor: isModeSwitch ? tokens.primaryTextColor.opacity(0.16) : tokens.controlColor,
                 buttonSize: OverlayMetrics.controlButtonSize
             )
         )
+        .overlay {
+            if isModeSwitch {
+                RoundedRectangle(cornerRadius: OverlayMetrics.controlCornerRadius)
+                    .stroke(tokens.secondaryTextColor.opacity(0.46), lineWidth: 1)
+            }
+        }
         .disabled(!isEnabled)
         .help(label)
         .accessibilityLabel(label)

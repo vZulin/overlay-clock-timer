@@ -80,6 +80,11 @@ final class AppCoordinator: ObservableObject {
     }
 
     func switchDisplayMode(to mode: DisplayMode) {
+        guard mode != displayMode else {
+            return
+        }
+
+        timerSessionStore.applyModeSwitchAction(preferencesStore.preferences.timerOnModeSwitch)
         displayMode = mode
         var preferences = preferencesStore.preferences
         preferences.lastDisplayMode = mode

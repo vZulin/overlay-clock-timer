@@ -33,6 +33,7 @@
 		000000000000000000000214 /* TimerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000114 /* TimerSession.swift */; };
 		000000000000000000000215 /* TimerSessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000115 /* TimerSessionStore.swift */; };
 		000000000000000000000216 /* OverlayToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000116 /* OverlayToolbarView.swift */; };
+		000000000000000000000217 /* ModeSwitchAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000117 /* ModeSwitchAction.swift */; };
 		000000000000000000000220 /* TimeSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000120 /* TimeSourceTests.swift */; };
 		000000000000000000000221 /* ClockFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000121 /* ClockFormatterTests.swift */; };
 		000000000000000000000222 /* DisplayTickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000122 /* DisplayTickerTests.swift */; };
@@ -44,6 +45,8 @@
 		000000000000000000000228 /* OverlayGeometryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000128 /* OverlayGeometryStoreTests.swift */; };
 		000000000000000000000229 /* TimerSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000129 /* TimerSessionTests.swift */; };
 		00000000000000000000022A /* TimerSessionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012A /* TimerSessionStoreTests.swift */; };
+		00000000000000000000022B /* ModeSwitchActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012B /* ModeSwitchActionTests.swift */; };
+		00000000000000000000022C /* AppCoordinatorModeSwitchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000012C /* AppCoordinatorModeSwitchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,7 @@
 		000000000000000000000114 /* TimerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSession.swift; sourceTree = "<group>"; };
 		000000000000000000000115 /* TimerSessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionStore.swift; sourceTree = "<group>"; };
 		000000000000000000000116 /* OverlayToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayToolbarView.swift; sourceTree = "<group>"; };
+		000000000000000000000117 /* ModeSwitchAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchAction.swift; sourceTree = "<group>"; };
 		000000000000000000000120 /* TimeSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSourceTests.swift; sourceTree = "<group>"; };
 		000000000000000000000121 /* ClockFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFormatterTests.swift; sourceTree = "<group>"; };
 		000000000000000000000122 /* DisplayTickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTickerTests.swift; sourceTree = "<group>"; };
@@ -104,6 +108,8 @@
 		000000000000000000000128 /* OverlayGeometryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayGeometryStoreTests.swift; sourceTree = "<group>"; };
 		000000000000000000000129 /* TimerSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionTests.swift; sourceTree = "<group>"; };
 		00000000000000000000012A /* TimerSessionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSessionStoreTests.swift; sourceTree = "<group>"; };
+		00000000000000000000012B /* ModeSwitchActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchActionTests.swift; sourceTree = "<group>"; };
+		00000000000000000000012C /* AppCoordinatorModeSwitchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorModeSwitchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000105 /* DurationFormatter.swift */,
+				000000000000000000000117 /* ModeSwitchAction.swift */,
 				000000000000000000000114 /* TimerSession.swift */,
 				000000000000000000000115 /* TimerSessionStore.swift */,
 			);
@@ -298,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000123 /* DurationFormatterTests.swift */,
+				00000000000000000000012B /* ModeSwitchActionTests.swift */,
 				000000000000000000000129 /* TimerSessionTests.swift */,
 				00000000000000000000012A /* TimerSessionStoreTests.swift */,
 			);
@@ -318,6 +326,7 @@
 			children = (
 				000000000000000000000127 /* OverlayWindowControllerTests.swift */,
 				000000000000000000000128 /* OverlayGeometryStoreTests.swift */,
+				00000000000000000000012C /* AppCoordinatorModeSwitchTests.swift */,
 			);
 			path = OverlayTests;
 			sourceTree = "<group>";
@@ -482,6 +491,7 @@
 				000000000000000000000214 /* TimerSession.swift in Sources */,
 				000000000000000000000215 /* TimerSessionStore.swift in Sources */,
 				000000000000000000000216 /* OverlayToolbarView.swift in Sources */,
+				000000000000000000000217 /* ModeSwitchAction.swift in Sources */,
 				000000000000000000000020 /* OverlayClockTimerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -502,6 +512,8 @@
 				000000000000000000000228 /* OverlayGeometryStoreTests.swift in Sources */,
 				000000000000000000000229 /* TimerSessionTests.swift in Sources */,
 				00000000000000000000022A /* TimerSessionStoreTests.swift in Sources */,
+				00000000000000000000022B /* ModeSwitchActionTests.swift in Sources */,
+				00000000000000000000022C /* AppCoordinatorModeSwitchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
