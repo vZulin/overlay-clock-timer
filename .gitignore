@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+.build/
+DerivedData/
+*.swiftpm/
+Packages/
+
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside

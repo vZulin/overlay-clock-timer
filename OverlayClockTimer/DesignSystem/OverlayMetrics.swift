@@ -1,0 +1,17 @@
+import CoreGraphics
+import Foundation
+
+enum OverlayMetrics {
+    static let defaultSize = OverlayPreferences.defaultWindowSize
+    static let minimumSize = OverlayPreferences.minimumWindowSize
+    static let maximumSize = OverlayPreferences.maximumWindowSize
+    static let cornerRadius: CGFloat = 8
+    static let controlButtonSize: CGFloat = 36
+    static let controlCornerRadius: CGFloat = 6
+    static let horizontalPadding: CGFloat = 12
+    static let verticalPadding: CGFloat = 10
+    static let defaultTimerFontSize: CGFloat = CGFloat(OverlayPreferences.defaultTimerFontSize)
+    static let minimumBackgroundOpacity = OverlayPreferences.minimumBackgroundOpacity
+    static let defaultBackgroundOpacity = OverlayPreferences.defaultBackgroundOpacity
+    static let maximumBackgroundOpacity = OverlayPreferences.maximumBackgroundOpacity
+}

@@ -17,21 +17,34 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Swift [version] or NEEDS CLARIFICATION
+**Primary Dependencies**: SwiftUI, AppKit, Foundation, XCTest; third-party dependencies require Constitution justification
+**Storage**: [UserDefaults, files, or N/A]
+**Testing**: XCTest for unit/integration tests; UI automation where practical
+**Target Platform**: macOS only, minimum version [version] or NEEDS CLARIFICATION
+**Project Type**: Native macOS menu-bar app with floating overlay window
+**Performance Goals**: [refresh cadence, CPU budget, memory budget, launch-time goal or NEEDS CLARIFICATION]
+**Constraints**: Always-on-top compact overlay, custom drag region, light/dark theme support, low resource usage
+**Scale/Scope**: Single-user local desktop utility with no server runtime
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- macOS-only scope: plan targets macOS only and rejects iOS, web, server, and
+  cross-platform runtime requirements.
+- Explicit Apple-native stack: Swift version, minimum macOS version, Xcode
+  requirement, Apple frameworks, test framework, and build tooling are named.
+- Overlay/menu-bar contract: plan preserves a menu-bar status item plus a
+  compact floating overlay near 280x160 px, always-on-top window level, titleless
+  draggable behavior, custom drag area, clock display, and timer mode.
+- Dependency discipline: no third-party dependency is introduced without a
+  documented Apple-framework limitation, cost, and removal strategy.
+- Theme and performance: light/dark appearance support, refresh cadence, timer
+  lifecycle, CPU/memory goals, and avoidance of busy-wait loops are documented.
+- Test-first gates: automated tests are planned for every development stage;
+  expected test results are immutable and the test command is documented for
+  each checkpoint.
 
 ## Project Structure
 
@@ -56,39 +69,22 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+[AppName]/
+├── App/                 # App lifecycle, menu-bar status item, app commands
+├── Overlay/             # Floating NSWindow/AppKit bridge and SwiftUI overlay views
+├── Clock/               # Clock formatting and injected time source
+├── Timer/               # Timer state machine and scheduling
+├── DesignSystem/        # Adaptive colors, typography, shared UI primitives
+└── Support/             # Small shared utilities
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+[AppName]Tests/
+├── ClockTests/
+├── TimerTests/
+├── OverlayTests/
+└── PerformanceTests/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+[AppName]UITests/
+└── [UI automation tests when practical]
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

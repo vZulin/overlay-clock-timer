@@ -5,6 +5,17 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Constitutional Scope *(mandatory)*
+
+- **Target Platform**: macOS only.
+- **Application Model**: Native menu-bar app with a separate floating overlay window.
+- **Overlay Contract**: Compact default size near 280x160 px, always-on-top window
+  level, titleless draggable behavior, and custom drag area remain required.
+- **Technology Boundary**: Implementation plan must select an Apple-native Swift
+  stack and justify any third-party dependency.
+- **Quality Boundary**: Every user story must include automated tests and a
+  documented command that passes after the story is implemented.
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -84,16 +95,17 @@
 
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-001**: App MUST [specific capability while remaining macOS-only]
+- **FR-002**: App MUST preserve menu-bar status item access for [feature behavior]
+- **FR-003**: Overlay MUST preserve always-on-top, titleless draggable behavior for [feature behavior]
+- **FR-004**: Clock/timer behavior MUST be testable with an injected or controllable time source
+- **FR-005**: UI MUST support light and dark appearance for [feature behavior]
+- **FR-006**: App MUST meet [specific performance or resource constraint]
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-007**: Overlay MUST use window level [NEEDS CLARIFICATION: floating or statusBar not specified]
+- **FR-008**: Timer mode MUST support [NEEDS CLARIFICATION: countdown, stopwatch, or both]
 
 ### Key Entities *(include if feature involves data)*
 
@@ -123,6 +135,6 @@
 -->
 
 - [Assumption about target users, e.g., "Users have stable internet connectivity"]
-- [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
-- [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
-- [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+- [Assumption about scope boundaries, e.g., "Only macOS desktop support is in scope"]
+- [Assumption about data/environment, e.g., "Timer preferences can be local-only"]
+- [Dependency on existing system/service, e.g., "Requires no network service"]

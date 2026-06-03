@@ -1,0 +1,763 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000000000000000000000020 /* OverlayClockTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000011 /* OverlayClockTimerApp.swift */; };
+		000000000000000000000021 /* OverlayClockTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000012 /* OverlayClockTimerTests.swift */; };
+		000000000000000000000022 /* OverlayClockTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000013 /* OverlayClockTimerUITests.swift */; };
+		000000000000000000000023 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000014 /* Assets.xcassets */; };
+		000000000000000000000201 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000101 /* AppCoordinator.swift */; };
+		000000000000000000000202 /* TimeSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000102 /* TimeSource.swift */; };
+		000000000000000000000203 /* ClockFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000103 /* ClockFormatter.swift */; };
+		000000000000000000000204 /* DisplayTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000104 /* DisplayTicker.swift */; };
+		000000000000000000000205 /* DurationFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000105 /* DurationFormatter.swift */; };
+		000000000000000000000206 /* OverlayPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000106 /* OverlayPreferences.swift */; };
+		000000000000000000000207 /* HotkeyBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000107 /* HotkeyBinding.swift */; };
+		000000000000000000000208 /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000108 /* PreferencesStore.swift */; };
+		000000000000000000000209 /* UserDefaultsPreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000109 /* UserDefaultsPreferencesStore.swift */; };
+		00000000000000000000020A /* ScreenFrameValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010A /* ScreenFrameValidator.swift */; };
+		00000000000000000000020B /* OverlayMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010B /* OverlayMetrics.swift */; };
+		00000000000000000000020C /* OverlayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010C /* OverlayTheme.swift */; };
+		00000000000000000000020D /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010D /* SymbolButtonStyle.swift */; };
+		00000000000000000000020E /* OverlayGeometryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010E /* OverlayGeometryStore.swift */; };
+		000000000000000000000220 /* TimeSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000120 /* TimeSourceTests.swift */; };
+		000000000000000000000221 /* ClockFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000121 /* ClockFormatterTests.swift */; };
+		000000000000000000000222 /* DisplayTickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000122 /* DisplayTickerTests.swift */; };
+		000000000000000000000223 /* DurationFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000123 /* DurationFormatterTests.swift */; };
+		000000000000000000000224 /* PreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000124 /* PreferencesStoreTests.swift */; };
+		000000000000000000000225 /* ScreenFrameValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000125 /* ScreenFrameValidatorTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		000000000000000000000044 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000000000040;
+			remoteInfo = OverlayClockTimer;
+		};
+		000000000000000000000046 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000000000040;
+			remoteInfo = OverlayClockTimer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		000000000000000000000011 /* OverlayClockTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayClockTimerApp.swift; sourceTree = "<group>"; };
+		000000000000000000000012 /* OverlayClockTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayClockTimerTests.swift; sourceTree = "<group>"; };
+		000000000000000000000013 /* OverlayClockTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayClockTimerUITests.swift; sourceTree = "<group>"; };
+		000000000000000000000014 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		000000000000000000000015 /* OverlayClockTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OverlayClockTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000016 /* OverlayClockTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OverlayClockTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000017 /* OverlayClockTimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OverlayClockTimerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000101 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		000000000000000000000102 /* TimeSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSource.swift; sourceTree = "<group>"; };
+		000000000000000000000103 /* ClockFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFormatter.swift; sourceTree = "<group>"; };
+		000000000000000000000104 /* DisplayTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTicker.swift; sourceTree = "<group>"; };
+		000000000000000000000105 /* DurationFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationFormatter.swift; sourceTree = "<group>"; };
+		000000000000000000000106 /* OverlayPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPreferences.swift; sourceTree = "<group>"; };
+		000000000000000000000107 /* HotkeyBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyBinding.swift; sourceTree = "<group>"; };
+		000000000000000000000108 /* PreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStore.swift; sourceTree = "<group>"; };
+		000000000000000000000109 /* UserDefaultsPreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesStore.swift; sourceTree = "<group>"; };
+		00000000000000000000010A /* ScreenFrameValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenFrameValidator.swift; sourceTree = "<group>"; };
+		00000000000000000000010B /* OverlayMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayMetrics.swift; sourceTree = "<group>"; };
+		00000000000000000000010C /* OverlayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayTheme.swift; sourceTree = "<group>"; };
+		00000000000000000000010D /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
+		00000000000000000000010E /* OverlayGeometryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayGeometryStore.swift; sourceTree = "<group>"; };
+		000000000000000000000120 /* TimeSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSourceTests.swift; sourceTree = "<group>"; };
+		000000000000000000000121 /* ClockFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFormatterTests.swift; sourceTree = "<group>"; };
+		000000000000000000000122 /* DisplayTickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTickerTests.swift; sourceTree = "<group>"; };
+		000000000000000000000123 /* DurationFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationFormatterTests.swift; sourceTree = "<group>"; };
+		000000000000000000000124 /* PreferencesStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStoreTests.swift; sourceTree = "<group>"; };
+		000000000000000000000125 /* ScreenFrameValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenFrameValidatorTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000000000000000000000032 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000035 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000038 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000004 /* OverlayClockTimer */,
+				00000000000000000000000F /* OverlayClockTimerTests */,
+				000000000000000000000010 /* OverlayClockTimerUITests */,
+				000000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000015 /* OverlayClockTimer.app */,
+				000000000000000000000016 /* OverlayClockTimerTests.xctest */,
+				000000000000000000000017 /* OverlayClockTimerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		000000000000000000000004 /* OverlayClockTimer */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000005 /* App */,
+				000000000000000000000006 /* Overlay */,
+				000000000000000000000007 /* Clock */,
+				000000000000000000000008 /* Timer */,
+				000000000000000000000009 /* Settings */,
+				00000000000000000000000A /* Preferences */,
+				00000000000000000000000B /* Hotkeys */,
+				00000000000000000000000C /* DesignSystem */,
+				00000000000000000000000D /* Support */,
+				00000000000000000000000E /* Resources */,
+			);
+			path = OverlayClockTimer;
+			sourceTree = "<group>";
+		};
+		000000000000000000000005 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000011 /* OverlayClockTimerApp.swift */,
+				000000000000000000000101 /* AppCoordinator.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		000000000000000000000006 /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000010E /* OverlayGeometryStore.swift */,
+			);
+			path = Overlay;
+			sourceTree = "<group>";
+		};
+		000000000000000000000007 /* Clock */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000102 /* TimeSource.swift */,
+				000000000000000000000103 /* ClockFormatter.swift */,
+				000000000000000000000104 /* DisplayTicker.swift */,
+			);
+			path = Clock;
+			sourceTree = "<group>";
+		};
+		000000000000000000000008 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000105 /* DurationFormatter.swift */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		000000000000000000000009 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000A /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000106 /* OverlayPreferences.swift */,
+				000000000000000000000107 /* HotkeyBinding.swift */,
+				000000000000000000000108 /* PreferencesStore.swift */,
+				000000000000000000000109 /* UserDefaultsPreferencesStore.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000B /* Hotkeys */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Hotkeys;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000C /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000010B /* OverlayMetrics.swift */,
+				00000000000000000000010C /* OverlayTheme.swift */,
+				00000000000000000000010D /* SymbolButtonStyle.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000D /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000010A /* ScreenFrameValidator.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000014 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		00000000000000000000000F /* OverlayClockTimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000012 /* OverlayClockTimerTests.swift */,
+				000000000000000000000018 /* ClockTests */,
+				000000000000000000000019 /* TimerTests */,
+				00000000000000000000001A /* PreferencesTests */,
+				00000000000000000000001B /* OverlayTests */,
+				00000000000000000000001C /* PerformanceTests */,
+			);
+			path = OverlayClockTimerTests;
+			sourceTree = "<group>";
+		};
+		000000000000000000000010 /* OverlayClockTimerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000013 /* OverlayClockTimerUITests.swift */,
+			);
+			path = OverlayClockTimerUITests;
+			sourceTree = "<group>";
+		};
+		000000000000000000000018 /* ClockTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000120 /* TimeSourceTests.swift */,
+				000000000000000000000121 /* ClockFormatterTests.swift */,
+				000000000000000000000122 /* DisplayTickerTests.swift */,
+			);
+			path = ClockTests;
+			sourceTree = "<group>";
+		};
+		000000000000000000000019 /* TimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000123 /* DurationFormatterTests.swift */,
+			);
+			path = TimerTests;
+			sourceTree = "<group>";
+		};
+		00000000000000000000001A /* PreferencesTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000124 /* PreferencesStoreTests.swift */,
+				000000000000000000000125 /* ScreenFrameValidatorTests.swift */,
+			);
+			path = PreferencesTests;
+			sourceTree = "<group>";
+		};
+		00000000000000000000001B /* OverlayTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = OverlayTests;
+			sourceTree = "<group>";
+		};
+		00000000000000000000001C /* PerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PerformanceTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000040 /* OverlayClockTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000000000000000000000055 /* Build configuration list for PBXNativeTarget "OverlayClockTimer" */;
+			buildPhases = (
+				000000000000000000000030 /* Sources */,
+				000000000000000000000032 /* Frameworks */,
+				000000000000000000000031 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OverlayClockTimer;
+			productName = OverlayClockTimer;
+			productReference = 000000000000000000000015 /* OverlayClockTimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		000000000000000000000041 /* OverlayClockTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000000000000000000000058 /* Build configuration list for PBXNativeTarget "OverlayClockTimerTests" */;
+			buildPhases = (
+				000000000000000000000033 /* Sources */,
+				000000000000000000000035 /* Frameworks */,
+				000000000000000000000034 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				000000000000000000000043 /* PBXTargetDependency */,
+			);
+			name = OverlayClockTimerTests;
+			productName = OverlayClockTimerTests;
+			productReference = 000000000000000000000016 /* OverlayClockTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		000000000000000000000042 /* OverlayClockTimerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000000000000005B /* Build configuration list for PBXNativeTarget "OverlayClockTimerUITests" */;
+			buildPhases = (
+				000000000000000000000036 /* Sources */,
+				000000000000000000000038 /* Frameworks */,
+				000000000000000000000037 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				000000000000000000000045 /* PBXTargetDependency */,
+			);
+			name = OverlayClockTimerUITests;
+			productName = OverlayClockTimerUITests;
+			productReference = 000000000000000000000017 /* OverlayClockTimerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					000000000000000000000040 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					000000000000000000000041 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 000000000000000000000040;
+					};
+					000000000000000000000042 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 000000000000000000000040;
+					};
+				};
+			};
+			buildConfigurationList = 000000000000000000000052 /* Build configuration list for PBXProject "OverlayClockTimer" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 000000000000000000000002;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 000000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000000000000000000000040 /* OverlayClockTimer */,
+				000000000000000000000041 /* OverlayClockTimerTests */,
+				000000000000000000000042 /* OverlayClockTimerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		000000000000000000000031 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000000023 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000034 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000037 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000000000030 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000000201 /* AppCoordinator.swift in Sources */,
+				000000000000000000000202 /* TimeSource.swift in Sources */,
+				000000000000000000000203 /* ClockFormatter.swift in Sources */,
+				000000000000000000000204 /* DisplayTicker.swift in Sources */,
+				000000000000000000000205 /* DurationFormatter.swift in Sources */,
+				000000000000000000000206 /* OverlayPreferences.swift in Sources */,
+				000000000000000000000207 /* HotkeyBinding.swift in Sources */,
+				000000000000000000000208 /* PreferencesStore.swift in Sources */,
+				000000000000000000000209 /* UserDefaultsPreferencesStore.swift in Sources */,
+				00000000000000000000020A /* ScreenFrameValidator.swift in Sources */,
+				00000000000000000000020B /* OverlayMetrics.swift in Sources */,
+				00000000000000000000020C /* OverlayTheme.swift in Sources */,
+				00000000000000000000020D /* SymbolButtonStyle.swift in Sources */,
+				00000000000000000000020E /* OverlayGeometryStore.swift in Sources */,
+				000000000000000000000020 /* OverlayClockTimerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000033 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000000021 /* OverlayClockTimerTests.swift in Sources */,
+				000000000000000000000220 /* TimeSourceTests.swift in Sources */,
+				000000000000000000000221 /* ClockFormatterTests.swift in Sources */,
+				000000000000000000000222 /* DisplayTickerTests.swift in Sources */,
+				000000000000000000000223 /* DurationFormatterTests.swift in Sources */,
+				000000000000000000000224 /* PreferencesStoreTests.swift in Sources */,
+				000000000000000000000225 /* ScreenFrameValidatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000036 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000000022 /* OverlayClockTimerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		000000000000000000000043 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000000000040 /* OverlayClockTimer */;
+			targetProxy = 000000000000000000000044 /* PBXContainerItemProxy */;
+		};
+		000000000000000000000045 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000000000040 /* OverlayClockTimer */;
+			targetProxy = 000000000000000000000046 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000000000050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		000000000000000000000051 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		000000000000000000000053 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = OverlayClockTimer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		000000000000000000000054 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = OverlayClockTimer;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		000000000000000000000056 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OverlayClockTimer.app/Contents/MacOS/OverlayClockTimer";
+			};
+			name = Debug;
+		};
+		000000000000000000000057 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OverlayClockTimer.app/Contents/MacOS/OverlayClockTimer";
+			};
+			name = Release;
+		};
+		000000000000000000000059 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = OverlayClockTimer;
+			};
+			name = Debug;
+		};
+		00000000000000000000005A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OverlayClockTimerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = OverlayClockTimer;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000000000052 /* Build configuration list for PBXProject "OverlayClockTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000050 /* Debug */,
+				000000000000000000000051 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		000000000000000000000055 /* Build configuration list for PBXNativeTarget "OverlayClockTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000053 /* Debug */,
+				000000000000000000000054 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		000000000000000000000058 /* Build configuration list for PBXNativeTarget "OverlayClockTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000056 /* Debug */,
+				000000000000000000000057 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000000000000000000005B /* Build configuration list for PBXNativeTarget "OverlayClockTimerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000059 /* Debug */,
+				00000000000000000000005A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000001 /* Project object */;
+}
