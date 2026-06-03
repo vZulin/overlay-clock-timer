@@ -8,6 +8,7 @@ final class AppCoordinator: ObservableObject {
     @Published private(set) var displayMode: DisplayMode
 
     let clockDisplayModel: ClockDisplayModel
+    let timerSessionStore: TimerSessionStore
 
     private let preferencesStore: PreferencesStore
     private let geometryStore: OverlayGeometryStoring
@@ -22,6 +23,7 @@ final class AppCoordinator: ObservableObject {
                 rootView: OverlayRootView(
                     coordinator: self,
                     clockDisplayModel: clockDisplayModel,
+                    timerSessionStore: timerSessionStore,
                     preferences: preferencesStore.preferences
                 )
             )
@@ -35,11 +37,13 @@ final class AppCoordinator: ObservableObject {
         launchOverlayOnStart: Bool = false,
         preferencesStore: PreferencesStore = UserDefaultsPreferencesStore(),
         geometryStore: OverlayGeometryStoring = OverlayGeometryStore(),
-        clockDisplayModel: ClockDisplayModel = ClockDisplayModel()
+        clockDisplayModel: ClockDisplayModel = ClockDisplayModel(),
+        timerSessionStore: TimerSessionStore = TimerSessionStore()
     ) {
         self.preferencesStore = preferencesStore
         self.geometryStore = geometryStore
         self.clockDisplayModel = clockDisplayModel
+        self.timerSessionStore = timerSessionStore
         self.isOverlayVisible = false
         self.isSettingsPresented = isSettingsPresented
         self.displayMode = preferencesStore.preferences.lastDisplayMode ?? displayMode

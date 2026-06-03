@@ -34,6 +34,12 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Evidence: App, unit test, and UI test targets built successfully; US1 coverage for injected clock display model dates, borderless `.floating` overlay window configuration, show/hide reuse, frame restore, drag/move frame persistence, off-screen recovery persistence, and visible overlay smoke flow passed with 0 failures.
 - Note: The initial sandboxed command failed because Xcode could not write to the default DerivedData location. The same command succeeded after approved elevated execution.
 
+### 2026-06-03 - Timer Mode
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: App, unit test, and UI test targets built successfully; US2 coverage for timer start, pause, resume, stop/reset, non-negative elapsed math, Loop capture/replacement, injected monotonic time, live elapsed formatting, button state derivation, Timer mode control enabled states, and secondary latest Loop display passed with 0 failures.
+
 ## Phase Checkpoints
 
 ### Setup

@@ -114,22 +114,22 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ### Tests for User Story 2 (MANDATORY)
 
-- [ ] T042 [P] [US2] Add timer start, pause, resume, stop/reset, and non-negative elapsed tests in `OverlayClockTimerTests/TimerTests/TimerSessionTests.swift`
-- [ ] T043 [P] [US2] Add Loop capture tests proving `latestLoop` is secondary, repeated Loop replaces it, and the main timer keeps running in `OverlayClockTimerTests/TimerTests/TimerSessionTests.swift`
-- [ ] T044 [P] [US2] Add timer store tests for injected monotonic time, live elapsed display, and button state derivation in `OverlayClockTimerTests/TimerTests/TimerSessionStoreTests.swift`
-- [ ] T045 [P] [US2] Add UI automation for Timer mode Start, Pause, Stop/Reset, Loop enabled states, and secondary Loop text in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T042 [P] [US2] Add timer start, pause, resume, stop/reset, and non-negative elapsed tests in `OverlayClockTimerTests/TimerTests/TimerSessionTests.swift`
+- [X] T043 [P] [US2] Add Loop capture tests proving `latestLoop` is secondary, repeated Loop replaces it, and the main timer keeps running in `OverlayClockTimerTests/TimerTests/TimerSessionTests.swift`
+- [X] T044 [P] [US2] Add timer store tests for injected monotonic time, live elapsed display, and button state derivation in `OverlayClockTimerTests/TimerTests/TimerSessionStoreTests.swift`
+- [X] T045 [P] [US2] Add UI automation for Timer mode Start, Pause, Stop/Reset, Loop enabled states, and secondary Loop text in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 2
 
-- [ ] T046 [P] [US2] Implement elapsed stopwatch state machine with `latestLoop` in `OverlayClockTimer/Timer/TimerSession.swift`
-- [ ] T047 [US2] Implement observable timer store, command methods, injected monotonic time source, and display state derivation in `OverlayClockTimer/Timer/TimerSessionStore.swift`
-- [ ] T048 [P] [US2] Implement media-player-style icon controls and stable disabled slots in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
-- [ ] T049 [US2] Extend overlay content for Timer idle, running, paused, and reset layouts in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T050 [US2] Bind Start/Pause, Stop/Reset, and Loop actions to `TimerSessionStore` from `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
-- [ ] T051 [US2] Render the latest Loop capture as a secondary line below the live main timer in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T052 [US2] Clear `latestLoop` on Stop/Reset while preserving it across Pause in `OverlayClockTimer/Timer/TimerSessionStore.swift`
-- [ ] T053 [US2] Add accessibility labels and tooltips for Start, Pause, Stop/Reset, and Loop controls in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
-- [ ] T054 [US2] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US2 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T046 [P] [US2] Implement elapsed stopwatch state machine with `latestLoop` in `OverlayClockTimer/Timer/TimerSession.swift`
+- [X] T047 [US2] Implement observable timer store, command methods, injected monotonic time source, and display state derivation in `OverlayClockTimer/Timer/TimerSessionStore.swift`
+- [X] T048 [P] [US2] Implement media-player-style icon controls and stable disabled slots in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
+- [X] T049 [US2] Extend overlay content for Timer idle, running, paused, and reset layouts in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T050 [US2] Bind Start/Pause, Stop/Reset, and Loop actions to `TimerSessionStore` from `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
+- [X] T051 [US2] Render the latest Loop capture as a secondary line below the live main timer in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T052 [US2] Clear `latestLoop` on Stop/Reset while preserving it across Pause in `OverlayClockTimer/Timer/TimerSessionStore.swift`
+- [X] T053 [US2] Add accessibility labels and tooltips for Start, Pause, Stop/Reset, and Loop controls in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
+- [X] T054 [US2] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US2 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
 
 **Checkpoint**: US1 and US2 work independently with deterministic timer tests.
 
