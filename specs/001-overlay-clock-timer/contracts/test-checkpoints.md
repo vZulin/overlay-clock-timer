@@ -27,6 +27,13 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
 - Evidence: App, unit test, and UI test targets built successfully; foundation coverage for time sources, clock formatting, elapsed duration formatting, display ticker cadence/cancellation, preference defaults/clamping/corruption handling/status-item invariant/Dock persistence, and visible-screen frame recovery passed with 0 failures.
 
+### 2026-06-03 - Clock Overlay
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: App, unit test, and UI test targets built successfully; US1 coverage for injected clock display model dates, borderless `.floating` overlay window configuration, show/hide reuse, frame restore, drag/move frame persistence, off-screen recovery persistence, and visible overlay smoke flow passed with 0 failures.
+- Note: The initial sandboxed command failed because Xcode could not write to the default DerivedData location. The same command succeeded after approved elevated execution.
+
 ## Phase Checkpoints
 
 ### Setup

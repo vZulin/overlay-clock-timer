@@ -25,12 +25,20 @@
 		00000000000000000000020C /* OverlayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010C /* OverlayTheme.swift */; };
 		00000000000000000000020D /* SymbolButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010D /* SymbolButtonStyle.swift */; };
 		00000000000000000000020E /* OverlayGeometryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010E /* OverlayGeometryStore.swift */; };
+		00000000000000000000020F /* ClockDisplayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000010F /* ClockDisplayModel.swift */; };
+		000000000000000000000210 /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000110 /* OverlayWindowController.swift */; };
+		000000000000000000000211 /* DragRegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000111 /* DragRegionView.swift */; };
+		000000000000000000000212 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000112 /* MenuBarContentView.swift */; };
+		000000000000000000000213 /* OverlayRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000113 /* OverlayRootView.swift */; };
 		000000000000000000000220 /* TimeSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000120 /* TimeSourceTests.swift */; };
 		000000000000000000000221 /* ClockFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000121 /* ClockFormatterTests.swift */; };
 		000000000000000000000222 /* DisplayTickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000122 /* DisplayTickerTests.swift */; };
 		000000000000000000000223 /* DurationFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000123 /* DurationFormatterTests.swift */; };
 		000000000000000000000224 /* PreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000124 /* PreferencesStoreTests.swift */; };
 		000000000000000000000225 /* ScreenFrameValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000125 /* ScreenFrameValidatorTests.swift */; };
+		000000000000000000000226 /* ClockDisplayModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000126 /* ClockDisplayModelTests.swift */; };
+		000000000000000000000227 /* OverlayWindowControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000127 /* OverlayWindowControllerTests.swift */; };
+		000000000000000000000228 /* OverlayGeometryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000128 /* OverlayGeometryStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,12 +80,20 @@
 		00000000000000000000010C /* OverlayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayTheme.swift; sourceTree = "<group>"; };
 		00000000000000000000010D /* SymbolButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButtonStyle.swift; sourceTree = "<group>"; };
 		00000000000000000000010E /* OverlayGeometryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayGeometryStore.swift; sourceTree = "<group>"; };
+		00000000000000000000010F /* ClockDisplayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDisplayModel.swift; sourceTree = "<group>"; };
+		000000000000000000000110 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
+		000000000000000000000111 /* DragRegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragRegionView.swift; sourceTree = "<group>"; };
+		000000000000000000000112 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		000000000000000000000113 /* OverlayRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayRootView.swift; sourceTree = "<group>"; };
 		000000000000000000000120 /* TimeSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSourceTests.swift; sourceTree = "<group>"; };
 		000000000000000000000121 /* ClockFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFormatterTests.swift; sourceTree = "<group>"; };
 		000000000000000000000122 /* DisplayTickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTickerTests.swift; sourceTree = "<group>"; };
 		000000000000000000000123 /* DurationFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationFormatterTests.swift; sourceTree = "<group>"; };
 		000000000000000000000124 /* PreferencesStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStoreTests.swift; sourceTree = "<group>"; };
 		000000000000000000000125 /* ScreenFrameValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenFrameValidatorTests.swift; sourceTree = "<group>"; };
+		000000000000000000000126 /* ClockDisplayModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockDisplayModelTests.swift; sourceTree = "<group>"; };
+		000000000000000000000127 /* OverlayWindowControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowControllerTests.swift; sourceTree = "<group>"; };
+		000000000000000000000128 /* OverlayGeometryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayGeometryStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +163,7 @@
 			children = (
 				000000000000000000000011 /* OverlayClockTimerApp.swift */,
 				000000000000000000000101 /* AppCoordinator.swift */,
+				000000000000000000000112 /* MenuBarContentView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -155,6 +172,9 @@
 			isa = PBXGroup;
 			children = (
 				00000000000000000000010E /* OverlayGeometryStore.swift */,
+				000000000000000000000110 /* OverlayWindowController.swift */,
+				000000000000000000000111 /* DragRegionView.swift */,
+				000000000000000000000113 /* OverlayRootView.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -165,6 +185,7 @@
 				000000000000000000000102 /* TimeSource.swift */,
 				000000000000000000000103 /* ClockFormatter.swift */,
 				000000000000000000000104 /* DisplayTicker.swift */,
+				00000000000000000000010F /* ClockDisplayModel.swift */,
 			);
 			path = Clock;
 			sourceTree = "<group>";
@@ -255,6 +276,7 @@
 				000000000000000000000120 /* TimeSourceTests.swift */,
 				000000000000000000000121 /* ClockFormatterTests.swift */,
 				000000000000000000000122 /* DisplayTickerTests.swift */,
+				000000000000000000000126 /* ClockDisplayModelTests.swift */,
 			);
 			path = ClockTests;
 			sourceTree = "<group>";
@@ -279,6 +301,8 @@
 		00000000000000000000001B /* OverlayTests */ = {
 			isa = PBXGroup;
 			children = (
+				000000000000000000000127 /* OverlayWindowControllerTests.swift */,
+				000000000000000000000128 /* OverlayGeometryStoreTests.swift */,
 			);
 			path = OverlayTests;
 			sourceTree = "<group>";
@@ -435,6 +459,11 @@
 				00000000000000000000020C /* OverlayTheme.swift in Sources */,
 				00000000000000000000020D /* SymbolButtonStyle.swift in Sources */,
 				00000000000000000000020E /* OverlayGeometryStore.swift in Sources */,
+				00000000000000000000020F /* ClockDisplayModel.swift in Sources */,
+				000000000000000000000210 /* OverlayWindowController.swift in Sources */,
+				000000000000000000000211 /* DragRegionView.swift in Sources */,
+				000000000000000000000212 /* MenuBarContentView.swift in Sources */,
+				000000000000000000000213 /* OverlayRootView.swift in Sources */,
 				000000000000000000000020 /* OverlayClockTimerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +479,9 @@
 				000000000000000000000223 /* DurationFormatterTests.swift in Sources */,
 				000000000000000000000224 /* PreferencesStoreTests.swift in Sources */,
 				000000000000000000000225 /* ScreenFrameValidatorTests.swift in Sources */,
+				000000000000000000000226 /* ClockDisplayModelTests.swift in Sources */,
+				000000000000000000000227 /* OverlayWindowControllerTests.swift in Sources */,
+				000000000000000000000228 /* OverlayGeometryStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

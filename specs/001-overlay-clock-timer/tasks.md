@@ -84,23 +84,23 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ### Tests for User Story 1 (MANDATORY)
 
-- [ ] T028 [P] [US1] Add clock display model tests with injected wall-clock dates in `OverlayClockTimerTests/ClockTests/ClockDisplayModelTests.swift`
-- [ ] T029 [P] [US1] Add overlay window level, borderless style, show/hide, and frame-restore tests in `OverlayClockTimerTests/OverlayTests/OverlayWindowControllerTests.swift`
-- [ ] T030 [P] [US1] Add overlay frame persistence tests for drag saves and off-screen restore in `OverlayClockTimerTests/OverlayTests/OverlayGeometryStoreTests.swift`
-- [ ] T031 [P] [US1] Add UI automation for menu-bar show/hide and visible overlay smoke flow in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T028 [P] [US1] Add clock display model tests with injected wall-clock dates in `OverlayClockTimerTests/ClockTests/ClockDisplayModelTests.swift`
+- [X] T029 [P] [US1] Add overlay window level, borderless style, show/hide, and frame-restore tests in `OverlayClockTimerTests/OverlayTests/OverlayWindowControllerTests.swift`
+- [X] T030 [P] [US1] Add overlay frame persistence tests for drag saves and off-screen restore in `OverlayClockTimerTests/OverlayTests/OverlayGeometryStoreTests.swift`
+- [X] T031 [P] [US1] Add UI automation for menu-bar show/hide and visible overlay smoke flow in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 1
 
-- [ ] T032 [P] [US1] Implement current-time display model using `ClockFormatter` and `DisplayTicker` in `OverlayClockTimer/Clock/ClockDisplayModel.swift`
-- [ ] T033 [US1] Implement borderless floating `NSWindow` ownership, `.floating` level, transparent background, shadow, and frame restore in `OverlayClockTimer/Overlay/OverlayWindowController.swift`
-- [ ] T034 [P] [US1] Implement AppKit-backed custom drag region using `window.performDrag(with:)` in `OverlayClockTimer/Overlay/DragRegionView.swift`
-- [ ] T035 [P] [US1] Implement menu-bar content with Show Overlay, Hide Overlay, Settings, and Quit actions in `OverlayClockTimer/App/MenuBarContentView.swift`
-- [ ] T036 [US1] Implement Clock-mode overlay layout with large tabular time display and bottom controls in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T037 [US1] Wire `MenuBarExtra`, overlay controller creation, and show/hide commands through `OverlayClockTimer/App/OverlayClockTimerApp.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T038 [US1] Persist overlay position after drag and restore validated frames through `OverlayClockTimer/Overlay/OverlayWindowController.swift` and `OverlayClockTimer/Overlay/OverlayGeometryStore.swift`
-- [ ] T039 [US1] Apply theme, opacity, radius, and sizing metrics to Clock-mode overlay content in `OverlayClockTimer/Overlay/OverlayRootView.swift` and `OverlayClockTimer/DesignSystem/OverlayTheme.swift`
-- [ ] T040 [US1] Add accessibility labels and tooltips for Clock-mode icon controls in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T041 [US1] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US1 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T032 [P] [US1] Implement current-time display model using `ClockFormatter` and `DisplayTicker` in `OverlayClockTimer/Clock/ClockDisplayModel.swift`
+- [X] T033 [US1] Implement borderless floating `NSWindow` ownership, `.floating` level, transparent background, shadow, and frame restore in `OverlayClockTimer/Overlay/OverlayWindowController.swift`
+- [X] T034 [P] [US1] Implement AppKit-backed custom drag region using `window.performDrag(with:)` in `OverlayClockTimer/Overlay/DragRegionView.swift`
+- [X] T035 [P] [US1] Implement menu-bar content with Show Overlay, Hide Overlay, Settings, and Quit actions in `OverlayClockTimer/App/MenuBarContentView.swift`
+- [X] T036 [US1] Implement Clock-mode overlay layout with large tabular time display and bottom controls in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T037 [US1] Wire `MenuBarExtra`, overlay controller creation, and show/hide commands through `OverlayClockTimer/App/OverlayClockTimerApp.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T038 [US1] Persist overlay position after drag and restore validated frames through `OverlayClockTimer/Overlay/OverlayWindowController.swift` and `OverlayClockTimer/Overlay/OverlayGeometryStore.swift`
+- [X] T039 [US1] Apply theme, opacity, radius, and sizing metrics to Clock-mode overlay content in `OverlayClockTimer/Overlay/OverlayRootView.swift` and `OverlayClockTimer/DesignSystem/OverlayTheme.swift`
+- [X] T040 [US1] Add accessibility labels and tooltips for Clock-mode icon controls in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T041 [US1] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the US1 checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
 
 **Checkpoint**: US1 is independently functional as the MVP.
 

@@ -7,22 +7,60 @@ final class AppCoordinator: ObservableObject {
     @Published private(set) var isSettingsPresented: Bool
     @Published private(set) var displayMode: DisplayMode
 
+    let clockDisplayModel: ClockDisplayModel
+
+    private let preferencesStore: PreferencesStore
+    private let geometryStore: OverlayGeometryStoring
+
+    private lazy var overlayWindowController: OverlayWindowController = {
+        OverlayWindowController(geometryStore: geometryStore) { [weak self] in
+            guard let self else {
+                return NSView(frame: CGRect(origin: .zero, size: OverlayPreferences.defaultWindowSize))
+            }
+
+            return NSHostingView(
+                rootView: OverlayRootView(
+                    coordinator: self,
+                    clockDisplayModel: clockDisplayModel,
+                    preferences: preferencesStore.preferences
+                )
+            )
+        }
+    }()
+
     init(
         isOverlayVisible: Bool = false,
         isSettingsPresented: Bool = false,
-        displayMode: DisplayMode = .clock
+        displayMode: DisplayMode = .clock,
+        launchOverlayOnStart: Bool = false,
+        preferencesStore: PreferencesStore = UserDefaultsPreferencesStore(),
+        geometryStore: OverlayGeometryStoring = OverlayGeometryStore(),
+        clockDisplayModel: ClockDisplayModel = ClockDisplayModel()
     ) {
-        self.isOverlayVisible = isOverlayVisible
+        self.preferencesStore = preferencesStore
+        self.geometryStore = geometryStore
+        self.clockDisplayModel = clockDisplayModel
+        self.isOverlayVisible = false
         self.isSettingsPresented = isSettingsPresented
-        self.displayMode = displayMode
+        self.displayMode = preferencesStore.preferences.lastDisplayMode ?? displayMode
+
+        if isOverlayVisible || launchOverlayOnStart {
+            Task { @MainActor [weak self] in
+                self?.showOverlay()
+            }
+        }
     }
 
     func showOverlay() {
         isOverlayVisible = true
+        clockDisplayModel.start()
+        overlayWindowController.show()
     }
 
     func hideOverlay() {
         isOverlayVisible = false
+        clockDisplayModel.stop()
+        overlayWindowController.hide()
     }
 
     func toggleOverlayVisibility() {
@@ -39,6 +77,13 @@ final class AppCoordinator: ObservableObject {
 
     func switchDisplayMode(to mode: DisplayMode) {
         displayMode = mode
+        var preferences = preferencesStore.preferences
+        preferences.lastDisplayMode = mode
+        preferencesStore.save(preferences)
+    }
+
+    func quit() {
+        NSApplication.shared.terminate(nil)
     }
 
     func handle(_ command: AppCommand) {
@@ -54,7 +99,7 @@ final class AppCoordinator: ObservableObject {
         case .switchMode(let mode):
             switchDisplayMode(to: mode)
         case .quit:
-            NSApplication.shared.terminate(nil)
+            quit()
         }
     }
 }

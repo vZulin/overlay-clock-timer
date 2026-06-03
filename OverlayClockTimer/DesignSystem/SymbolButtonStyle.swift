@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SymbolButtonStyle: ButtonStyle {
+    var backgroundColor: Color = Color.primary.opacity(0.10)
     var buttonSize: CGFloat = OverlayMetrics.controlButtonSize
     var cornerRadius: CGFloat = OverlayMetrics.controlCornerRadius
 
@@ -9,7 +10,7 @@ struct SymbolButtonStyle: ButtonStyle {
             .frame(width: buttonSize, height: buttonSize)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.primary.opacity(configuration.isPressed ? 0.18 : 0.10))
+                    .fill(backgroundColor.opacity(configuration.isPressed ? 0.75 : 1.0))
             )
             .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
