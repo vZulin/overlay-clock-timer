@@ -140,3 +140,7 @@ layout:
 - Apply opacity to the panel material/background, not to the entire window
   content, so text and icons remain readable.
 - Persist frame and size through the preferences store.
+- Final implementation keeps the drag-region status label as `CLOCK` or `TIMER`
+  in all states. The earlier `LOOP` marker mockup was not implemented because
+  the secondary captured loop value already communicates loop state without
+  changing the compact header label.

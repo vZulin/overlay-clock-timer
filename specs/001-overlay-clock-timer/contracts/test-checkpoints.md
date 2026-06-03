@@ -52,6 +52,58 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
 - Evidence: App, unit test, and UI test targets built successfully; US4 coverage for preference persistence and clamping, hotkey conflict rejection and replacement, launch-at-login success/failure consistency, Dock visibility while preserving the menu-bar status item, and opening a separate settings window without hiding the overlay passed with 0 failures.
 
+### 2026-06-03 - Polish Accessibility and Performance
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: Added regression coverage for icon-only accessibility labels,
+  disabled control states, stable focus target dimensions, and settings
+  reachability. Added performance coverage for SC-001 launch-to-readable-overlay
+  under 2 seconds, SC-004 60-second timer accuracy within 50 ms, SC-006 live
+  theme/opacity/size/font preference application under 1 second, ticker cadence,
+  idle ticker cancellation, and primary timer command response under 150 ms.
+- Manual visual verification: During the foreground UI automation run, the
+  default system appearance overlay and separate settings window were visible
+  and readable. Light, dark, and opacity behavior remain covered by live
+  preference application tests and the final settings checklist; no truncation or
+  unreadable text was observed at the default overlay frame.
+
+### 2026-06-03 - Whitespace Validation
+
+- Command: `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests specs/001-overlay-clock-timer/tasks.md`
+- Result: PASS.
+- Evidence: No whitespace errors were reported.
+
+### 2026-06-03 - Final Build
+
+- Command: `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: App target built, signed locally, validated, and registered with
+  Launch Services successfully.
+- Note: The initial sandboxed command failed because Xcode could not write to
+  the default DerivedData location. The same command succeeded after approved
+  elevated execution.
+
+### 2026-06-03 - Final Test
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS with Xcode 26.2 on macOS destination `My Mac`.
+- Evidence: Full unit, performance, and UI automation suite passed with 0
+  failures. UI coverage includes overlay launch/show/hide, Timer controls, Loop
+  display, mode-switch separation, settings-window reachability, and
+  accessibility label/disabled-state regression checks.
+
+### 2026-06-03 - Quickstart Validation
+
+- Validated commands:
+  - `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'`
+  - `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: PASS.
+- Evidence: The completed Xcode project builds and the automated test suite
+  launches the app, shows the overlay, opens settings, switches modes, and runs
+  Timer controls end to end.
+- Follow-up gaps: None recorded.
+
 ## Phase Checkpoints
 
 ### Setup

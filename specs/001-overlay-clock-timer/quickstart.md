@@ -39,6 +39,13 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ## Manual Verification Checklist
 
+Use this checklist after a successful final build and test run:
+
+```bash
+xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'
+xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
+```
+
 ### Clock Mode
 
 - Display format is `HH:MM:SS.mmm`.
@@ -88,3 +95,8 @@ OverlayClockTimerUITests/
 - DateFormatter is used for current system time only.
 - Elapsed timer display uses a custom duration formatter.
 - Timer math must use an injected monotonic time source for deterministic tests.
+- Final validation includes accessibility regression coverage for icon-only
+  controls, deterministic timer accuracy coverage, live preference application
+  latency coverage, and full app/UI tests through the `OverlayClockTimer` scheme.
+- Final validation on 2026-06-03 with Xcode 26.2 passed the documented build and
+  test commands against the completed Xcode project.

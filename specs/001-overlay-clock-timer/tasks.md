@@ -201,19 +201,19 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 **Purpose**: Strengthen accessibility, performance, documentation, and final validation across all user stories.
 
-- [ ] T085 [P] Add accessibility regression coverage for icon labels, disabled states, focus rings, and settings reachability in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T086 [P] Add SC-001 fresh launch-to-readable-overlay performance threshold tests in `OverlayClockTimerTests/PerformanceTests/LaunchOverlayPerformanceTests.swift`
-- [ ] T087 [P] Add SC-004 60-second timer accuracy threshold tests with injected monotonic time in `OverlayClockTimerTests/PerformanceTests/TimerAccuracyPerformanceTests.swift`
-- [ ] T088 [P] Add SC-006 live preference-application latency threshold tests for theme, opacity, size, and font changes in `OverlayClockTimerTests/PerformanceTests/PreferenceApplicationPerformanceTests.swift`
-- [ ] T089 [P] Add ticker cadence, idle overlay behavior, and primary button response performance tests in `OverlayClockTimerTests/PerformanceTests/OverlayTickerPerformanceTests.swift`
-- [ ] T090 Tune ticker lifecycle, visibility-based cancellation, and low-CPU idle behavior in `OverlayClockTimer/Clock/DisplayTicker.swift`
-- [ ] T091 Document final light/dark, opacity, and theme manual verification results in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
-- [ ] T092 [P] Update final build, run, and manual verification notes in `specs/001-overlay-clock-timer/quickstart.md`
-- [ ] T093 [P] Update implementation notes if final UI differs from the mockup contract in `specs/001-overlay-clock-timer/ui-mockups.md`
-- [ ] T094 Run whitespace validation with `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests specs/001-overlay-clock-timer/tasks.md` and record issues in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
-- [ ] T095 Run `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the build checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
-- [ ] T096 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the final checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
-- [ ] T097 Validate `specs/001-overlay-clock-timer/quickstart.md` end to end against the completed `OverlayClockTimer.xcodeproj` and record any follow-up gaps in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T085 [P] Add accessibility regression coverage for icon labels, disabled states, focus rings, and settings reachability in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T086 [P] Add SC-001 fresh launch-to-readable-overlay performance threshold tests in `OverlayClockTimerTests/PerformanceTests/LaunchOverlayPerformanceTests.swift`
+- [X] T087 [P] Add SC-004 60-second timer accuracy threshold tests with injected monotonic time in `OverlayClockTimerTests/PerformanceTests/TimerAccuracyPerformanceTests.swift`
+- [X] T088 [P] Add SC-006 live preference-application latency threshold tests for theme, opacity, size, and font changes in `OverlayClockTimerTests/PerformanceTests/PreferenceApplicationPerformanceTests.swift`
+- [X] T089 [P] Add ticker cadence, idle overlay behavior, and primary button response performance tests in `OverlayClockTimerTests/PerformanceTests/OverlayTickerPerformanceTests.swift`
+- [X] T090 Tune ticker lifecycle, visibility-based cancellation, and low-CPU idle behavior in `OverlayClockTimer/Clock/DisplayTicker.swift`
+- [X] T091 Document final light/dark, opacity, and theme manual verification results in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T092 [P] Update final build, run, and manual verification notes in `specs/001-overlay-clock-timer/quickstart.md`
+- [X] T093 [P] Update implementation notes if final UI differs from the mockup contract in `specs/001-overlay-clock-timer/ui-mockups.md`
+- [X] T094 Run whitespace validation with `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests specs/001-overlay-clock-timer/tasks.md` and record issues in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T095 Run `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the build checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T096 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` for `OverlayClockTimer.xcodeproj` and record the final checkpoint in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
+- [X] T097 Validate `specs/001-overlay-clock-timer/quickstart.md` end to end against the completed `OverlayClockTimer.xcodeproj` and record any follow-up gaps in `specs/001-overlay-clock-timer/contracts/test-checkpoints.md`
 
 ---
 

@@ -60,6 +60,10 @@
 		00000000000000000000024A /* HotkeyBindingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014A /* HotkeyBindingTests.swift */; };
 		00000000000000000000024B /* LaunchAtLoginControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014B /* LaunchAtLoginControllerTests.swift */; };
 		00000000000000000000024C /* AppVisibilityControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014C /* AppVisibilityControllerTests.swift */; };
+		00000000000000000000024D /* LaunchOverlayPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014D /* LaunchOverlayPerformanceTests.swift */; };
+		00000000000000000000024E /* TimerAccuracyPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */; };
+		00000000000000000000024F /* PreferenceApplicationPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */; };
+		000000000000000000000250 /* OverlayTickerPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000150 /* OverlayTickerPerformanceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +140,10 @@
 		00000000000000000000014A /* HotkeyBindingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyBindingTests.swift; sourceTree = "<group>"; };
 		00000000000000000000014B /* LaunchAtLoginControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginControllerTests.swift; sourceTree = "<group>"; };
 		00000000000000000000014C /* AppVisibilityControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVisibilityControllerTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014D /* LaunchOverlayPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchOverlayPerformanceTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAccuracyPerformanceTests.swift; sourceTree = "<group>"; };
+		00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceApplicationPerformanceTests.swift; sourceTree = "<group>"; };
+		000000000000000000000150 /* OverlayTickerPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayTickerPerformanceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -373,6 +381,10 @@
 		00000000000000000000001C /* PerformanceTests */ = {
 			isa = PBXGroup;
 			children = (
+				00000000000000000000014D /* LaunchOverlayPerformanceTests.swift */,
+				00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */,
+				00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */,
+				000000000000000000000150 /* OverlayTickerPerformanceTests.swift */,
 			);
 			path = PerformanceTests;
 			sourceTree = "<group>";
@@ -566,6 +578,10 @@
 				00000000000000000000024A /* HotkeyBindingTests.swift in Sources */,
 				00000000000000000000024B /* LaunchAtLoginControllerTests.swift in Sources */,
 				00000000000000000000024C /* AppVisibilityControllerTests.swift in Sources */,
+				00000000000000000000024D /* LaunchOverlayPerformanceTests.swift in Sources */,
+				00000000000000000000024E /* TimerAccuracyPerformanceTests.swift in Sources */,
+				00000000000000000000024F /* PreferenceApplicationPerformanceTests.swift in Sources */,
+				000000000000000000000250 /* OverlayTickerPerformanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
