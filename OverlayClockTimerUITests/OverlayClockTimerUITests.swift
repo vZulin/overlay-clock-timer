@@ -6,6 +6,17 @@ final class OverlayClockTimerUITests: XCTestCase {
     }
 
     @MainActor
+    func testDefaultLaunchShowsReadableOverlay() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["clock.display"].exists)
+    }
+
+    @MainActor
     func testMenuBarShowHideAndVisibleOverlaySmokeFlow() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]

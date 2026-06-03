@@ -6,16 +6,20 @@ struct OverlayClockTimerApp: App {
     @StateObject private var coordinator: AppCoordinator
 
     init() {
+        let arguments = ProcessInfo.processInfo.arguments
+
         if
-            ProcessInfo.processInfo.arguments.contains("--ui-testing"),
+            arguments.contains("--ui-testing"),
             let bundleIdentifier = Bundle.main.bundleIdentifier
         {
             UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
         }
 
+        let shouldShowOverlayOnLaunch = !arguments.contains("--hide-overlay-on-launch")
+
         _coordinator = StateObject(
             wrappedValue: AppCoordinator(
-                launchOverlayOnStart: ProcessInfo.processInfo.arguments.contains("--show-overlay-on-launch")
+                launchOverlayOnStart: shouldShowOverlayOnLaunch
             )
         )
     }
