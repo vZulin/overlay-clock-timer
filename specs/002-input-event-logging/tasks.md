@@ -19,11 +19,11 @@ phase.
 
 **Purpose**: Create feature folders and register new source/test files in the Xcode project.
 
-- [ ] T001 Create `OverlayClockTimer/InputLogging/`, `OverlayClockTimerTests/InputLoggingTests/`, and `OverlayClockTimerTests/PerformanceTests/` directories
-- [ ] T002 Create empty app Swift files at `OverlayClockTimer/InputLogging/EventTimestampProvider.swift`, `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`, `OverlayClockTimer/InputLogging/InputEventObserver.swift`, `OverlayClockTimer/InputLogging/InputEventRecord.swift`, `OverlayClockTimer/InputLogging/InputEventStore.swift`, `OverlayClockTimer/InputLogging/LogSessionWriter.swift`, `OverlayClockTimer/Overlay/InputEventTableView.swift`, and `OverlayClockTimer/Settings/InputLoggingSettingsView.swift`
-- [ ] T003 Create empty test Swift files at `OverlayClockTimerTests/InputLoggingTests/EventTimestampProviderTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`, `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`, and `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
-- [ ] T004 Add file references and source/test build entries for the files created by T002 and T003 in `OverlayClockTimer.xcodeproj/project.pbxproj`
-- [ ] T005 Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the setup checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T001 Create `OverlayClockTimer/InputLogging/`, `OverlayClockTimerTests/InputLoggingTests/`, and `OverlayClockTimerTests/PerformanceTests/` directories
+- [X] T002 Create empty app Swift files at `OverlayClockTimer/InputLogging/EventTimestampProvider.swift`, `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`, `OverlayClockTimer/InputLogging/InputEventObserver.swift`, `OverlayClockTimer/InputLogging/InputEventRecord.swift`, `OverlayClockTimer/InputLogging/InputEventStore.swift`, `OverlayClockTimer/InputLogging/LogSessionWriter.swift`, `OverlayClockTimer/Overlay/InputEventTableView.swift`, and `OverlayClockTimer/Settings/InputLoggingSettingsView.swift`
+- [X] T003 Create empty test Swift files at `OverlayClockTimerTests/InputLoggingTests/EventTimestampProviderTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`, `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`, `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`, and `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
+- [X] T004 Add file references and source/test build entries for the files created by T002 and T003 in `OverlayClockTimer.xcodeproj/project.pbxproj`
+- [X] T005 Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the setup checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 ---
 

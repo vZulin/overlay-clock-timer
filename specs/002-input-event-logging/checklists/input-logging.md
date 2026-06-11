@@ -8,86 +8,86 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are the logging toggle placement, icon-only nature, and relationship to the Clock/Timer switch fully specified? [Completeness, Spec FR-001, Spec FR-002]
-- [ ] CHK002 Are panel open, close, expansion direction, and collapsed-state requirements complete enough to avoid contradictory overlay layout interpretations? [Completeness, Spec Constitutional Scope, Spec FR-003]
-- [ ] CHK003 Are requirements complete for when input capture is active and inactive, including before open, after close, and collapsed normal use? [Completeness, Spec FR-004, Spec FR-005, Spec FR-026]
-- [ ] CHK004 Are table row limit requirements complete for default, minimum, maximum, trimming, and invalid persisted values? [Completeness, Spec Clarifications, Spec FR-006..FR-008, Spec Edge Cases]
-- [ ] CHK005 Are event table preservation requirements complete for default disabled behavior, enabled same-launch behavior, app quit clearing, and log-file separation? [Completeness, Spec Clarifications, Spec FR-009..FR-016]
-- [ ] CHK006 Are keyboard event requirements complete for character-producing keyDown, repeat events, and modifier combinations? [Completeness, Spec FR-018..FR-020]
-- [ ] CHK007 Are mouse event requirements complete for separate Mouse Down and Mouse Up records with independent timestamps? [Completeness, Spec FR-021]
-- [ ] CHK008 Are timestamp requirements complete for Clock mode, Timer mode, idle/reset timer state, paused timer state, reset during logging, and system clock changes? [Completeness, Spec FR-022, Spec FR-023, Spec Edge Cases]
-- [ ] CHK009 Are local file logging requirements complete for file naming, session creation, reopen behavior, write boundaries, and file creation failure? [Completeness, Spec FR-014..FR-017, Spec FR-027]
-- [ ] CHK010 Are required record fields complete enough to support table display and session log lines without adding unstated fields later? [Completeness, Spec FR-024, Spec Key Entities]
+- [x] CHK001 Are the logging toggle placement, icon-only nature, and relationship to the Clock/Timer switch fully specified? [Completeness, Spec FR-001, Spec FR-002]
+- [x] CHK002 Are panel open, close, expansion direction, and collapsed-state requirements complete enough to avoid contradictory overlay layout interpretations? [Completeness, Spec Constitutional Scope, Spec FR-003]
+- [x] CHK003 Are requirements complete for when input capture is active and inactive, including before open, after close, and collapsed normal use? [Completeness, Spec FR-004, Spec FR-005, Spec FR-026]
+- [x] CHK004 Are table row limit requirements complete for default, minimum, maximum, trimming, and invalid persisted values? [Completeness, Spec Clarifications, Spec FR-006..FR-008, Spec Edge Cases]
+- [x] CHK005 Are event table preservation requirements complete for default disabled behavior, enabled same-launch behavior, app quit clearing, and log-file separation? [Completeness, Spec Clarifications, Spec FR-009..FR-016]
+- [x] CHK006 Are keyboard event requirements complete for character-producing keyDown, repeat events, and modifier combinations? [Completeness, Spec FR-018..FR-020]
+- [x] CHK007 Are mouse event requirements complete for separate Mouse Down and Mouse Up records with independent timestamps? [Completeness, Spec FR-021]
+- [x] CHK008 Are timestamp requirements complete for Clock mode, Timer mode, idle/reset timer state, paused timer state, reset during logging, and system clock changes? [Completeness, Spec FR-022, Spec FR-023, Spec Edge Cases]
+- [x] CHK009 Are local file logging requirements complete for file naming, session creation, reopen behavior, write boundaries, and file creation failure? [Completeness, Spec FR-014..FR-017, Spec FR-027]
+- [x] CHK010 Are required record fields complete enough to support table display and session log lines without adding unstated fields later? [Completeness, Spec FR-024, Spec Key Entities]
 
 ## Requirement Clarity
 
-- [ ] CHK011 Is "logging panel is open" defined clearly enough to distinguish panel visibility from overlay visibility and app running state? [Clarity, Spec FR-004, Spec FR-026]
-- [ ] CHK012 Is "character-producing keyDown" clear enough to distinguish printable characters from modifier-only keys and non-text control keys? [Clarity, Spec FR-018, Spec FR-020]
-- [ ] CHK013 Is "readable combination name" specified with enough canonical modifier naming examples to prevent inconsistent labels? [Clarity, Spec FR-020]
-- [ ] CHK014 Is "event phase when applicable" clear enough to identify which categories require phase and which do not? [Clarity, Spec FR-024]
-- [ ] CHK015 Is the relationship between in-memory preserved rows and durable session log files stated without ambiguity? [Clarity, Spec FR-016, Spec Assumptions]
-- [ ] CHK016 Is "current visible timer value" clear enough to handle running, paused, stopped, reset, and never-started timer states? [Clarity, Spec FR-023, Spec Edge Cases]
-- [ ] CHK017 Is the log file path format precise enough to define date/time token width and avoid filename collisions for rapid reopen sessions? [Clarity, Spec FR-014, Spec Edge Cases]
-- [ ] CHK018 Is the settings scope clear enough to distinguish new input logging settings from a separate settings window? [Clarity, Spec FR-007, Spec FR-009, Spec Assumptions]
+- [x] CHK011 Is "logging panel is open" defined clearly enough to distinguish panel visibility from overlay visibility and app running state? [Clarity, Spec FR-004, Spec FR-026]
+- [x] CHK012 Is "character-producing keyDown" clear enough to distinguish printable characters from modifier-only keys and non-text control keys? [Clarity, Spec FR-018, Spec FR-020]
+- [x] CHK013 Is "readable combination name" specified with enough canonical modifier naming examples to prevent inconsistent labels? [Clarity, Spec FR-020]
+- [x] CHK014 Is "event phase when applicable" clear enough to identify which categories require phase and which do not? [Clarity, Spec FR-024]
+- [x] CHK015 Is the relationship between in-memory preserved rows and durable session log files stated without ambiguity? [Clarity, Spec FR-016, Spec Assumptions]
+- [x] CHK016 Is "current visible timer value" clear enough to handle running, paused, stopped, reset, and never-started timer states? [Clarity, Spec FR-023, Spec Edge Cases]
+- [x] CHK017 Is the log file path format precise enough to define date/time token width and avoid filename collisions for rapid reopen sessions? [Clarity, Spec FR-014, Spec Edge Cases]
+- [x] CHK018 Is the settings scope clear enough to distinguish new input logging settings from a separate settings window? [Clarity, Spec FR-007, Spec FR-009, Spec Assumptions]
 
 ## Requirement Consistency
 
-- [ ] CHK019 Are default empty-table requirements consistent across the independent test, acceptance scenarios, functional requirements, success criteria, and assumptions? [Consistency, Spec User Story 1, Spec FR-010, Spec FR-011, Spec SC-001]
-- [ ] CHK020 Are same-launch preservation requirements consistent across clarifications, user scenarios, functional requirements, key entities, success criteria, and assumptions? [Consistency, Spec Clarifications, Spec FR-012, Spec FR-013, Spec SC-007]
-- [ ] CHK021 Are "new log file on each open" requirements consistent with preserved in-memory table rows and no rewrite into a new session log file? [Consistency, Spec User Story 3, Spec FR-014..FR-016]
-- [ ] CHK022 Are table ordering requirements consistent between visible table behavior, row trimming, mouse chronological capture order, and reverse visible table order? [Consistency, Spec FR-006, Spec FR-008, Spec SC-004, Spec SC-005]
-- [ ] CHK023 Are privacy requirements consistent with the existence of local session log files and optional in-memory table preservation? [Consistency, Spec FR-026, Spec FR-028, Spec Assumptions]
-- [ ] CHK024 Are file logging boundaries consistent with the no-logging-while-closed invariant across all keyboard and mouse scenarios? [Consistency, Spec User Story 2, Spec User Story 3, Spec FR-017, Spec FR-026]
+- [x] CHK019 Are default empty-table requirements consistent across the independent test, acceptance scenarios, functional requirements, success criteria, and assumptions? [Consistency, Spec User Story 1, Spec FR-010, Spec FR-011, Spec SC-001]
+- [x] CHK020 Are same-launch preservation requirements consistent across clarifications, user scenarios, functional requirements, key entities, success criteria, and assumptions? [Consistency, Spec Clarifications, Spec FR-012, Spec FR-013, Spec SC-007]
+- [x] CHK021 Are "new log file on each open" requirements consistent with preserved in-memory table rows and no rewrite into a new session log file? [Consistency, Spec User Story 3, Spec FR-014..FR-016]
+- [x] CHK022 Are table ordering requirements consistent between visible table behavior, row trimming, mouse chronological capture order, and reverse visible table order? [Consistency, Spec FR-006, Spec FR-008, Spec SC-004, Spec SC-005]
+- [x] CHK023 Are privacy requirements consistent with the existence of local session log files and optional in-memory table preservation? [Consistency, Spec FR-026, Spec FR-028, Spec Assumptions]
+- [x] CHK024 Are file logging boundaries consistent with the no-logging-while-closed invariant across all keyboard and mouse scenarios? [Consistency, Spec User Story 2, Spec User Story 3, Spec FR-017, Spec FR-026]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK025 Are all success criteria measurable with objective counts, timing thresholds, or exact formats? [Acceptance Criteria, Spec SC-001..SC-009]
-- [ ] CHK026 Does SC-001 avoid implying preserved rows under default settings and align with the default empty-table requirement? [Acceptance Criteria, Spec SC-001, Spec FR-010, Spec FR-011]
-- [ ] CHK027 Does SC-002 define enough observable evidence to distinguish five repeated keyDown records from one coalesced record? [Acceptance Criteria, Spec SC-002, Spec FR-018, Spec FR-019]
-- [ ] CHK028 Does SC-003 define enough evidence to validate combination coalescing without over-constraining unsupported keyboard layouts? [Acceptance Criteria, Spec SC-003, Spec FR-020]
-- [ ] CHK029 Does SC-004 define both capture chronology and visible table ordering without ambiguity? [Acceptance Criteria, Spec SC-004]
-- [ ] CHK030 Does SC-005 remain measurable for configured row limits at default, minimum, and maximum values? [Acceptance Criteria, Spec SC-005, Spec FR-007]
-- [ ] CHK031 Does SC-007 objectively distinguish restored visible rows from rows written into the new session log file? [Acceptance Criteria, Spec SC-007, Spec FR-016]
+- [x] CHK025 Are all success criteria measurable with objective counts, timing thresholds, or exact formats? [Acceptance Criteria, Spec SC-001..SC-009]
+- [x] CHK026 Does SC-001 avoid implying preserved rows under default settings and align with the default empty-table requirement? [Acceptance Criteria, Spec SC-001, Spec FR-010, Spec FR-011]
+- [x] CHK027 Does SC-002 define enough observable evidence to distinguish five repeated keyDown records from one coalesced record? [Acceptance Criteria, Spec SC-002, Spec FR-018, Spec FR-019]
+- [x] CHK028 Does SC-003 define enough evidence to validate combination coalescing without over-constraining unsupported keyboard layouts? [Acceptance Criteria, Spec SC-003, Spec FR-020]
+- [x] CHK029 Does SC-004 define both capture chronology and visible table ordering without ambiguity? [Acceptance Criteria, Spec SC-004]
+- [x] CHK030 Does SC-005 remain measurable for configured row limits at default, minimum, and maximum values? [Acceptance Criteria, Spec SC-005, Spec FR-007]
+- [x] CHK031 Does SC-007 objectively distinguish restored visible rows from rows written into the new session log file? [Acceptance Criteria, Spec SC-007, Spec FR-016]
 
 ## Scenario Coverage
 
-- [ ] CHK032 Are primary open, capture, review, close, and reopen flows covered across the user stories? [Coverage, Spec User Stories 1..3]
-- [ ] CHK033 Are alternate flows covered for row limit changes while logging is active and while the panel is closed? [Coverage, Spec User Story 1, Spec FR-007]
-- [ ] CHK034 Are alternate flows covered for table preservation disabled, enabled, and app-quit reset states? [Coverage, Spec User Story 1, Spec FR-010..FR-013]
-- [ ] CHK035 Are exception flows covered for file creation failure and unavailable input-monitoring permissions? [Coverage, Spec Edge Cases, Spec FR-027]
-- [ ] CHK036 Are mode-switch flows covered while logging remains open in both Clock and Timer modes? [Coverage, Spec User Story 1, Spec FR-022, Spec FR-023]
+- [x] CHK032 Are primary open, capture, review, close, and reopen flows covered across the user stories? [Coverage, Spec User Stories 1..3]
+- [x] CHK033 Are alternate flows covered for row limit changes while logging is active and while the panel is closed? [Coverage, Spec User Story 1, Spec FR-007]
+- [x] CHK034 Are alternate flows covered for table preservation disabled, enabled, and app-quit reset states? [Coverage, Spec User Story 1, Spec FR-010..FR-013]
+- [x] CHK035 Are exception flows covered for file creation failure and unavailable input-monitoring permissions? [Coverage, Spec Edge Cases, Spec FR-027]
+- [x] CHK036 Are mode-switch flows covered while logging remains open in both Clock and Timer modes? [Coverage, Spec User Story 1, Spec FR-022, Spec FR-023]
 
 ## Edge Case Coverage
 
-- [ ] CHK037 Are rapid open/close requirements complete enough to define file creation and capture-stop behavior without duplicate session files? [Edge Case, Spec Edge Cases, Spec FR-014, Spec FR-015]
-- [ ] CHK038 Are burst repeat-key requirements complete enough to define row trimming and log file retention separately? [Edge Case, Spec Edge Cases, Spec FR-008, Spec FR-018]
-- [ ] CHK039 Are invalid persisted row-limit requirements clear for missing, corrupted, below-range, and above-range persisted values? [Ambiguity, Spec Edge Cases]
-- [ ] CHK040 Are permission-denied requirements complete enough to define user-visible state, table behavior, and file logging behavior when capture is unavailable? [Edge Case, Spec Edge Cases]
-- [ ] CHK041 Are system clock change requirements separated from Timer mode elapsed-time requirements to avoid timestamp source conflicts? [Edge Case, Spec Edge Cases, Spec FR-022, Spec FR-023]
-- [ ] CHK042 Are app quit and relaunch requirements complete for clearing preserved rows while retaining user preferences? [Edge Case, Spec FR-013, Spec Key Entities, Spec Assumptions]
+- [x] CHK037 Are rapid open/close requirements complete enough to define file creation and capture-stop behavior without duplicate session files? [Edge Case, Spec Edge Cases, Spec FR-014, Spec FR-015]
+- [x] CHK038 Are burst repeat-key requirements complete enough to define row trimming and log file retention separately? [Edge Case, Spec Edge Cases, Spec FR-008, Spec FR-018]
+- [x] CHK039 Are invalid persisted row-limit requirements clear for missing, corrupted, below-range, and above-range persisted values? [Ambiguity, Spec Edge Cases]
+- [x] CHK040 Are permission-denied requirements complete enough to define user-visible state, table behavior, and file logging behavior when capture is unavailable? [Edge Case, Spec Edge Cases]
+- [x] CHK041 Are system clock change requirements separated from Timer mode elapsed-time requirements to avoid timestamp source conflicts? [Edge Case, Spec Edge Cases, Spec FR-022, Spec FR-023]
+- [x] CHK042 Are app quit and relaunch requirements complete for clearing preserved rows while retaining user preferences? [Edge Case, Spec FR-013, Spec Key Entities, Spec Assumptions]
 
 ## Non-Functional Requirements
 
-- [ ] CHK043 Are performance requirements defined for opening the logging panel and restoring preserved rows under the maximum row limit? [Performance, Spec SC-001, Spec SC-007]
-- [ ] CHK044 Are privacy requirements explicit about no background monitoring, no capture while collapsed, no network transfer, and local-only event artifacts? [Privacy, Spec FR-026, Spec FR-028, Spec Assumptions]
-- [ ] CHK045 Are accessibility requirements specified for the new icon-only logging toggle and expanded table UI? [Accessibility, Spec FR-002, Spec FR-025]
-- [ ] CHK046 Are readability requirements specified for the expanded logging UI in light and dark appearance? [Accessibility, Spec FR-025]
-- [ ] CHK047 Are reliability requirements defined for file creation failure without blocking in-memory table use? [Reliability, Spec FR-027]
-- [ ] CHK048 Are scalability limits defined for visible rows, preserved rows, repeat-key bursts, and session log growth? [Scalability, Spec FR-006..FR-008, Spec FR-014..FR-017]
+- [x] CHK043 Are performance requirements defined for opening the logging panel and restoring preserved rows under the maximum row limit? [Performance, Spec SC-001, Spec SC-007]
+- [x] CHK044 Are privacy requirements explicit about no background monitoring, no capture while collapsed, no network transfer, and local-only event artifacts? [Privacy, Spec FR-026, Spec FR-028, Spec Assumptions]
+- [x] CHK045 Are accessibility requirements specified for the new icon-only logging toggle and expanded table UI? [Accessibility, Spec FR-002, Spec FR-025]
+- [x] CHK046 Are readability requirements specified for the expanded logging UI in light and dark appearance? [Accessibility, Spec FR-025]
+- [x] CHK047 Are reliability requirements defined for file creation failure without blocking in-memory table use? [Reliability, Spec FR-027]
+- [x] CHK048 Are scalability limits defined for visible rows, preserved rows, repeat-key bursts, and session log growth? [Scalability, Spec FR-006..FR-008, Spec FR-014..FR-017]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK049 Are dependencies on macOS input-monitoring permissions explicitly documented and connected to failure behavior? [Dependency, Spec Edge Cases, Spec Assumptions]
-- [ ] CHK050 Are dependencies on the existing settings window and overlay visual system documented without introducing a new settings surface? [Dependency, Spec FR-007, Spec FR-009, Spec Assumptions]
-- [ ] CHK051 Are assumptions about local diagnostic log retention documented clearly enough to avoid accidental auto-delete or sync requirements? [Assumption, Spec Assumptions, Spec FR-028]
-- [ ] CHK052 Are assumptions about observable external app input scoped clearly enough to avoid promising capture that macOS permissions may prevent? [Assumption, Spec Assumptions, Spec Edge Cases]
+- [x] CHK049 Are dependencies on macOS input-monitoring permissions explicitly documented and connected to failure behavior? [Dependency, Spec Edge Cases, Spec Assumptions]
+- [x] CHK050 Are dependencies on the existing settings window and overlay visual system documented without introducing a new settings surface? [Dependency, Spec FR-007, Spec FR-009, Spec Assumptions]
+- [x] CHK051 Are assumptions about local diagnostic log retention documented clearly enough to avoid accidental auto-delete or sync requirements? [Assumption, Spec Assumptions, Spec FR-028]
+- [x] CHK052 Are assumptions about observable external app input scoped clearly enough to avoid promising capture that macOS permissions may prevent? [Assumption, Spec Assumptions, Spec Edge Cases]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK053 Is there any remaining conflict between "logging active only while panel is open" and preserving visible rows after close? [Conflict, Spec FR-004, Spec FR-012, Spec Assumptions]
-- [ ] CHK054 Is there any remaining ambiguity between visible table history and session log file contents? [Ambiguity, Spec FR-014..FR-017, Spec SC-007]
-- [ ] CHK055 Is there any remaining ambiguity in whether table row limit applies to visible rows only, preserved in-memory rows, or file log lines? [Ambiguity, Spec FR-006..FR-008, Spec FR-016]
-- [ ] CHK056 Is the term "session" used consistently for open-panel logging sessions rather than app launches or preserved table history? [Terminology, Spec User Story 3, Spec FR-014..FR-017]
+- [x] CHK053 Is there any remaining conflict between "logging active only while panel is open" and preserving visible rows after close? [Conflict, Spec FR-004, Spec FR-012, Spec Assumptions]
+- [x] CHK054 Is there any remaining ambiguity between visible table history and session log file contents? [Ambiguity, Spec FR-014..FR-017, Spec SC-007]
+- [x] CHK055 Is there any remaining ambiguity in whether table row limit applies to visible rows only, preserved in-memory rows, or file log lines? [Ambiguity, Spec FR-006..FR-008, Spec FR-016]
+- [x] CHK056 Is the term "session" used consistently for open-panel logging sessions rather than app launches or preserved table history? [Terminology, Spec User Story 3, Spec FR-014..FR-017]
 
 ## Notes
 
