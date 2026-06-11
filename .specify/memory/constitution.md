@@ -1,23 +1,18 @@
 <!--
 Sync Impact Report
-Version change: N/A (template) -> 1.0.0
+Version change: 1.0.0 -> 1.1.0
 Modified principles:
-- Template placeholder -> I. macOS-Only Native Product
-- Template placeholder -> II. Apple-Native Stack and Minimal Dependencies
-- Template placeholder -> III. Floating Overlay and Menu Bar Contract
-- Template placeholder -> IV. Test-First Delivery Gates
-- Template placeholder -> V. Performance, Theme, and Maintainability
+- V. Performance, Theme, and Maintainability (logging privacy constraint expanded)
 Added sections:
-- Technical Constraints
-- Development Workflow and Quality Gates
+- None
 Removed sections:
 - None
 Templates requiring updates:
-- ✅ .specify/templates/plan-template.md
-- ✅ .specify/templates/spec-template.md
-- ✅ .specify/templates/tasks-template.md
+- ✅ .specify/templates/plan-template.md (checked; no update required)
+- ✅ .specify/templates/spec-template.md (checked; no update required)
+- ✅ .specify/templates/tasks-template.md (checked; no update required)
 - ✅ .specify/templates/commands/*.md (not present in this repository)
-- ✅ Runtime guidance docs (none present in this repository)
+- ✅ Runtime guidance docs (AGENTS.md checked; no update required)
 Follow-up TODOs:
 - None
 -->
@@ -89,7 +84,12 @@ and predictable.
 - Light and dark appearances MUST be verified by automated tests where feasible and by
   documented manual checks where AppKit rendering makes automation impractical.
 - Timer and clock logic MUST be testable without waiting for real wall-clock time.
-- Logging, if added, MUST be low-volume and MUST NOT include sensitive local data.
+- Logging, if added, MUST be low-volume. Input-event logging MAY include user-visible
+  input event labels only when explicitly activated by opening the logging panel, MUST
+  stop immediately when the panel closes, MUST remain local-only, MUST NOT run in the
+  background, and MUST NOT include app names, window titles, coordinates, clipboard
+  content, text field identifiers, process metadata, network identifiers, or hidden
+  durable history.
 
 ## Development Workflow and Quality Gates
 
@@ -122,4 +122,4 @@ with the macOS-only scope, stack declaration, overlay/menu-bar contract, depende
 policy, testing gates, performance constraints, and theme support. Work MUST NOT proceed
 past a stage checkpoint while required automated tests are failing.
 
-**Version**: 1.0.0 | **Ratified**: 2026-06-03 | **Last Amended**: 2026-06-03
+**Version**: 1.1.0 | **Ratified**: 2026-06-03 | **Last Amended**: 2026-06-11
