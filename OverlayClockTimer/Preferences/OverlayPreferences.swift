@@ -44,6 +44,10 @@ struct OverlayPreferences: Equatable {
     static let defaultTimerFontSize: Double = 48
     static let maximumTimerFontSize: Double = 96
 
+    static let minimumEventTableRowLimit = 5
+    static let defaultEventTableRowLimit = 15
+    static let maximumEventTableRowLimit = 50
+
     var theme: OverlayThemePreference
     var backgroundOpacity: Double
     var windowSize: CGSize
@@ -54,6 +58,8 @@ struct OverlayPreferences: Equatable {
     var showDockIcon: Bool
     var launchAtLoginEnabled: Bool
     var hotkeyBindings: [HotkeyBinding]
+    var eventTableRowLimit: Int
+    var preserveEventTableBetweenOpens: Bool
 
     var appVisibility: AppVisibilityPreference {
         AppVisibilityPreference(showDockIcon: showDockIcon)
@@ -69,7 +75,9 @@ struct OverlayPreferences: Equatable {
         timerOnModeSwitch: ModeSwitchAction.defaultValue,
         showDockIcon: false,
         launchAtLoginEnabled: false,
-        hotkeyBindings: []
+        hotkeyBindings: [],
+        eventTableRowLimit: defaultEventTableRowLimit,
+        preserveEventTableBetweenOpens: false
     )
 
     func validated() -> OverlayPreferences {
@@ -86,7 +94,9 @@ struct OverlayPreferences: Equatable {
             timerOnModeSwitch: timerOnModeSwitch,
             showDockIcon: showDockIcon,
             launchAtLoginEnabled: launchAtLoginEnabled,
-            hotkeyBindings: HotkeyBindingSet.validated(hotkeyBindings)
+            hotkeyBindings: HotkeyBindingSet.validated(hotkeyBindings),
+            eventTableRowLimit: Self.clampedEventTableRowLimit(eventTableRowLimit),
+            preserveEventTableBetweenOpens: preserveEventTableBetweenOpens
         )
     }
 
@@ -101,6 +111,10 @@ struct OverlayPreferences: Equatable {
         let heightBound = Double(windowSize.height) * 0.45
         let maximumAllowed = min(maximumTimerFontSize, heightBound)
         return fontSize.clamped(to: minimumTimerFontSize...maximumAllowed)
+    }
+
+    static func clampedEventTableRowLimit(_ rowLimit: Int) -> Int {
+        min(max(rowLimit, minimumEventTableRowLimit), maximumEventTableRowLimit)
     }
 }
 

@@ -35,19 +35,19 @@ phase.
 
 ### Tests for Foundation (MANDATORY)
 
-- [ ] T006 [P] Add `LoggingPreferences` default, clamp, persistence, and corrupted-value tests to `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
-- [ ] T007 [P] Add input event record ordering and privacy-shape tests in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
-- [ ] T008 [P] Add Clock/Timer timestamp context tests in `OverlayClockTimerTests/InputLoggingTests/EventTimestampProviderTests.swift`
-- [ ] T009 [P] Add log session file naming, collision, append, close, and failure tests in `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`
+- [X] T006 [P] Add `LoggingPreferences` default, clamp, persistence, and corrupted-value tests to `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
+- [X] T007 [P] Add input event record ordering and privacy-shape tests in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
+- [X] T008 [P] Add Clock/Timer timestamp context tests in `OverlayClockTimerTests/InputLoggingTests/EventTimestampProviderTests.swift`
+- [X] T009 [P] Add log session file naming, collision, append, close, and failure tests in `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`
 
 ### Implementation for Foundation
 
-- [ ] T010 [P] Implement `InputEventRecord`, event category, event phase, and capture-order value types in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
-- [ ] T011 [P] Implement `EventTimestampProvider` using `ClockDisplayModel` and `TimerSessionStore` display values in `OverlayClockTimer/InputLogging/EventTimestampProvider.swift`
-- [ ] T012 [P] Implement `LogSessionWriter` with session file creation, collision-safe names, append, close, and failure status in `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
-- [ ] T013 Extend `OverlayPreferences` with `eventTableRowLimit` and `preserveEventTableBetweenOpens` defaults and validation in `OverlayClockTimer/Preferences/OverlayPreferences.swift`
-- [ ] T014 Extend `UserDefaultsPreferencesStore` keys, load, save, and validation for input logging preferences in `OverlayClockTimer/Preferences/UserDefaultsPreferencesStore.swift`
-- [ ] T015 Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the foundation checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T010 [P] Implement `InputEventRecord`, event category, event phase, and capture-order value types in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
+- [X] T011 [P] Implement `EventTimestampProvider` using `ClockDisplayModel` and `TimerSessionStore` display values in `OverlayClockTimer/InputLogging/EventTimestampProvider.swift`
+- [X] T012 [P] Implement `LogSessionWriter` with session file creation, collision-safe names, append, close, and failure status in `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
+- [X] T013 Extend `OverlayPreferences` with `eventTableRowLimit` and `preserveEventTableBetweenOpens` defaults and validation in `OverlayClockTimer/Preferences/OverlayPreferences.swift`
+- [X] T014 Extend `UserDefaultsPreferencesStore` keys, load, save, and validation for input logging preferences in `OverlayClockTimer/Preferences/UserDefaultsPreferencesStore.swift`
+- [X] T015 Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the foundation checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin.
 

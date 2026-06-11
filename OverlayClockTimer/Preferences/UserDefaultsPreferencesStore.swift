@@ -18,6 +18,8 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         static let launchAtLoginEnabled = "app.launchAtLoginEnabled"
         static let legacyStatusItemVisible = "app.statusItemVisible"
         static let hotkeyBindings = "hotkeys.bindings"
+        static let eventTableRowLimit = "inputLogging.eventTableRowLimit"
+        static let preserveEventTableBetweenOpens = "inputLogging.preserveEventTableBetweenOpens"
     }
 
     private let userDefaults: UserDefaults
@@ -45,7 +47,10 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
             timerOnModeSwitch: ModeSwitchAction(storedValue: userDefaults.string(forKey: Keys.timerOnModeSwitch)),
             showDockIcon: boolValue(forKey: Keys.showDockIcon) ?? defaults.showDockIcon,
             launchAtLoginEnabled: boolValue(forKey: Keys.launchAtLoginEnabled) ?? defaults.launchAtLoginEnabled,
-            hotkeyBindings: readHotkeyBindings()
+            hotkeyBindings: readHotkeyBindings(),
+            eventTableRowLimit: intValue(forKey: Keys.eventTableRowLimit) ?? defaults.eventTableRowLimit,
+            preserveEventTableBetweenOpens: boolValue(forKey: Keys.preserveEventTableBetweenOpens)
+                ?? defaults.preserveEventTableBetweenOpens
         ).validated()
 
         userDefaults.removeObject(forKey: Keys.legacyStatusItemVisible)
@@ -63,6 +68,11 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         userDefaults.set(validated.timerOnModeSwitch.rawValue, forKey: Keys.timerOnModeSwitch)
         userDefaults.set(validated.showDockIcon, forKey: Keys.showDockIcon)
         userDefaults.set(validated.launchAtLoginEnabled, forKey: Keys.launchAtLoginEnabled)
+        userDefaults.set(validated.eventTableRowLimit, forKey: Keys.eventTableRowLimit)
+        userDefaults.set(
+            validated.preserveEventTableBetweenOpens,
+            forKey: Keys.preserveEventTableBetweenOpens
+        )
         writeHotkeyBindings(validated.hotkeyBindings)
 
         if let lastDisplayMode = validated.lastDisplayMode {
@@ -129,6 +139,13 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
             return nil
         }
         return number.boolValue
+    }
+
+    private func intValue(forKey key: String) -> Int? {
+        guard let number = userDefaults.object(forKey: key) as? NSNumber else {
+            return nil
+        }
+        return number.intValue
     }
 
     private func readHotkeyBindings() -> [HotkeyBinding] {
