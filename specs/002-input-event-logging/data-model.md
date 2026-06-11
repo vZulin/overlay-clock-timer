@@ -55,25 +55,27 @@ preferences.
 
 ## Entity: InputEventRecord
 
-Immutable representation of one captured keyboard or mouse event.
+Immutable representation of one captured keyboard, mouse-button, or scroll
+event.
 
 ### Fields
 
 - `id`: Stable unique identity for the row.
-- `captureOrder`: Monotonic sequence number assigned at capture time.
+- `captureOrder`: Monotonic sequence number assigned at capture time for
+  internal newest-first sorting.
 - `timestamp`: Already formatted mode-specific timestamp string.
-- `category`: `keyboard` or `mouse`.
-- `name`: Human-readable event name.
-- `phase`: Optional phase, such as `keyDown`, `repeatKeyDown`, `mouseDown`, or
-  `mouseUp`.
+- `eventName`: Human-readable event name shown in the table and written to the
+  session log file.
 
 ### Validation Rules
 
 - `captureOrder` must increase for every captured event in the current app
-  launch.
+  launch, but it is not displayed or written to the session log file.
 - `timestamp` must match the active display mode's required format.
-- `name` must not include app name, window title, text field identifier,
+- `eventName` must not include app name, window title, text field identifier,
   clipboard content, coordinates, or process metadata.
+- Visible table rows expose only `timestamp` and `eventName`.
+- Session log lines expose only `timestamp`, a tab separator, and `eventName`.
 
 ## Entity: KeyboardInputEvent
 
@@ -102,12 +104,34 @@ Specialized input source event before conversion into `InputEventRecord`.
 
 ### Fields
 
-- `phase`: `mouseDown` or `mouseUp`.
+- `button`: `left`, `right`, `third`, or `additional`.
+- `action`: `down` or `up`.
+- `additionalButtonNumber`: Optional integer used when `button` is
+  `additional` to format numbered additional-button labels.
 
 ### Validation Rules
 
 - Mouse down and mouse up are separate events.
+- Left-button events map to `LM ↓` and `LM ↑`.
+- Right-button events map to `RM ↓` and `RM ↑`.
+- Third-button events map to `3M ↓` and `3M ↑`.
+- Additional-button events map to numbered labels such as `4M ↓`, `4M ↑`,
+  `5M ↓`, and `5M ↑`.
 - Mouse coordinates are not stored.
+
+## Entity: ScrollInputEvent
+
+Specialized input source event before conversion into `InputEventRecord`.
+
+### Fields
+
+- `direction`: `up` or `down`.
+
+### Validation Rules
+
+- Upward scroll input maps to `SM ↑`.
+- Downward scroll input maps to `SM ↓`.
+- Scroll coordinates, delta magnitudes, and target view metadata are not stored.
 
 ## Entity: LogSessionFile
 
@@ -150,6 +174,6 @@ Represents the mode-specific source used to produce an event timestamp.
 - `LoggingPanelState` owns visible and preserved `InputEventRecord` collections.
 - `LoggingPreferences` controls `LoggingPanelState` row trimming and preservation
   behavior.
-- `KeyboardInputEvent` and `MouseInputEvent` are converted into
-  `InputEventRecord`.
+- `KeyboardInputEvent`, `MouseInputEvent`, and `ScrollInputEvent` are converted
+  into `InputEventRecord`.
 - `EventTimestampContext` formats the timestamp for each `InputEventRecord`.

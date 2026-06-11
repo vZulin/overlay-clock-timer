@@ -15,11 +15,68 @@ xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'
 
 ## Run Automated Tests
 
-Run this command after every implementation phase:
+Run this command after every implementation phase. This is the default
+development mode: UI input-capture tests launch the app with
+`--mock-input-event-capture`, so they do not depend on macOS TCC permissions or
+ad-hoc signing stability.
 
 ```bash
 xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 ```
+
+To run only the input-capture UI tests in development mode:
+
+```bash
+xcodebuild test \
+  -scheme OverlayClockTimer \
+  -destination 'platform=macOS' \
+  -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testKeyboardLoggingRecordsRowsAndStopsOnClose \
+  -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testMouseLoggingRowsAndFileState
+```
+
+## Run Real Input Capture UI Tests
+
+Real input capture tests intentionally do not use the mock event source. They
+require macOS permissions and a stable build product path. Because this project
+uses ad-hoc signing when no `DEVELOPMENT_TEAM` is configured, rebuilding may
+change the TCC identity. Prefer `build-for-testing` once, grant permissions to
+that exact app path, then run `test-without-building`.
+
+Build once into a stable DerivedData directory:
+
+```bash
+DERIVED_DATA="$PWD/build/DerivedData"
+
+xcodebuild build-for-testing \
+  -scheme OverlayClockTimer \
+  -destination 'platform=macOS' \
+  -derivedDataPath "$DERIVED_DATA"
+```
+
+Grant permissions in System Settings > Privacy & Security:
+
+- `build/DerivedData/Build/Products/Debug/OverlayClockTimer.app`
+  - Accessibility
+  - Input Monitoring
+- `build/DerivedData/Build/Products/Debug/OverlayClockTimerUITests-Runner.app`
+  - Accessibility
+
+Run the real-capture tests without rebuilding:
+
+```bash
+OVERLAY_CLOCK_TIMER_REAL_INPUT_CAPTURE_TESTS=1 \
+xcodebuild test-without-building \
+  -scheme OverlayClockTimer \
+  -destination 'platform=macOS' \
+  -derivedDataPath "$DERIVED_DATA" \
+  -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testKeyboardLoggingRecordsRowsAndStopsOnClose \
+  -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testMouseLoggingRowsAndFileState
+```
+
+If the panel shows `Capture Unavailable`, remove stale OverlayClockTimer entries
+from System Settings and add the exact app paths from `build/DerivedData` again.
+Do not rerun `xcodebuild test` for the real-capture check, because it may
+rebuild/re-sign the app before launch.
 
 ## Manual Review Flow
 
@@ -31,10 +88,17 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 5. Confirm the default table is empty on open.
 6. Generate keyboard repeat input and modifier combinations while the panel is
    open.
-7. Generate mouse down and mouse up events while the panel is open.
-8. Close the panel and confirm no additional input is captured or written.
-9. Reopen the panel with default settings and confirm the table starts empty.
-10. Enable event table preservation in Settings, reopen the panel during the
+7. Generate left, right, third, and additional mouse-button down/up events while
+   the panel is open.
+8. Generate scroll up and scroll down events while the panel is open.
+9. Confirm the event table shows only `Time` and `Event` columns.
+10. Confirm mouse rows use `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
+    and numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, and
+    `5M ↑`.
+11. Confirm scroll rows use `SM ↑` and `SM ↓`.
+12. Close the panel and confirm no additional input is captured or written.
+13. Reopen the panel with default settings and confirm the table starts empty.
+14. Enable event table preservation in Settings, reopen the panel during the
     same app launch, and confirm visible rows restore without being copied into
     the new log file.
 
@@ -56,6 +120,15 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 
 - Reopening the panel creates a new file.
 - Preserved in-memory rows are not written into the new file.
+- Each log line contains only the timestamp, one tab character, and the event
+  name:
+
+```text
+00:00:00.000	Command+C
+```
+
+- Log lines must not contain `order=`, `timestamp=`, `category=`, `type=`,
+  `name=`, or `phase=`.
 - Log files remain local to the Mac.
 
 ## Expected Project Layout

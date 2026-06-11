@@ -33,6 +33,8 @@ toggle, expanded event table, table row lifecycle, and accessibility.
 ## Table Contract
 
 - Rows are newest-first.
+- The table shows exactly two user-facing columns: `Time` and `Event`.
+- The table must not show `Type`, `Category`, or `Phase` columns.
 - Row count must not exceed `eventTableRowLimit`.
 - Default row limit is `15`.
 - Valid row limit range is `5...50`.
@@ -42,6 +44,20 @@ toggle, expanded event table, table row lifecycle, and accessibility.
 - Preserved rows clear when the app quits.
 - Preserved rows are visible UI history only and are not written into a new
   session log file.
+
+## Event Name Contract
+
+- Keyboard character events show the character-producing event name.
+- Keyboard shortcut events show canonical modifier order followed by the key,
+  such as `Command+C` or `Option+Shift+K`.
+- Left mouse-button events show `LM ↓` and `LM ↑`.
+- Right mouse-button events show `RM ↓` and `RM ↑`.
+- Third mouse-button events show `3M ↓` and `3M ↑`.
+- Additional mouse-button events include the button number, such as `4M ↓`,
+  `4M ↑`, `5M ↓`, and `5M ↑`.
+- Scroll events show `SM ↑` for upward scroll and `SM ↓` for downward scroll.
+- Mouse and scroll rows must not expose coordinates, delta magnitudes, target
+  view metadata, category/type, or phase.
 
 ## Empty and Unavailable States
 

@@ -69,22 +69,46 @@ resetting a near-valid value while keeping the UI bounded.
 - Reject loading preferences entirely: rejected because one invalid setting
   should not corrupt unrelated overlay preferences.
 
-## Decision: Use Canonical Event Names With Limited Data Capture
+## Decision: Use Minimal User-Facing Event Records
 
-Record keyboard character names and modifier combinations, plus mouse phase
-names, but do not record app names, window titles, coordinates, clipboard
-content, text field identifiers, or process metadata.
+Expose only the formatted timestamp and canonical event name in the visible
+table and session log files. Keep capture order internal for deterministic
+newest-first sorting. Do not display or write category/type, phase, or order.
 
 **Rationale**: The feature needs diagnostic event names and repeat granularity,
 but constitution privacy constraints require minimizing captured local data.
-Limiting the record shape keeps logs useful while reducing unnecessary
-sensitive context.
+The clarified format keeps rows readable in the compact widget and makes log
+files easy to scan or parse as two tab-separated fields.
 
 **Alternatives considered**:
 
-- Record full event metadata: rejected as unnecessary and higher privacy risk.
+- Record full event metadata: rejected as unnecessary, noisier in the UI, and
+  higher privacy risk.
+- Keep category/type/phase columns visible: rejected because the user identified
+  them as not useful and they do not fit the compact overlay.
 - Hash or redact all keyboard values: rejected because the spec requires visible
   character repeat evidence such as five `s` records.
+
+## Decision: Normalize Mouse and Scroll Input Into Compact Event Labels
+
+Represent mouse-button down/up and scroll direction with short labels before
+display or file writing: `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
+numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, `5M ↑`, and
+scroll labels `SM ↑` and `SM ↓`.
+
+**Rationale**: Left and right mouse input must be distinguishable, additional
+buttons must not collapse into the same event, and row text must fit inside the
+overlay widget. Compact labels preserve diagnostic value without widening the
+table.
+
+**Alternatives considered**:
+
+- Long labels such as `Left Mouse Down`: rejected because they consume too much
+  table width in the compact overlay.
+- Numeric-only button names: rejected because left/right/third buttons should be
+  immediately recognizable.
+- Keep generic `Mouse Down` and `Mouse Up`: rejected because it loses button
+  identity and fails the clarified requirement.
 
 ## Decision: Reuse Existing Clock and Timer Display Sources for Timestamps
 

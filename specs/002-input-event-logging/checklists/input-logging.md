@@ -89,6 +89,35 @@
 - [x] CHK055 Is there any remaining ambiguity in whether table row limit applies to visible rows only, preserved in-memory rows, or file log lines? [Ambiguity, Spec FR-006..FR-008, Spec FR-016]
 - [x] CHK056 Is the term "session" used consistently for open-panel logging sessions rather than app launches or preserved table history? [Terminology, Spec User Story 3, Spec FR-014..FR-017]
 
+## Format Revision Completeness
+
+- [ ] CHK057 Are the visible table fields fully specified as only `Time` and `Event`, including explicit exclusion of `Type`, `Category`, and `Phase` columns? [Completeness, Spec Clarifications, Spec FR-024]
+- [ ] CHK058 Are session log line requirements complete enough to define exactly one timestamp, one tab separator, one event name, and no key-value fields? [Completeness, Spec Clarifications, Spec FR-025, Spec SC-010]
+- [ ] CHK059 Are compact mouse-button labels specified for left, right, third, and numbered additional buttons across both down and up transitions? [Completeness, Spec FR-021, Spec SC-004]
+- [ ] CHK060 Are compact scroll labels specified for both upward and downward scroll directions without storing coordinates or delta magnitudes? [Completeness, Spec FR-026, Spec Edge Cases]
+- [ ] CHK061 Are public `InputEventRecord` fields defined narrowly enough to expose timestamp and event name while keeping capture order internal? [Completeness, Spec Key Entities, Plan Design Notes]
+
+## Format Revision Clarity
+
+- [ ] CHK062 Is the mapping from physical mouse buttons to `LM`, `RM`, `3M`, and numbered additional-button labels unambiguous for devices with more than three buttons? [Clarity, Spec FR-021, Spec Key Entities]
+- [ ] CHK063 Is the upward versus downward scroll direction wording clear enough to avoid conflicting interpretations between natural and non-natural macOS scroll settings? [Ambiguity, Spec FR-026, Spec SC-008]
+- [ ] CHK064 Is the tab-separated log format specified with enough precision to avoid spaces, escaped `\t` text, or extra trailing fields? [Clarity, Spec FR-025, Spec SC-010]
+- [ ] CHK065 Is the expected relationship between compact event labels and keyboard combination names clear enough to keep a single `Event` column meaningful? [Clarity, Spec FR-020, Spec FR-021, Spec FR-026]
+
+## Test Mode Requirements Quality
+
+- [ ] CHK066 Are development mock input-capture tests and explicit real input-capture tests documented as distinct modes with clear scope and expectations? [Completeness, Plan Design Notes, Quickstart]
+- [ ] CHK067 Are requirements clear that automated mock-mode tests must fail when the mock source produces no events, even if real macOS capture is unavailable? [Clarity, Spec FR-031, Spec FR-032, Plan Design Notes]
+- [ ] CHK068 Are real input-capture permission assumptions documented without making default development tests depend on local Accessibility or Input Monitoring grants? [Consistency, Spec Edge Cases, Spec Assumptions, Plan Design Notes]
+- [ ] CHK069 Are `Capture Unavailable` requirements complete enough to distinguish permission unavailability from empty input history and file-writing failure states? [Coverage, Spec Edge Cases, Spec FR-029, Plan Design Notes]
+
+## Task Alignment Quality
+
+- [ ] CHK070 Are Phase 6 tasks explicitly aligned to the clarified public table format, compact mouse labels, compact scroll labels, and tab-separated log format? [Traceability, Tasks T055..T068]
+- [ ] CHK071 Are test-first task dependencies stated clearly enough so post-format tests exist before the corresponding production changes? [Consistency, Spec FR-031, Tasks T055..T071]
+- [ ] CHK072 Are historical Phase 5 checkpoint statements clearly separated from the final post-format-revision acceptance state? [Ambiguity, Tasks Phase 5, Tasks Phase 6]
+- [ ] CHK073 Are final whitespace, build, and test checkpoint tasks defined after all post-format-revision tasks rather than before them? [Consistency, Tasks T069..T071]
+
 ## Notes
 
 - This checklist validates the written requirements, not the implementation.

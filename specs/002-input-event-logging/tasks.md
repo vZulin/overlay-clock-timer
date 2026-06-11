@@ -42,7 +42,7 @@ phase.
 
 ### Implementation for Foundation
 
-- [X] T010 [P] Implement `InputEventRecord`, event category, event phase, and capture-order value types in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
+- [X] T010 [P] Implement the initial `InputEventRecord` and capture-order value types in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
 - [X] T011 [P] Implement `EventTimestampProvider` using `ClockDisplayModel` and `TimerSessionStore` display values in `OverlayClockTimer/InputLogging/EventTimestampProvider.swift`
 - [X] T012 [P] Implement `LogSessionWriter` with session file creation, collision-safe names, append, close, and failure status in `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
 - [X] T013 Extend `OverlayPreferences` with `eventTableRowLimit` and `preserveEventTableBetweenOpens` defaults and validation in `OverlayClockTimer/Preferences/OverlayPreferences.swift`
@@ -89,62 +89,80 @@ phase.
 
 ### Tests for User Story 2 (MANDATORY)
 
-- [ ] T028 [P] [US2] Add keyboard character, repeat keyDown, non-character key, modifier combination naming, and modifier-plus-visible-text precedence tests in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
-- [ ] T029 [P] [US2] Add keyboard observer lifecycle and no-capture-while-closed tests in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
-- [ ] T030 [P] [US2] Add keyboard record insertion and row trimming tests through `InputEventStore` in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
-- [ ] T031 [P] [US2] Add UI automation for visible keyboard rows and no rows after close where automation is practical in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T028 [P] [US2] Add keyboard character, repeat keyDown, non-character key, modifier combination naming, and modifier-plus-visible-text precedence tests in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [X] T029 [P] [US2] Add keyboard observer lifecycle and no-capture-while-closed tests in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
+- [X] T030 [P] [US2] Add keyboard record insertion and row trimming tests through `InputEventStore` in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
+- [X] T031 [P] [US2] Add UI automation for visible keyboard rows and no rows after close where automation is practical in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 2
 
-- [ ] T032 [P] [US2] Implement keyboard event name formatting with canonical modifier order and modifier-plus-visible-text precedence in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
-- [ ] T033 [P] [US2] Implement `InputEventObserver` keyboard observation start/stop hooks and injectable event source seam in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
-- [ ] T034 [US2] Connect keyboard observer events to `InputEventStore` row insertion and `LogSessionWriter` appends in `OverlayClockTimer/InputLogging/InputEventStore.swift`
-- [ ] T035 [US2] Wire keyboard observer lifecycle to logging panel open/close in `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T036 [US2] Add permission-unavailable state propagation for keyboard capture in `OverlayClockTimer/InputLogging/InputEventObserver.swift` and `OverlayClockTimer/Overlay/InputEventTableView.swift`
-- [ ] T037 [US2] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US2 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T032 [P] [US2] Implement keyboard event name formatting with canonical modifier order and modifier-plus-visible-text precedence in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
+- [X] T033 [P] [US2] Implement `InputEventObserver` keyboard observation start/stop hooks and injectable event source seam in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
+- [X] T034 [US2] Connect keyboard observer events to `InputEventStore` row insertion and `LogSessionWriter` appends in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [X] T035 [US2] Wire keyboard observer lifecycle to logging panel open/close in `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T036 [US2] Add permission-unavailable state propagation for keyboard capture in `OverlayClockTimer/InputLogging/InputEventObserver.swift` and `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [X] T037 [US2] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US2 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
 ---
 
-## Phase 5: User Story 3 - Log Mouse Events and Persist the Session (Priority: P3)
+## Phase 5: User Story 3 - Initial Mouse Events and Session Persistence (Priority: P3)
 
-**Goal**: Record Mouse Down and Mouse Up as separate events, create a new session log file for each panel open, append only open-session events, and keep preserved rows out of new files.
+**Goal**: Record initial mouse down/up events, create a new session log file for each panel open, append only open-session events, and keep preserved rows out of new files.
 
 **Independent Test**: Open the logging panel, verify a new log file is created, perform mouse down/up, verify separate table and file records, close the panel, and verify no further writes occur.
 
+**Clarified Scope Note**: The final US3 behavior now requires compact button-specific mouse labels, scroll labels, a two-column table, and tab-separated log lines. Those format changes are tracked in Phase 6 tasks T055-T068.
+
 ### Tests for User Story 3 (MANDATORY)
 
-- [ ] T038 [P] [US3] Add mouse down/up naming tests in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
-- [ ] T039 [P] [US3] Add mouse observer lifecycle, permission-unavailable, and no-capture-while-closed tests in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
-- [ ] T040 [P] [US3] Add session log file open, append, close, preserved-row exclusion, and failure status integration tests in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
-- [ ] T041 [P] [US3] Add UI automation for mouse rows and file-recording unavailable state where automation is practical in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T038 [P] [US3] Add mouse down/up naming tests in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [X] T039 [P] [US3] Add mouse observer lifecycle, permission-unavailable, and no-capture-while-closed tests in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
+- [X] T040 [P] [US3] Add session log file open, append, close, preserved-row exclusion, and failure status integration tests in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
+- [X] T041 [P] [US3] Add UI automation for mouse rows and file-recording unavailable state where automation is practical in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for User Story 3
 
-- [ ] T042 [P] [US3] Extend `InputEventNameFormatter` with mouse down/up event names in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
-- [ ] T043 [P] [US3] Extend `InputEventObserver` with mouse down/up observation using the same open-panel lifecycle in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
-- [ ] T044 [US3] Integrate `LogSessionWriter` session creation, append, close, and unavailable status with `InputEventStore` in `OverlayClockTimer/InputLogging/InputEventStore.swift`
-- [ ] T045 [US3] Ensure preserved in-memory rows are restored visibly but never appended to a new session file in `OverlayClockTimer/InputLogging/InputEventStore.swift`
-- [ ] T046 [US3] Wire mouse observer lifecycle, permission-unavailable state, and file writer teardown to panel close in `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T047 [US3] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US3 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T042 [P] [US3] Extend `InputEventNameFormatter` with mouse down/up event names in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
+- [X] T043 [P] [US3] Extend `InputEventObserver` with mouse down/up observation using the same open-panel lifecycle in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
+- [X] T044 [US3] Integrate `LogSessionWriter` session creation, append, close, and unavailable status with `InputEventStore` in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [X] T045 [US3] Ensure preserved in-memory rows are restored visibly but never appended to a new session file in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [X] T046 [US3] Wire mouse observer lifecycle, permission-unavailable state, and file writer teardown to panel close in `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T047 [US3] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US3 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 **Checkpoint**: All user stories are independently functional.
 
 ---
 
-## Phase 6: Polish & Cross-Cutting Concerns
+## Phase 6: Clarified Format Revision & Cross-Cutting Concerns
 
-**Purpose**: Cross-story validation, privacy hardening, documentation, and final checkpoints.
+**Purpose**: Bring the completed input logging implementation into alignment with the clarified output format, then complete cross-story validation, privacy hardening, documentation, and final checkpoints.
 
-- [ ] T048 [P] Add privacy regression tests proving no app name, window title, coordinates, clipboard content, text field identifier, process metadata, or network identifier is present in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
-- [ ] T049 [P] Add light/dark readability and accessibility regression coverage for logging toggle, table rows, empty state, and unavailable states in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [ ] T048 [P] Add privacy regression tests proving no app name, window title, coordinates, scroll coordinates, scroll delta magnitudes, clipboard content, text field identifier, process metadata, network identifier, category/type, phase, or log key-value fields are exposed in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
+- [ ] T049 [P] Add light/dark readability and accessibility regression coverage for the logging toggle, two-column table rows, compact event labels, empty state, and unavailable states in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 - [ ] T050 [P] Add maximum row-limit, nonblocking log append, and closed-panel idle observer performance coverage in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
-- [ ] T051 Update manual validation guidance for input logging in `specs/002-input-event-logging/quickstart.md`
+- [X] T051 Update manual validation guidance for input logging in `specs/002-input-event-logging/quickstart.md`
 - [ ] T052 Run requirements checklist review and record any remaining issues in `specs/002-input-event-logging/checklists/input-logging.md`
-- [ ] T053 Run `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T054 Run `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` and record the build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T055 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the final checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T053 Run pre-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` and record the historical whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T054 Run pre-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` and record the historical build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [ ] T055 [P] [US1] Add UI automation proving the input event table shows exactly `Time` and `Event` columns and no `Type`, `Category`, or `Phase` columns in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [ ] T056 [P] [US3] Add compact mouse-button label tests for `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`, `4M ↓`, `4M ↑`, `5M ↓`, and `5M ↑` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [ ] T057 [P] [US3] Add compact scroll label tests for `SM ↑` and `SM ↓` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [ ] T058 [P] [US3] Add observer lifecycle tests for right, third, additional mouse buttons, scroll up/down, and no scroll capture while closed in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
+- [ ] T059 [P] [US3] Add store and writer tests proving session log lines are `<timestamp><TAB><event name>` only and exclude `order=`, `timestamp=`, `category=`, `type=`, `name=`, and `phase=` in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift` and `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`
+- [ ] T060 [P] [US3] Add UI automation for compact mouse-button rows and compact scroll rows in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [ ] T061 [P] Update `InputEventRecord` to expose `timestamp` and `eventName` as the public record projection while keeping capture order internal for sorting in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
+- [ ] T062 [P] [US3] Update `InputEventNameFormatter` to emit compact mouse-button and scroll event labels in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
+- [ ] T063 [P] [US3] Extend `InputEventObserver` source event mapping for right, third, additional mouse buttons, and scroll up/down events in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
+- [ ] T064 [US3] Update `InputEventStore` and `LogSessionWriter` to write exactly `timestamp`, one tab character, and `eventName` per log line in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
+- [ ] T065 [US1] Update `InputEventTableView` to render only `Time` and `Event` columns and remove `Type`, `Category`, and `Phase` UI output in `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [ ] T066 [US3] Update mock input capture fixtures for compact mouse-button and scroll events in `OverlayClockTimer/InputLogging/InputEventObserver.swift` and `OverlayClockTimer/App/OverlayClockTimerApp.swift`
+- [ ] T067 [US1] Update UI test accessibility identifiers and assertions for the two-column table shape in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [ ] T068 [US3] Update UI test accessibility identifiers and assertions for compact mouse-button and scroll event names in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [ ] T069 Run post-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` after T055-T068 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [ ] T070 Run post-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T069 and record the build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [ ] T071 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T070 and record the final checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 ---
 
@@ -157,13 +175,13 @@ phase.
 - **User Story 1 (Phase 3)**: Depends on Foundation; MVP scope.
 - **User Story 2 (Phase 4)**: Depends on Foundation and uses US1 panel/store integration.
 - **User Story 3 (Phase 5)**: Depends on Foundation and uses US1 panel/store integration; can share observer work with US2 if implemented in parallel.
-- **Polish (Phase 6)**: Depends on selected user stories being complete.
+- **Clarified Format Revision & Polish (Phase 6)**: Depends on selected user stories being complete and must run before the final checkpoint because the feature specification changed the public table/log format after the initial US3 implementation.
 
 ### User Story Dependencies
 
 - **US1 (P1)**: Required first for the visible panel, settings, row storage, and open/close lifecycle.
 - **US2 (P2)**: Requires the US1 store/panel lifecycle to display and persist keyboard rows.
-- **US3 (P3)**: Requires the US1 store/panel lifecycle and foundational file writer; can proceed after US1 without waiting for US2 if mouse observer work is isolated.
+- **US3 (P3)**: Requires the US1 store/panel lifecycle and foundational file writer; the initial mouse/session behavior is complete, but final US3 acceptance now depends on T056-T064, T066, and T068 for compact mouse-button labels, scroll labels, and tab-separated log output.
 
 ### Within Each User Story
 
@@ -185,7 +203,11 @@ phase.
 - T032 and T033 can run in parallel before US2 integration tasks T034-T036.
 - T038, T039, T040, and T041 can run in parallel.
 - T042 and T043 can run in parallel before US3 integration tasks T044-T046.
-- T048, T049, and T050 can run in parallel during polish.
+- T048, T049, T050, T055, T056, T057, T058, T059, and T060 can run in parallel during clarified format revision because they update different test files or independent test scopes.
+- T061, T062, and T063 can run in parallel after their corresponding tests exist.
+- T065 can run after T055; T064 can run after T059; T066 can run after T062-T063.
+- T067 and T068 can run after T065-T066.
+- T069, T070, and T071 must run sequentially after T055-T068 are complete.
 
 ## Parallel Example: User Story 1
 
@@ -214,6 +236,16 @@ Task: "T040 [US3] Add session file integration tests in OverlayClockTimerTests/I
 Task: "T041 [US3] Add mouse logging UI automation in OverlayClockTimerUITests/OverlayClockTimerUITests.swift"
 ```
 
+## Parallel Example: Clarified Format Revision
+
+```bash
+Task: "T055 [US1] Add two-column table UI automation in OverlayClockTimerUITests/OverlayClockTimerUITests.swift"
+Task: "T056 [US3] Add compact mouse-button label tests in OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift"
+Task: "T057 [US3] Add compact scroll label tests in OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift"
+Task: "T058 [US3] Add observer lifecycle tests for mouse buttons and scroll in OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift"
+Task: "T059 [US3] Add tab-separated log line tests in OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift and OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift"
+```
+
 ---
 
 ## Implementation Strategy
@@ -231,7 +263,9 @@ Task: "T041 [US3] Add mouse logging UI automation in OverlayClockTimerUITests/Ov
 2. US1: visible panel and settings lifecycle.
 3. US2: keyboard capture and naming semantics.
 4. US3: mouse capture and session file integration.
-5. Polish: privacy, accessibility, performance, quickstart, and final build/test.
+5. Clarified format revision: two-column table, compact mouse-button labels,
+   scroll labels, and tab-separated log output.
+6. Polish: privacy, accessibility, performance, quickstart, and final build/test.
 
 ### Privacy Guardrails
 
@@ -239,4 +273,5 @@ Task: "T041 [US3] Add mouse logging UI automation in OverlayClockTimerUITests/Ov
 - Do not introduce telemetry, network writes, or sync.
 - Do not store app names, window titles, coordinates, clipboard content, text
   field identifiers, process metadata, or network identifiers.
+- Do not display or write category/type, phase, order, or key-value log fields.
 - Keep preserved table rows in memory only and clear them when the app quits.

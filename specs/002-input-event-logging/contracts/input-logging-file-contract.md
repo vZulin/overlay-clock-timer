@@ -18,18 +18,32 @@ Input Event Logging.
 - A session starts when the logging panel opens.
 - A session ends when the logging panel closes.
 - File writing is active only during an open-panel session.
-- Keyboard or mouse events after close must not be written to the closed file.
+- Keyboard, mouse, or scroll events after close must not be written to the
+  closed file.
 - Reopening the panel creates a new session file.
 
 ## Record Content
 
-Each log record contains:
+Each log record is one line with exactly two fields:
 
 - Formatted timestamp.
-- Input category: `keyboard` or `mouse`.
+- One tab character.
 - Event name.
-- Event phase when applicable.
-- Capture order.
+
+Example:
+
+```text
+00:00:00.000	Command+C
+```
+
+Each log record must not contain these key-value fields:
+
+- `order=`.
+- `timestamp=`.
+- `category=`.
+- `type=`.
+- `name=`.
+- `phase=`.
 
 Each log record must not contain:
 
@@ -38,6 +52,7 @@ Each log record must not contain:
 - Process metadata.
 - Text field identifier.
 - Mouse coordinates.
+- Scroll coordinates or delta magnitudes.
 - Clipboard content.
 - Network identifiers.
 

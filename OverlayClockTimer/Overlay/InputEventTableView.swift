@@ -43,6 +43,9 @@ struct InputEventTableView: View {
             TableColumn("Event") { record in
                 Text(record.name)
                     .lineLimit(1)
+                    .accessibilityIdentifier(
+                        "inputLogging.eventName.\(record.name.inputLoggingAccessibilityIdentifierComponent)"
+                    )
             }
 
             TableColumn("Phase") { record in
@@ -56,8 +59,16 @@ struct InputEventTableView: View {
 
     private var statusBar: some View {
         HStack(spacing: 8) {
-            statusLabel("Capture", status: store.captureStatus)
-            statusLabel("File", status: store.fileRecordingStatus)
+            statusLabel(
+                "Capture",
+                status: store.captureStatus,
+                identifier: "inputLogging.captureStatus"
+            )
+            statusLabel(
+                "File",
+                status: store.fileRecordingStatus,
+                identifier: "inputLogging.fileStatus"
+            )
             Spacer(minLength: 8)
             Text("\(store.visibleRows.count)/\(store.preferences.eventTableRowLimit)")
                 .font(.caption.monospacedDigit())
@@ -81,16 +92,30 @@ struct InputEventTableView: View {
         .background(tokens.panelColor.opacity(0.82))
     }
 
-    private func statusLabel(_ title: String, status: InputLoggingSessionStatus) -> some View {
+    private func statusLabel(
+        _ title: String,
+        status: InputLoggingSessionStatus,
+        identifier: String
+    ) -> some View {
         Label {
             Text("\(title): \(status.title)")
                 .font(.caption2)
+                .accessibilityIdentifier(identifier)
         } icon: {
             Image(systemName: status.systemImage)
                 .font(.caption2)
         }
         .foregroundStyle(status.isUnavailable ? Color.red : tokens.secondaryTextColor)
         .accessibilityLabel("\(title) \(status.title)")
+    }
+}
+
+private extension String {
+    var inputLoggingAccessibilityIdentifierComponent: String {
+        let sanitized = lowercased().map { character -> Character in
+            character.isLetter || character.isNumber ? character : "-"
+        }
+        return String(sanitized).trimmingCharacters(in: CharacterSet(charactersIn: "-"))
     }
 }
 

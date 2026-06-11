@@ -72,7 +72,6 @@ write professional-grade code.
 Auto-generated from all feature plans. Last updated: 2026-06-11
 
 ## Active Technologies
-
 - Swift 6 language mode with Xcode 26.x; use the Swift 6.3 compiler where
   available in the selected Xcode 26.x toolchain + SwiftUI, AppKit,
   CoreGraphics, Foundation, XCTest; no third-party dependencies
@@ -118,7 +117,6 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Write automated tests before implementation for changed behavior.
 
 ## Recent Changes
-
 - 002-input-event-logging: Added Swift 6 language mode with Xcode 26.x; use the
   Swift 6.3 compiler where available in the selected Xcode 26.x toolchain,
   SwiftUI, AppKit, CoreGraphics, Foundation, XCTest; no third-party
@@ -127,7 +125,6 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - 001-overlay-clock-timer: Added Swift 6 language mode with Xcode 26.x, Swift
   6.3 compiler where available, SwiftUI, AppKit, Foundation,
   ServiceManagement, XCTest; no third-party dependencies
-- 001-overlay-clock-timer: Added UserDefaults storage for preferences, Dock
   visibility, window frame, mode, and timer-on-mode-switch action
 
 <!-- MANUAL ADDITIONS START -->

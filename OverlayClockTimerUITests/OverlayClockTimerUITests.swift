@@ -135,17 +135,17 @@ final class OverlayClockTimerUITests: XCTestCase {
 
         loggingToggle.click()
 
-        let table = app.descendants(matching: .any)["inputLogging.eventTable"]
-        XCTAssertTrue(table.waitForExistence(timeout: 2))
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
         XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
         XCTAssertTrue(modeSwitch.exists)
         XCTAssertTrue(modeSwitch.isEnabled)
 
         loggingToggle.click()
-        XCTAssertFalse(table.waitForExistence(timeout: 1))
+        XCTAssertFalse(panel.waitForExistence(timeout: 1))
 
         loggingToggle.click()
-        XCTAssertTrue(table.waitForExistence(timeout: 2))
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
         XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
     }
 
@@ -165,6 +165,78 @@ final class OverlayClockTimerUITests: XCTestCase {
         XCTAssertTrue(loggingToggle.waitForExistence(timeout: 2))
         XCTAssertTrue(modeSwitch.exists)
         XCTAssertLessThan(loggingToggle.frame.maxX, modeSwitch.frame.minX)
+    }
+
+    @MainActor
+    func testKeyboardLoggingRecordsRowsAndStopsOnClose() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        overlayWindow.click()
+        overlayWindow.typeKey("s", modifierFlags: [])
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["inputLogging.eventName.s"]
+                .waitForExistence(timeout: 2)
+        )
+
+        loggingToggle.click()
+        XCTAssertFalse(panel.waitForExistence(timeout: 1))
+    }
+
+    @MainActor
+    func testMouseLoggingRowsAndFileState() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        let fileActive = app.staticTexts["File Active"]
+        let fileUnavailable = app.staticTexts["File Unavailable"]
+        guard fileActive.exists else {
+            XCTFail(
+                fileUnavailable.exists
+                    ? "File recording is unavailable; this test cannot verify persisted mouse events."
+                    : "File recording did not become active."
+            )
+            return
+        }
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        overlayWindow.click()
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["inputLogging.eventName.mouse-down"]
+                .waitForExistence(timeout: 2)
+        )
+        XCTAssertTrue(
+            app.descendants(matching: .any)["inputLogging.eventName.mouse-up"]
+                .waitForExistence(timeout: 2)
+        )
     }
 
     @MainActor
@@ -241,4 +313,34 @@ final class OverlayClockTimerUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(button.frame.width, 32, file: file, line: line)
         XCTAssertGreaterThanOrEqual(button.frame.height, 32, file: file, line: line)
     }
+
+    private func inputCaptureTestLaunchArguments() -> [String] {
+        var arguments = ["--ui-testing", "--show-overlay-on-launch"]
+        if ProcessInfo.processInfo.environment["OVERLAY_CLOCK_TIMER_REAL_INPUT_CAPTURE_TESTS"] != "1" {
+            arguments.append("--mock-input-event-capture")
+        }
+        return arguments
+    }
+
+    @MainActor
+    private func requireCaptureActive(
+        _ app: XCUIApplication,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> Bool {
+        let captureActive = app.staticTexts["Capture Active"]
+        let captureUnavailable = app.staticTexts["Capture Unavailable"]
+        guard captureActive.exists else {
+            XCTFail(
+                captureUnavailable.exists
+                ? "Capture is unavailable; grant Input Monitoring/Accessibility permission before running real capture UI tests."
+                : "Capture did not become active.",
+                file: file,
+                line: line
+            )
+            return false
+        }
+        return true
+    }
+
 }

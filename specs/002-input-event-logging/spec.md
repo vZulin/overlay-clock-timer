@@ -5,8 +5,8 @@
 **Status**: Draft
 **Input**: User description: "Add Input Event Logging with an overlay logging
 toggle, expandable recent event table, keyboard keyDown repeat logging, modifier
-combination logging, mouse down and mouse up logging, mode-specific timestamps,
-and per-panel-session log files."
+combination logging, compact mouse button logging, compact scroll logging,
+mode-specific timestamps, and per-panel-session log files."
 
 ## Clarifications
 
@@ -17,6 +17,11 @@ and per-panel-session log files."
 - Q: How long should the optional preserved event table survive? → A: Preserve
   rows only between panel openings during the current app launch; clear them
   when the app quits.
+- Q: How should event rows and log lines expose event fields, mouse buttons, and
+  scroll input? → A: Show only time and compact event name. Log each line as
+  `<timestamp><TAB><event name>`. Mouse labels are `LM ↓`, `LM ↑`, `RM ↓`,
+  `RM ↑`, `3M ↓`, `3M ↑`, and numbered additional-button labels such as
+  `4M ↓`, `4M ↑`, `5M ↓`, `5M ↑`; scroll labels are `SM ↑` and `SM ↓`.
 
 ## Constitutional Scope *(mandatory)*
 
@@ -105,34 +110,44 @@ log file contain the exact event count and event names.
 
 ---
 
-### User Story 3 - Log Mouse Events and Persist the Session (Priority: P3)
+### User Story 3 - Log Mouse and Scroll Events and Persist the Session (Priority: P3)
 
-As a user, I want mouse down and mouse up activity to be recorded separately and
-written to a local session log file while the logging panel is open.
+As a user, I want mouse button down/up activity and scroll direction activity to
+be recorded with compact distinguishable event names and written to a local
+session log file while the logging panel is open.
 
-**Why this priority**: Mouse press boundaries and durable session logs complete
-the diagnostic workflow after the visible panel and keyboard semantics exist.
+**Why this priority**: Mouse press boundaries, button identity, scroll
+direction, and durable session logs complete the diagnostic workflow after the
+visible panel and keyboard semantics exist.
 
 **Independent Test**: Open the logging panel, verify a new log file is created,
-perform mouse down and mouse up actions, and verify both the table and log file
-contain separate records while no writes occur after the panel closes.
+perform left, right, third, additional-button, and scroll actions, and verify
+both the table and log file contain compact distinct records while no writes
+occur after the panel closes.
 
 **Acceptance Scenarios**:
 
 1. **Given** the logging panel is closed, **When** the user opens it, **Then** a
    new log file is created under
    `~/Library/Logs/OverlayClockTimer/YYYY-MM-DD_HH-MM-SS.log`.
-2. **Given** the logging panel is open, **When** the user performs a mouse down
-   followed by mouse up, **Then** two separate records appear with precise
-   timestamps and event names `Mouse Down` and `Mouse Up`.
-3. **Given** the logging panel is open and more events occur than the configured
+2. **Given** the logging panel is open, **When** the user performs a left mouse
+   down followed by left mouse up, **Then** two separate records appear with
+   precise timestamps and event names `LM ↓` and `LM ↑`.
+3. **Given** the logging panel is open, **When** the user performs right, third,
+   or additional mouse-button down/up input, **Then** the records distinguish the
+   button using `RM ↓`/`RM ↑`, `3M ↓`/`3M ↑`, or numbered labels such as
+   `4M ↓`/`4M ↑` and `5M ↓`/`5M ↑`.
+4. **Given** the logging panel is open, **When** the user scrolls up or down,
+   **Then** the records distinguish the scroll direction using `SM ↑` or
+   `SM ↓`.
+5. **Given** the logging panel is open and more events occur than the configured
    row limit allows, **When** the table refreshes, **Then** only the newest
    configured number of records remain visible while the session log file keeps
    the records captured during the open session.
-4. **Given** the logging panel has been closed, **When** additional keyboard or
-   mouse events occur, **Then** no additional rows appear and no additional
-   lines are written to the closed session log file.
-5. **Given** the preserve table setting is enabled and the panel is reopened,
+6. **Given** the logging panel has been closed, **When** additional keyboard,
+   mouse, or scroll events occur, **Then** no additional rows appear and no
+   additional lines are written to the closed session log file.
+7. **Given** the preserve table setting is enabled and the panel is reopened,
    **When** the new session log file starts, **Then** preserved in-memory rows
    remain visible but are not rewritten into the new session log file.
 
@@ -159,6 +174,10 @@ contain separate records while no writes occur after the panel closes.
 - The user resets or pauses the timer while logging is open; subsequent Timer
   mode event timestamps reflect the current visible timer value at the moment of
   each event.
+- A mouse has left, right, third, or additional buttons; down/up records
+  distinguish the button with compact event names and do not store coordinates.
+- The user scrolls while the logging panel is open; scroll direction is recorded
+  as a compact event name and no scroll coordinates are stored.
 - The system clock changes while logging is open in Clock mode; subsequent
   Clock mode event timestamps reflect the updated system time.
 - The log directory or file cannot be created; the app keeps the panel usable,
@@ -219,32 +238,42 @@ contain separate records while no writes occur after the panel closes.
   visible text, including Shift- or Option-modified characters, it MUST be
   treated as one character-producing keyDown record; non-character modifier
   shortcuts MUST be treated as one readable combination event.
-- **FR-021**: Mouse logging MUST record `Mouse Down` and `Mouse Up` as separate
-  events with their own timestamps.
+- **FR-021**: Mouse logging MUST record left, right, third, and additional
+  mouse-button down/up events as separate events with their own timestamps and
+  compact event names: `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`, and
+  numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, and
+  `5M ↑`.
 - **FR-022**: In Clock mode, each event timestamp MUST use real system time in
   `HH:MM:SS.mmm` format.
 - **FR-023**: In Timer mode, each event timestamp MUST use the current visible
   timer value in the existing timer display format, with `00:00:00.000` when the
   timer has not started or has been reset.
-- **FR-024**: Each input-event record MUST include timestamp, input category,
-  event name, and event phase when applicable.
-- **FR-025**: The expanded logging UI MUST preserve the overlay's always-on-top,
+- **FR-024**: The visible input-event table MUST show only `Time` and `Event`
+  columns. It MUST NOT show `Type`, `Category`, or `Phase` columns.
+- **FR-025**: Each session log line MUST contain only the formatted timestamp, a
+  single tab separator, and the event name. For example,
+  `00:00:00.000\tCommand+C`, where `\t` denotes one tab character.
+- **FR-026**: Scroll logging MUST record upward and downward scroll input as
+  separate events with compact event names `SM ↑` and `SM ↓`.
+- **FR-027**: The expanded logging UI MUST preserve the overlay's always-on-top,
   titleless, draggable behavior, light/dark readability, icon accessibility
   labels, and tooltips.
-- **FR-026**: The app MUST NOT capture, display, or write keyboard or mouse
-  events before the logging panel opens, after it closes, or during normal
-  overlay use with the panel collapsed.
-- **FR-027**: If the app cannot create the session log file, it MUST continue to
+- **FR-028**: The app MUST NOT capture, display, or write keyboard, mouse, or
+  scroll events before the logging panel opens, after it closes, or during
+  normal overlay use with the panel collapsed.
+- **FR-029**: If the app cannot create the session log file, it MUST continue to
   show captured in-memory table rows while the panel is open and must clearly
   indicate that file recording is unavailable for that session.
-- **FR-028**: The app MUST keep input-event logs local to the user's Mac and
+- **FR-030**: The app MUST keep input-event logs local to the user's Mac and
   MUST NOT send, sync, or upload event records.
-- **FR-029**: Automated tests MUST cover panel open/close behavior, default empty
+- **FR-031**: Automated tests MUST cover panel open/close behavior, default empty
   table behavior, optional same-launch table preservation, table ordering and
   trimming at default, minimum, and maximum row limits, keyboard repeats,
-  keyboard combinations, mouse down/up records, Clock timestamps, Timer
-  timestamps, file-session creation, and the no-logging-while-closed invariant.
-- **FR-030**: Expected automated test results MUST NOT be changed to match
+  keyboard combinations, mouse-button-specific down/up records, scroll
+  direction records, Clock timestamps, Timer timestamps, two-column table
+  display, tab-separated log output, file-session creation, and the
+  no-logging-while-closed invariant.
+- **FR-032**: Expected automated test results MUST NOT be changed to match
   incorrect app behavior.
 
 ### Key Entities
@@ -254,12 +283,16 @@ contain separate records while no writes occur after the panel closes.
 - **LoggingPreferences**: Saved input logging preferences, including the event
   table row limit with default, minimum, and maximum bounds, plus whether visible
   table rows are preserved between panel openings during the current app launch.
-- **InputEventRecord**: A captured input event with timestamp, category, event
-  name, optional phase, and capture order.
+- **InputEventRecord**: A captured input event with timestamp, event name, and
+  internal capture order. Category/type/phase are not exposed in the visible
+  table or session log file.
 - **KeyboardInputEvent**: A keyboard record representing either one
   character-producing keyDown or one modifier combination.
-- **MouseInputEvent**: A mouse record representing either `Mouse Down` or
-  `Mouse Up`.
+- **MouseInputEvent**: A mouse record representing one compact mouse-button
+  down/up event (`LM`, `RM`, `3M`, or numbered additional-button labels such as
+  `4M` and `5M`).
+- **ScrollInputEvent**: A scroll record representing compact upward or downward
+  scroll direction events (`SM ↑` or `SM ↓`).
 - **LogSessionFile**: The local file created for one open-panel logging session.
 - **EventTimestampContext**: The mode-specific source used to format a record's
   timestamp as Clock time or Timer value.
@@ -275,21 +308,25 @@ contain separate records while no writes occur after the panel closes.
   records with distinct millisecond timestamps.
 - **SC-003**: In 10 out of 10 modifier-combination trials, each combination is
   recorded as exactly one keyboard event with a readable combination name.
-- **SC-004**: In 10 out of 10 mouse click trials, `Mouse Down` and `Mouse Up`
-  appear as separate records in chronological capture order and reverse visible
-  table order.
+- **SC-004**: In 10 out of 10 mouse trials, left, right, third, and additional
+  mouse-button down/up actions appear as compact distinct records in
+  chronological capture order and reverse visible table order.
 - **SC-005**: After one more event than the configured row limit is captured,
   the visible table contains exactly the configured number of rows and the
   newest event is the first row.
-- **SC-006**: After the logging panel closes, 10 subsequent keyboard or mouse
-  events produce zero new table rows and zero new writes to the closed session
-  log file.
+- **SC-006**: After the logging panel closes, 10 subsequent keyboard, mouse, or
+  scroll events produce zero new table rows and zero new writes to the closed
+  session log file.
 - **SC-007**: With event table preservation enabled, reopening the logging panel
   during the same app launch restores the previously visible rows in 10 out of
   10 trials without writing those rows into the new session log file.
-- **SC-008**: Clock mode and Timer mode timestamps match their required formats
+- **SC-008**: In 10 out of 10 scroll trials, upward and downward scroll actions
+  appear as `SM ↑` and `SM ↓`.
+- **SC-009**: Clock mode and Timer mode timestamps match their required formats
   in 100% of automated timestamp-format test cases.
-- **SC-009**: Automated tests cover every user story and pass after the feature
+- **SC-010**: Each session log line contains exactly one timestamp, one tab
+  separator, and one event name, with no order, category/type, or phase fields.
+- **SC-011**: Automated tests cover every user story and pass after the feature
   is implemented.
 
 ## Assumptions

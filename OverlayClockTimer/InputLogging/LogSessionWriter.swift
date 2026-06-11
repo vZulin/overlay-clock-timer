@@ -18,6 +18,15 @@ enum LogSessionWriterError: Error, Equatable {
     case failedToAppend(String)
 }
 
+protocol LogSessionWriting: AnyObject {
+    var currentSession: LogSessionFile? { get }
+
+    @discardableResult
+    func open() throws -> LogSessionFile
+    func append(_ record: InputEventRecord) throws
+    func close()
+}
+
 final class LogSessionWriter {
     private let logDirectoryURL: URL
     private let fileManager: FileManager
@@ -129,3 +138,5 @@ final class LogSessionWriter {
         return "\(formatter.string(from: date)).log"
     }
 }
+
+extension LogSessionWriter: LogSessionWriting {}
