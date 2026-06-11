@@ -29,7 +29,7 @@ final class InputLoggingPerformanceTests: XCTestCase {
         XCTAssertLessThan(elapsed, 0.2)
     }
 
-    func testNonblockingLogAppendPathStaysResponsive() {
+    func testNonblockingLogAppendPathStaysResponsive() async {
         let writer = PerformanceLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 50),
@@ -51,9 +51,37 @@ final class InputLoggingPerformanceTests: XCTestCase {
         }
         let elapsed = Date().timeIntervalSince(startedAt)
 
+        await writer.waitForAppendedLineCount(500)
         XCTAssertEqual(writer.appendedLineCount, 500)
         XCTAssertEqual(store.visibleRows.count, 50)
         XCTAssertLessThan(elapsed, 0.2)
+    }
+
+    func testCapturedRowsPublishWithinDisplayRefreshTargetAndPreserveCapturedTimestamp() {
+        let store = InputEventStore(preferences: preferences(rowLimit: 15))
+
+        store.openPanel()
+
+        for trial in 1...10 {
+            let capturedTimestamp = "00:00:00.\(String(format: "%03d", trial))"
+            let startedAt = Date()
+
+            store.recordKeyboardEvent(
+                KeyboardInputEvent(
+                    characters: "s",
+                    key: "S",
+                    modifiers: [],
+                    isRepeat: false
+                ),
+                timestamp: capturedTimestamp
+            )
+
+            let elapsed = Date().timeIntervalSince(startedAt)
+
+            XCTAssertEqual(store.visibleRows.first?.eventName, "s")
+            XCTAssertEqual(store.visibleRows.first?.timestamp, capturedTimestamp)
+            XCTAssertLessThanOrEqual(elapsed, 0.016)
+        }
     }
 
     func testStoppedObserverDoesNotDeliverIdleEvents() {
@@ -95,9 +123,14 @@ final class InputLoggingPerformanceTests: XCTestCase {
     }
 }
 
-private final class PerformanceLogSessionWriter: LogSessionWriting {
-    private(set) var appendedLineCount = 0
+private final class PerformanceLogSessionWriter: LogSessionWriting, @unchecked Sendable {
+    private let lock = NSLock()
+    private var _appendedLineCount = 0
     private(set) var currentSession: LogSessionFile?
+
+    var appendedLineCount: Int {
+        lock.withLock { _appendedLineCount }
+    }
 
     func open() throws -> LogSessionFile {
         let session = LogSessionFile(
@@ -109,15 +142,38 @@ private final class PerformanceLogSessionWriter: LogSessionWriting {
         return session
     }
 
-    func append(_ record: InputEventRecord) throws {
+    func append(_ record: InputEventRecord) async throws {
         _ = record.logLine
-        appendedLineCount += 1
+        lock.withLock {
+            _appendedLineCount += 1
+        }
     }
 
     func close() {
         currentSession = currentSession.map {
             LogSessionFile(url: $0.url, createdAt: $0.createdAt, status: .closed)
         }
+    }
+
+    func waitForAppendedLineCount(_ count: Int, timeout: TimeInterval = 2) async {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if appendedLineCount >= count {
+                return
+            }
+
+            try? await Task.sleep(nanoseconds: 10_000_000)
+        }
+
+        XCTFail("Timed out waiting for \(count) appended log lines.")
+    }
+}
+
+private extension NSLock {
+    func withLock<T>(_ work: () throws -> T) rethrows -> T {
+        lock()
+        defer { unlock() }
+        return try work()
     }
 }
 

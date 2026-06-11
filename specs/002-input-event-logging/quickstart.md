@@ -34,6 +34,23 @@ xcodebuild test \
   -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testMouseLoggingRowsAndFileState
 ```
 
+To run only the visible-refresh SLA coverage:
+
+```bash
+xcodebuild test \
+  -scheme OverlayClockTimer \
+  -destination 'platform=macOS' \
+  -only-testing:OverlayClockTimerTests/InputEventStoreTests/testVisibleRowsUpdateBeforeDelayedLogAppendCompletesAndFailureStatusChanges \
+  -only-testing:OverlayClockTimerTests/InputLoggingPerformanceTests/testCapturedRowsPublishWithinDisplayRefreshTargetAndPreserveCapturedTimestamp \
+  -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testInputLoggingRowsAppearBeforeDelayedFileWritingCanBlockVisibility
+```
+
+The UI SLA test uses `--mock-input-event-capture` plus
+`--delayed-input-event-log-writing` to prove visible rows are not blocked by a
+slow session log append. Strict `<=16 ms` UI timing is opt-in with
+`OVERLAY_CLOCK_TIMER_STRICT_UI_REFRESH_SLA=1` because XCUI polling is not a
+stable display-refresh timer on every machine.
+
 ## Run Real Input Capture UI Tests
 
 Real input capture tests intentionally do not use the mock event source. They

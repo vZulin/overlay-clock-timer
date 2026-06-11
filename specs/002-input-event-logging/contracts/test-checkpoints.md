@@ -88,14 +88,37 @@
 - Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_18-31-49-+0200.xcresult`
 - Scope: Final Phase 6 checkpoint after compact event labels, physical scroll gesture labels, two-column table output, minimal session log lines, and full unit/UI regression coverage.
 
-## Required Follow-Up: Visible Table Refresh SLA
+## Phase 7: Targeted Visible Refresh SLA
 
+- Date: 2026-06-11 19:45 +0200
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS' -only-testing:OverlayClockTimerTests/InputEventStoreTests -only-testing:OverlayClockTimerTests/InputLoggingPerformanceTests -only-testing:OverlayClockTimerTests/LogSessionWriterTests`
+- Result: Passed
+- Output marker: `** TEST SUCCEEDED **`
+- Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_19-45-05-+0200.xcresult`
+- Scope: Targeted unit and performance checkpoint for async session log append, visible-row publication before delayed file writes, captured timestamp preservation, append failure status propagation, and async log writer contract coverage.
+
+## Phase 7: Targeted Delayed-Writer UI
+
+- Date: 2026-06-11 19:37 +0200
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS' -only-testing:OverlayClockTimerUITests/OverlayClockTimerUITests/testInputLoggingRowsAppearBeforeDelayedFileWritingCanBlockVisibility`
+- Result: Passed
+- Output marker: `** TEST SUCCEEDED **`
+- Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_19-36-09-+0200.xcresult`
+- Scope: Targeted UI checkpoint proving mock captured rows become visible across 10 panel-open trials while session log append is artificially delayed. Strict `<=16 ms` UI timing remains opt-in with `OVERLAY_CLOCK_TIMER_STRICT_UI_REFRESH_SLA=1` because XCUI polling is not a stable display-refresh timer.
+
+## Phase 7: Whitespace
+
+- Date: 2026-06-11 19:48 +0200
+- Command: `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md specs/002-input-event-logging/quickstart.md specs/002-input-event-logging/contracts/test-checkpoints.md`
+- Result: Passed
+- Output marker: no whitespace errors
+- Scope: Phase 7 whitespace checkpoint after async visible-row publication, serial log append ordering, delayed writer UI wiring, visible refresh SLA tests, quickstart updates, and task status updates.
+
+## Phase 7: Final Test
+
+- Date: 2026-06-11 19:48 +0200
 - Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
-- Required before implementation is considered complete.
-- Scope: Add a performance or UI-level regression check proving that captured
-  events are inserted into the in-memory table model immediately and the newest
-  row becomes visible by the next display refresh, targeting `<=16 ms` on a
-  normally loaded 60 Hz display.
-- The check must fail when the timestamp is correct but the visible table update
-  is delayed by a timer tick, file write, debounce interval, or explicit batch
-  refresh.
+- Result: Passed
+- Output marker: `** TEST SUCCEEDED **`
+- Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_19-46-04-+0200.xcresult`
+- Scope: Final Phase 7 checkpoint after serial async log append scheduling, queue-isolated log writer state, UI-first visible row publication, delayed-writer UI coverage, captured timestamp preservation, append failure status propagation, and full unit/UI regression coverage.

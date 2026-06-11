@@ -43,11 +43,11 @@ final class LogSessionWriterTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: session.url.path))
     }
 
-    func testAppendWritesRecordLinesWhileOpen() throws {
+    func testAppendWritesRecordLinesWhileOpen() async throws {
         let writer = writer()
         let session = try writer.open()
 
-        try writer.append(record())
+        try await writer.append(record())
         writer.close()
 
         let content = try String(contentsOf: session.url, encoding: .utf8)
@@ -60,14 +60,19 @@ final class LogSessionWriterTests: XCTestCase {
         XCTAssertFalse(content.contains("phase="))
     }
 
-    func testClosePreventsAdditionalWrites() throws {
+    func testClosePreventsAdditionalWrites() async throws {
         let writer = writer()
         let session = try writer.open()
 
-        try writer.append(record(order: 1))
+        try await writer.append(record(order: 1))
         writer.close()
 
-        XCTAssertThrowsError(try writer.append(record(order: 2)))
+        do {
+            try await writer.append(record(order: 2))
+            XCTFail("Expected append to fail after close.")
+        } catch {
+            XCTAssertEqual(error as? LogSessionWriterError, .notOpen)
+        }
         let content = try String(contentsOf: session.url, encoding: .utf8)
         XCTAssertEqual(content, "12:34:56.789\ts\n")
         XCTAssertEqual(writer.currentSession?.status, .closed)

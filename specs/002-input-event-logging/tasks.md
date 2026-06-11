@@ -174,19 +174,19 @@ phase.
 
 ### Tests for Visible Table Refresh SLA (MANDATORY)
 
-- [ ] T072 [P] [US1] Add a store regression test proving `visibleRows` is updated before a deliberately delayed `LogSessionWriting.append(_:)` completes and before file status changes in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
-- [ ] T073 [P] [US1] Add SC-012 performance coverage that runs 10 mock visible-capture trials and measures event injection to published newest `visibleRows` entry within `<=16 ms`, while preserving the captured timestamp, in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
-- [ ] T074 [P] [US1] Add UI automation with mock input capture that measures event injection to row existence in 10 trials, verifies the row appears within the display-refresh target where UI automation timing is stable, and proves delayed file writing cannot block row visibility in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T072 [P] [US1] Add a store regression test proving `visibleRows` is updated before a deliberately delayed `LogSessionWriting.append(_:)` completes and before file status changes in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
+- [X] T073 [P] [US1] Add SC-012 performance coverage that runs 10 mock visible-capture trials and measures event injection to published newest `visibleRows` entry within `<=16 ms`, while preserving the captured timestamp, in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
+- [X] T074 [P] [US1] Add UI automation with mock input capture that measures event injection to row existence in 10 trials, verifies the row appears within the display-refresh target where UI automation timing is stable, and proves delayed file writing cannot block row visibility in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 
 ### Implementation for Visible Table Refresh SLA
 
-- [ ] T075 [US1] Refactor `InputEventStore` so `recordKeyboardEvent(_:timestamp:)`, `recordMouseEvent(_:timestamp:)`, and `recordScrollEvent(_:timestamp:)` mutate and publish `visibleRows` before scheduling any session log append in `OverlayClockTimer/InputLogging/InputEventStore.swift`
-- [ ] T076 [US1] Move session log append work off the visible-row update path while preserving append failure reporting, session scoping, and close semantics that prevent pending writes from writing to a closed session in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
-- [ ] T077 [US1] Verify `InputEventTableView` reads directly from `InputEventStore.visibleRows` without debounce, timer batching, or a secondary cached row source in `OverlayClockTimer/Overlay/InputEventTableView.swift`
-- [ ] T078 [US1] Add or update mock launch/test wiring for delayed file writing used by the SLA UI test in `OverlayClockTimer/App/OverlayClockTimerApp.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T079 Update manual validation and checkpoint notes for the visible table refresh SLA in `specs/002-input-event-logging/quickstart.md` and `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T080 Run `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md specs/002-input-event-logging/quickstart.md specs/002-input-event-logging/contracts/test-checkpoints.md` after T072-T079 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T081 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T072-T080 and record the visible-refresh SLA checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T075 [US1] Refactor `InputEventStore` so `recordKeyboardEvent(_:timestamp:)`, `recordMouseEvent(_:timestamp:)`, and `recordScrollEvent(_:timestamp:)` mutate and publish `visibleRows` before scheduling any session log append in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [X] T076 [US1] Move session log append work off the visible-row update path while preserving append failure reporting, session scoping, and close semantics that prevent pending writes from writing to a closed session in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
+- [X] T077 [US1] Verify `InputEventTableView` reads directly from `InputEventStore.visibleRows` without debounce, timer batching, or a secondary cached row source in `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [X] T078 [US1] Add or update mock launch/test wiring for delayed file writing used by the SLA UI test in `OverlayClockTimer/App/OverlayClockTimerApp.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T079 Update manual validation and checkpoint notes for the visible table refresh SLA in `specs/002-input-event-logging/quickstart.md` and `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T080 Run `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md specs/002-input-event-logging/quickstart.md specs/002-input-event-logging/contracts/test-checkpoints.md` after T072-T079 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T081 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T072-T080 and record the visible-refresh SLA checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 ---
 

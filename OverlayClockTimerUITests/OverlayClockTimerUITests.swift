@@ -138,6 +138,11 @@ final class OverlayClockTimerUITests: XCTestCase {
         let panel = app.descendants(matching: .any)["inputLogging.panel"]
         XCTAssertTrue(panel.waitForExistence(timeout: 2))
         XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+        let eventTable = app.outlines["inputLogging.eventTable"]
+        XCTAssertGreaterThanOrEqual(
+            eventTable.frame.height,
+            400
+        )
         XCTAssertTrue(modeSwitch.exists)
         XCTAssertTrue(modeSwitch.isEnabled)
 
@@ -327,6 +332,49 @@ final class OverlayClockTimerUITests: XCTestCase {
                 "Missing row identifier: \(identifier)"
             )
         }
+    }
+
+    @MainActor
+    func testInputLoggingRowsAppearBeforeDelayedFileWritingCanBlockVisibility() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+            + ["--delayed-input-event-log-writing"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        let row = app.descendants(matching: .any)["inputLogging.eventName.s"]
+        let enforceStrictDisplayRefreshTarget =
+            ProcessInfo.processInfo.environment["OVERLAY_CLOCK_TIMER_STRICT_UI_REFRESH_SLA"] == "1"
+        var rowAppearanceDurations: [TimeInterval] = []
+
+        for trial in 1...10 {
+            loggingToggle.click()
+            XCTAssertTrue(panel.waitForExistence(timeout: 2), "Panel did not open in trial \(trial).")
+            guard requireCaptureActive(app) else {
+                return
+            }
+
+            let startedAt = Date()
+            XCTAssertTrue(
+                row.waitForExistence(timeout: 0.5),
+                "Input row did not appear before the delayed file writer could block visibility in trial \(trial)."
+            )
+            let elapsed = Date().timeIntervalSince(startedAt)
+            rowAppearanceDurations.append(elapsed)
+
+            if enforceStrictDisplayRefreshTarget {
+                XCTAssertLessThanOrEqual(elapsed, 0.016, "Trial \(trial) exceeded the display-refresh target.")
+            }
+
+            loggingToggle.click()
+            XCTAssertFalse(panel.waitForExistence(timeout: 1), "Panel did not close in trial \(trial).")
+        }
+
+        XCTAssertEqual(rowAppearanceDurations.count, 10)
     }
 
     @MainActor

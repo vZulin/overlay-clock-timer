@@ -11,7 +11,11 @@ enum OverlayMetrics {
     static let horizontalPadding: CGFloat = 12
     static let verticalPadding: CGFloat = 10
     static let defaultTimerFontSize: CGFloat = CGFloat(OverlayPreferences.defaultTimerFontSize)
-    static let inputLoggingTableHeight: CGFloat = 178
+    static let inputLoggingTableHeaderHeight: CGFloat = 28
+    static let inputLoggingTableRowHeight: CGFloat = 25
+    static let inputLoggingTableHeight: CGFloat =
+        inputLoggingTableHeaderHeight
+        + CGFloat(OverlayPreferences.defaultEventTableRowLimit) * inputLoggingTableRowHeight
     static let inputLoggingExpandedHeightDelta: CGFloat = inputLoggingTableHeight + 46
     static let maximumExpandedSize = CGSize(
         width: maximumSize.width,

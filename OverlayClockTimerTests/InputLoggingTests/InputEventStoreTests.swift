@@ -68,7 +68,7 @@ final class InputEventStoreTests: XCTestCase {
         XCTAssertTrue(store.visibleRows.isEmpty)
     }
 
-    func testKeyboardEventsInsertRowsNewestFirstTrimToLimitAndAppendLogRecords() {
+    func testKeyboardEventsInsertRowsNewestFirstTrimToLimitAndAppendLogRecords() async {
         let writer = RecordingLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 5, preservesRows: false),
@@ -88,10 +88,12 @@ final class InputEventStoreTests: XCTestCase {
             )
         }
 
+        let appendedRecords = await writer.waitForAppendedRecords(count: 6)
+
         XCTAssertEqual(store.visibleRows.map(\.captureOrder.rawValue), [6, 5, 4, 3, 2])
         XCTAssertEqual(store.visibleRows.first?.eventName, "s")
-        XCTAssertEqual(writer.appendedRecords.map(\.captureOrder.rawValue), [1, 2, 3, 4, 5, 6])
-        XCTAssertEqual(writer.appendedRecords.first?.logLine, "00:00:00.001\ts")
+        XCTAssertEqual(appendedRecords.map(\.captureOrder.rawValue), [1, 2, 3, 4, 5, 6])
+        XCTAssertEqual(appendedRecords.first?.logLine, "00:00:00.001\ts")
         XCTAssertEqual(store.fileRecordingStatus, .active)
     }
 
@@ -116,7 +118,7 @@ final class InputEventStoreTests: XCTestCase {
         XCTAssertTrue(writer.appendedRecords.isEmpty)
     }
 
-    func testPanelOpenCreatesNewSessionAndCloseStopsFurtherWrites() {
+    func testPanelOpenCreatesNewSessionAndCloseStopsFurtherWrites() async {
         let writer = RecordingLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 5, preservesRows: false),
@@ -125,6 +127,7 @@ final class InputEventStoreTests: XCTestCase {
 
         store.openPanel()
         store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
+        _ = await writer.waitForAppendedRecords(count: 1)
         store.closePanel()
         store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseUp), timestamp: "12:00:00.002")
 
@@ -134,7 +137,7 @@ final class InputEventStoreTests: XCTestCase {
         XCTAssertEqual(store.fileRecordingStatus, .inactive)
     }
 
-    func testMouseEventsAppendSeparateDownAndUpRecords() {
+    func testMouseEventsAppendSeparateDownAndUpRecords() async {
         let writer = RecordingLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 5, preservesRows: false),
@@ -147,10 +150,12 @@ final class InputEventStoreTests: XCTestCase {
         store.recordScrollEvent(ScrollInputEvent(direction: .up), timestamp: "12:00:00.003")
         store.recordScrollEvent(ScrollInputEvent(direction: .down), timestamp: "12:00:00.004")
 
+        let appendedRecords = await writer.waitForAppendedRecords(count: 4)
+
         XCTAssertEqual(store.visibleRows.map(\.eventName), ["SM ↓", "SM ↑", "RM ↑", "LM ↓"])
-        XCTAssertEqual(writer.appendedRecords.map(\.eventName), ["LM ↓", "RM ↑", "SM ↑", "SM ↓"])
+        XCTAssertEqual(appendedRecords.map(\.eventName), ["LM ↓", "RM ↑", "SM ↑", "SM ↓"])
         XCTAssertEqual(
-            writer.appendedRecords.map(\.logLine),
+            appendedRecords.map(\.logLine),
             [
                 "12:00:00.001\tLM ↓",
                 "12:00:00.002\tRM ↑",
@@ -160,7 +165,7 @@ final class InputEventStoreTests: XCTestCase {
         )
     }
 
-    func testPreservedRowsAreVisibleButExcludedFromNewSessionFile() {
+    func testPreservedRowsAreVisibleButExcludedFromNewSessionFile() async {
         let writer = RecordingLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 5, preservesRows: true),
@@ -169,8 +174,9 @@ final class InputEventStoreTests: XCTestCase {
 
         store.openPanel()
         store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
+        _ = await writer.waitForAppendedRecords(count: 1)
         store.closePanel()
-        writer.appendedRecords.removeAll()
+        writer.removeAllAppendedRecords()
 
         store.openPanel()
 
@@ -195,7 +201,7 @@ final class InputEventStoreTests: XCTestCase {
         XCTAssertTrue(writer.appendedRecords.isEmpty)
     }
 
-    func testAppendFailureReportsUnavailableStatusAndKeepsVisibleRow() {
+    func testAppendFailureReportsUnavailableStatusAndKeepsVisibleRow() async {
         let writer = RecordingLogSessionWriter()
         writer.appendError = LogSessionWriterError.failedToAppend("Disk is full.")
         let store = InputEventStore(
@@ -206,11 +212,13 @@ final class InputEventStoreTests: XCTestCase {
         store.openPanel()
         store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseUp), timestamp: "12:00:00.001")
 
+        await waitUntil { store.fileRecordingStatus == .unavailable(reason: "Disk is full.") }
+
         XCTAssertEqual(store.fileRecordingStatus, .unavailable(reason: "Disk is full."))
         XCTAssertEqual(store.visibleRows.map(\.eventName), ["LM ↑"])
     }
 
-    func testSessionLogLinesUseTimestampTabEventNameOnly() {
+    func testSessionLogLinesUseTimestampTabEventNameOnly() async {
         let writer = RecordingLogSessionWriter()
         let store = InputEventStore(
             preferences: preferences(rowLimit: 5, preservesRows: false),
@@ -221,14 +229,16 @@ final class InputEventStoreTests: XCTestCase {
         store.recordMouseEvent(MouseInputEvent(button: .additional(4), phase: .mouseDown), timestamp: "12:00:00.001")
         store.recordScrollEvent(ScrollInputEvent(direction: .up), timestamp: "12:00:00.002")
 
+        let appendedRecords = await writer.waitForAppendedRecords(count: 2)
+
         XCTAssertEqual(
-            writer.appendedRecords.map(\.logLine),
+            appendedRecords.map(\.logLine),
             [
                 "12:00:00.001\t4M ↓",
                 "12:00:00.002\tSM ↑"
             ]
         )
-        for line in writer.appendedRecords.map(\.logLine) {
+        for line in appendedRecords.map(\.logLine) {
             XCTAssertFalse(line.contains("order="))
             XCTAssertFalse(line.contains("timestamp="))
             XCTAssertFalse(line.contains("category="))
@@ -236,6 +246,38 @@ final class InputEventStoreTests: XCTestCase {
             XCTAssertFalse(line.contains("name="))
             XCTAssertFalse(line.contains("phase="))
         }
+    }
+
+    func testVisibleRowsUpdateBeforeDelayedLogAppendCompletesAndFailureStatusChanges() async {
+        let writer = RecordingLogSessionWriter()
+        writer.appendDelayNanoseconds = 200_000_000
+        writer.appendError = LogSessionWriterError.failedToAppend("Delayed write failed.")
+        let store = InputEventStore(
+            preferences: preferences(rowLimit: 5, preservesRows: false),
+            logSessionWriter: writer
+        )
+
+        store.openPanel()
+        store.recordKeyboardEvent(
+            KeyboardInputEvent(
+                characters: "s",
+                key: "S",
+                modifiers: [],
+                isRepeat: false
+            ),
+            timestamp: "00:00:00.123"
+        )
+
+        XCTAssertEqual(store.visibleRows.first?.eventName, "s")
+        XCTAssertEqual(store.visibleRows.first?.timestamp, "00:00:00.123")
+        XCTAssertEqual(store.fileRecordingStatus, .active)
+        XCTAssertTrue(writer.appendedRecords.isEmpty)
+
+        await waitUntil {
+            store.fileRecordingStatus == .unavailable(reason: "Delayed write failed.")
+        }
+
+        XCTAssertEqual(store.visibleRows.first?.eventName, "s")
     }
 
     private func preferences(rowLimit: Int, preservesRows: Bool) -> OverlayPreferences {
@@ -254,17 +296,40 @@ final class InputEventStoreTests: XCTestCase {
     }
 }
 
-private final class RecordingLogSessionWriter: LogSessionWriting {
+private final class RecordingLogSessionWriter: LogSessionWriting, @unchecked Sendable {
     var openError: Error?
     var appendError: Error?
+    var appendDelayNanoseconds: UInt64 = 0
 
-    private(set) var openCallCount = 0
-    private(set) var closeCallCount = 0
-    var appendedRecords: [InputEventRecord] = []
-    private(set) var currentSession: LogSessionFile?
+    private let lock = NSLock()
+    private var _openCallCount = 0
+    private var _closeCallCount = 0
+    private var _appendedRecords: [InputEventRecord] = []
+    private var _currentSession: LogSessionFile?
+
+    var openCallCount: Int {
+        lock.withLock { _openCallCount }
+    }
+
+    var closeCallCount: Int {
+        lock.withLock { _closeCallCount }
+    }
+
+    var appendedRecords: [InputEventRecord] {
+        lock.withLock { _appendedRecords }
+    }
+
+    private(set) var currentSession: LogSessionFile? {
+        get {
+            lock.withLock { _currentSession }
+        }
+        set {
+            lock.withLock { _currentSession = newValue }
+        }
+    }
 
     func open() throws -> LogSessionFile {
-        openCallCount += 1
+        lock.withLock { _openCallCount += 1 }
         if let openError {
             throw openError
         }
@@ -278,18 +343,76 @@ private final class RecordingLogSessionWriter: LogSessionWriting {
         return session
     }
 
-    func append(_ record: InputEventRecord) throws {
+    func append(_ record: InputEventRecord) async throws {
+        if appendDelayNanoseconds > 0 {
+            try? await Task.sleep(nanoseconds: appendDelayNanoseconds)
+        }
+
         if let appendError {
             throw appendError
         }
 
-        appendedRecords.append(record)
+        lock.withLock {
+            _appendedRecords.append(record)
+        }
     }
 
     func close() {
-        closeCallCount += 1
+        lock.withLock { _closeCallCount += 1 }
         currentSession = currentSession.map {
             LogSessionFile(url: $0.url, createdAt: $0.createdAt, status: .closed)
         }
+    }
+
+    func removeAllAppendedRecords() {
+        lock.withLock {
+            _appendedRecords.removeAll()
+        }
+    }
+
+    func waitForAppendedRecords(
+        count: Int,
+        timeout: TimeInterval = 2,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async -> [InputEventRecord] {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            let records = appendedRecords
+            if records.count >= count {
+                return records
+            }
+
+            try? await Task.sleep(nanoseconds: 10_000_000)
+        }
+
+        XCTFail("Timed out waiting for \(count) appended records.", file: file, line: line)
+        return appendedRecords
+    }
+}
+
+private func waitUntil(
+    timeout: TimeInterval = 2,
+    condition: @MainActor @escaping () -> Bool,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) async {
+    let deadline = Date().addingTimeInterval(timeout)
+    while Date() < deadline {
+        if await condition() {
+            return
+        }
+
+        try? await Task.sleep(nanoseconds: 10_000_000)
+    }
+
+    XCTFail("Timed out waiting for condition.", file: file, line: line)
+}
+
+private extension NSLock {
+    func withLock<T>(_ work: () throws -> T) rethrows -> T {
+        lock()
+        defer { unlock() }
+        return try work()
     }
 }

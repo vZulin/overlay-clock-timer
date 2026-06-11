@@ -16,6 +16,8 @@ final class InputEventStore: ObservableObject {
     private(set) var preferences: OverlayPreferences
     private var preservedRows: [InputEventRecord] = []
     private var nextCaptureOrder = InputEventCaptureOrder(0)
+    private var logSessionIdentifier: UInt64 = 0
+    private var lastLogAppendTask: Task<Void, Never>?
 
     private let eventNameFormatter: InputEventNameFormatter
     private let logSessionWriter: LogSessionWriting?
@@ -57,6 +59,8 @@ final class InputEventStore: ObservableObject {
             visibleRows = []
         }
 
+        logSessionIdentifier += 1
+        lastLogAppendTask = nil
         logSessionWriter?.close()
         captureStatus = .inactive
         fileRecordingStatus = .inactive
@@ -85,7 +89,7 @@ final class InputEventStore: ObservableObject {
         )
 
         append(record)
-        appendLogRecord(record)
+        scheduleLogAppend(record)
     }
 
     func recordMouseEvent(_ event: MouseInputEvent, timestamp: String) {
@@ -101,7 +105,7 @@ final class InputEventStore: ObservableObject {
         )
 
         append(record)
-        appendLogRecord(record)
+        scheduleLogAppend(record)
     }
 
     func recordScrollEvent(_ event: ScrollInputEvent, timestamp: String) {
@@ -117,7 +121,7 @@ final class InputEventStore: ObservableObject {
         )
 
         append(record)
-        appendLogRecord(record)
+        scheduleLogAppend(record)
     }
 
     func setCaptureStatus(_ status: InputLoggingSessionStatus) {
@@ -161,22 +165,54 @@ final class InputEventStore: ObservableObject {
 
         do {
             try logSessionWriter.open()
+            logSessionIdentifier += 1
             fileRecordingStatus = .active
         } catch {
             fileRecordingStatus = .unavailable(reason: reason(from: error))
         }
     }
 
-    private func appendLogRecord(_ record: InputEventRecord) {
+    private func scheduleLogAppend(_ record: InputEventRecord) {
         guard fileRecordingStatus == .active, let logSessionWriter else {
             return
         }
 
-        do {
-            try logSessionWriter.append(record)
-        } catch {
-            fileRecordingStatus = .unavailable(reason: reason(from: error))
+        let sessionIdentifier = logSessionIdentifier
+        let previousLogAppendTask = lastLogAppendTask
+        let task = Task { [weak self, logSessionWriter, previousLogAppendTask, record, sessionIdentifier] in
+            await previousLogAppendTask?.value
+
+            let shouldAppend = await MainActor.run { [weak self] in
+                guard let self else {
+                    return false
+                }
+
+                return self.isPanelOpen
+                    && self.logSessionIdentifier == sessionIdentifier
+                    && self.fileRecordingStatus == .active
+            }
+
+            guard shouldAppend else {
+                return
+            }
+
+            do {
+                try await logSessionWriter.append(record)
+            } catch {
+                await MainActor.run { [weak self] in
+                    guard
+                        let self,
+                        self.isPanelOpen,
+                        self.logSessionIdentifier == sessionIdentifier
+                    else {
+                        return
+                    }
+
+                    self.fileRecordingStatus = .unavailable(reason: self.reason(from: error))
+                }
+            }
         }
+        lastLogAppendTask = task
     }
 
     private func reason(from error: Error) -> String {

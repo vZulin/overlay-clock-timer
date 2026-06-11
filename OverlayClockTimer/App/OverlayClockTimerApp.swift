@@ -19,11 +19,17 @@ struct OverlayClockTimerApp: App {
         let inputEventObserver = arguments.contains("--mock-input-event-capture")
             ? InputEventObserver(eventSource: MockInputEventSource())
             : InputEventObserver()
+        let logSessionWriter: LogSessionWriting = arguments.contains("--delayed-input-event-log-writing")
+            ? DelayedLogSessionWriter(
+                delayNanoseconds: 2_000_000_000
+            )
+            : LogSessionWriter()
 
         _coordinator = StateObject(
             wrappedValue: AppCoordinator(
                 launchOverlayOnStart: shouldShowOverlayOnLaunch,
-                inputEventObserver: inputEventObserver
+                inputEventObserver: inputEventObserver,
+                logSessionWriter: logSessionWriter
             )
         )
     }
