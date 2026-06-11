@@ -160,4 +160,28 @@ final class PreferencesStoreTests: XCTestCase {
             OverlayPreferences.defaults.preserveEventTableBetweenOpens
         )
     }
+
+    @MainActor
+    func testInputLoggingSettingsUpdatesCanApplyWhilePanelIsOpen() {
+        let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
+        let coordinator = AppCoordinator(
+            preferencesStore: store,
+            clockDisplayModel: ClockDisplayModel(ticker: DisplayTicker(maximumFramesPerSecond: 1)),
+            timerSessionStore: TimerSessionStore(ticker: DisplayTicker(maximumFramesPerSecond: 1))
+        )
+
+        coordinator.inputEventStore.openPanel()
+        coordinator.updatePreferences { preferences in
+            preferences.eventTableRowLimit = 22
+            preferences.preserveEventTableBetweenOpens = true
+        }
+
+        let reloaded = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(coordinator.preferences.eventTableRowLimit, 22)
+        XCTAssertTrue(coordinator.preferences.preserveEventTableBetweenOpens)
+        XCTAssertEqual(coordinator.inputEventStore.preferences.eventTableRowLimit, 22)
+        XCTAssertEqual(reloaded.eventTableRowLimit, 22)
+        XCTAssertTrue(reloaded.preserveEventTableBetweenOpens)
+        XCTAssertTrue(coordinator.inputEventStore.isPanelOpen)
+    }
 }

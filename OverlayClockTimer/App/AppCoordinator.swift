@@ -10,6 +10,7 @@ final class AppCoordinator: ObservableObject {
 
     let clockDisplayModel: ClockDisplayModel
     let timerSessionStore: TimerSessionStore
+    let inputEventStore: InputEventStore
 
     private let preferencesStore: PreferencesStore
     private let geometryStore: OverlayGeometryStoring
@@ -41,7 +42,8 @@ final class AppCoordinator: ObservableObject {
                 rootView: OverlayRootView(
                     coordinator: self,
                     clockDisplayModel: clockDisplayModel,
-                    timerSessionStore: timerSessionStore
+                    timerSessionStore: timerSessionStore,
+                    inputEventStore: inputEventStore
                 )
             )
         }
@@ -62,6 +64,7 @@ final class AppCoordinator: ObservableObject {
         self.geometryStore = geometryStore
         self.clockDisplayModel = clockDisplayModel
         self.timerSessionStore = timerSessionStore
+        self.inputEventStore = InputEventStore(preferences: preferencesStore.preferences)
         self.hotkeyRegistrar = hotkeyRegistrar
         self.preferences = preferencesStore.preferences
         self.isOverlayVisible = false
@@ -83,11 +86,15 @@ final class AppCoordinator: ObservableObject {
         isOverlayVisible = true
         clockDisplayModel.start()
         overlayWindowController.show(defaultSize: preferences.windowSize)
-        overlayWindowController.apply(preferences: preferences)
+        overlayWindowController.apply(
+            preferences: preferences,
+            isLoggingPanelOpen: inputEventStore.isPanelOpen
+        )
     }
 
     func hideOverlay() {
         isOverlayVisible = false
+        inputEventStore.closePanel()
         clockDisplayModel.stop()
         overlayWindowController.hide()
     }
@@ -130,6 +137,7 @@ final class AppCoordinator: ObservableObject {
         update(&updatedPreferences)
         preferencesStore.save(updatedPreferences)
         preferences = preferencesStore.preferences
+        inputEventStore.apply(preferences: preferences)
         applyLivePreferences()
     }
 
@@ -166,7 +174,16 @@ final class AppCoordinator: ObservableObject {
 
     func reloadPreferences() {
         preferences = preferencesStore.load()
+        inputEventStore.apply(preferences: preferences)
         applyLivePreferences()
+    }
+
+    func toggleInputEventLoggingPanel() {
+        inputEventStore.togglePanel()
+        overlayWindowController.apply(
+            preferences: preferences,
+            isLoggingPanelOpen: inputEventStore.isPanelOpen
+        )
     }
 
     func handle(_ command: HotkeyCommand) {
@@ -185,6 +202,7 @@ final class AppCoordinator: ObservableObject {
     }
 
     func quit() {
+        inputEventStore.clearPreservedRows()
         NSApplication.shared.terminate(nil)
     }
 
@@ -206,7 +224,10 @@ final class AppCoordinator: ObservableObject {
     }
 
     private func applyLivePreferences() {
-        overlayWindowController.apply(preferences: preferences)
+        overlayWindowController.apply(
+            preferences: preferences,
+            isLoggingPanelOpen: inputEventStore.isPanelOpen
+        )
         hotkeyRegistrar.refresh(bindings: preferences.hotkeyBindings)
     }
 

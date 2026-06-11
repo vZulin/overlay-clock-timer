@@ -17,3 +17,12 @@
 - Output marker: `** TEST SUCCEEDED **`
 - Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_14-20-20-+0200.xcresult`
 - Scope: Phase 2 foundation checkpoint after adding input logging preferences, records, timestamp provider, and session log writer.
+
+## Phase 3: User Story 1
+
+- Date: 2026-06-11 14:39 +0200
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: Passed
+- Output marker: `** TEST SUCCEEDED **`
+- Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_14-38-31-+0200.xcresult`
+- Scope: Phase 3 US1 checkpoint after adding the logging toggle, expanded event table, input logging settings, default empty reopen behavior, same-launch preservation, and overlay expansion wiring.

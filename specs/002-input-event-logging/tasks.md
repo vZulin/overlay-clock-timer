@@ -61,21 +61,21 @@ phase.
 
 ### Tests for User Story 1 (MANDATORY)
 
-- [ ] T016 [P] [US1] Add `InputEventStore` panel open/close, newest-first rows, row trimming, default empty reopen, and same-launch preservation tests in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
-- [ ] T017 [P] [US1] Add input logging settings UI preference binding tests in `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
-- [ ] T018 [P] [US1] Add overlay UI automation for logging toggle placement, panel open/close, mode switch availability, and default empty reopen in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T019 [P] [US1] Add panel open latency performance coverage for SC-001 in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
+- [X] T016 [P] [US1] Add `InputEventStore` panel open/close, newest-first rows, row trimming, default empty reopen, and same-launch preservation tests in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
+- [X] T017 [P] [US1] Add input logging settings UI preference binding tests in `OverlayClockTimerTests/PreferencesTests/PreferencesStoreTests.swift`
+- [X] T018 [P] [US1] Add overlay UI automation for logging toggle placement, panel open/close, mode switch availability, and default empty reopen in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T019 [P] [US1] Add panel open latency performance coverage for SC-001 in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Implement `InputEventStore` panel state, row trimming, default empty open, same-launch preservation, and file/capture status fields in `OverlayClockTimer/InputLogging/InputEventStore.swift`
-- [ ] T021 [P] [US1] Implement the expanded newest-first event table, empty state, unavailable states, and accessibility labels in `OverlayClockTimer/Overlay/InputEventTableView.swift`
-- [ ] T022 [P] [US1] Implement `InputLoggingSettingsView` with row limit and preservation controls in `OverlayClockTimer/Settings/InputLoggingSettingsView.swift`
-- [ ] T023 [US1] Add the Input Logging settings section to the existing settings window in `OverlayClockTimer/Settings/SettingsWindowView.swift`
-- [ ] T024 [US1] Add the logging toggle immediately left of the mode switch in both toolbar layouts in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
-- [ ] T025 [US1] Integrate `InputEventStore` and `InputEventTableView` into the overlay layout expansion in `OverlayClockTimer/Overlay/OverlayRootView.swift`
-- [ ] T026 [US1] Wire `InputEventStore` ownership, preferences, and app-quit preserved-row clearing through `OverlayClockTimer/App/AppCoordinator.swift`
-- [ ] T027 [US1] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US1 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T020 [P] [US1] Implement `InputEventStore` panel state, row trimming, default empty open, same-launch preservation, and file/capture status fields in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [X] T021 [P] [US1] Implement the expanded newest-first event table, empty state, unavailable states, and accessibility labels in `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [X] T022 [P] [US1] Implement `InputLoggingSettingsView` with row limit and preservation controls in `OverlayClockTimer/Settings/InputLoggingSettingsView.swift`
+- [X] T023 [US1] Add the Input Logging settings section to the existing settings window in `OverlayClockTimer/Settings/SettingsWindowView.swift`
+- [X] T024 [US1] Add the logging toggle immediately left of the mode switch in both toolbar layouts in `OverlayClockTimer/Overlay/OverlayToolbarView.swift`
+- [X] T025 [US1] Integrate `InputEventStore` and `InputEventTableView` into the overlay layout expansion in `OverlayClockTimer/Overlay/OverlayRootView.swift`
+- [X] T026 [US1] Wire `InputEventStore` ownership, preferences, and app-quit preserved-row clearing through `OverlayClockTimer/App/AppCoordinator.swift`
+- [X] T027 [US1] Run `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` and record the US1 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 **Checkpoint**: User Story 1 is independently functional and testable as the MVP.
 

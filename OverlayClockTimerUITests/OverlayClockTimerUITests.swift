@@ -119,6 +119,55 @@ final class OverlayClockTimerUITests: XCTestCase {
     }
 
     @MainActor
+    func testInputLoggingToggleOpensClosesPanelAndPreservesModeSwitch() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        let modeSwitch = app.buttons["clock.switchMode"]
+        XCTAssertTrue(loggingToggle.exists)
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertLessThan(loggingToggle.frame.maxX, modeSwitch.frame.minX)
+
+        loggingToggle.click()
+
+        let table = app.descendants(matching: .any)["inputLogging.eventTable"]
+        XCTAssertTrue(table.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertTrue(modeSwitch.isEnabled)
+
+        loggingToggle.click()
+        XCTAssertFalse(table.waitForExistence(timeout: 1))
+
+        loggingToggle.click()
+        XCTAssertTrue(table.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+    }
+
+    @MainActor
+    func testInputLoggingToggleIsLeftOfTimerModeSwitch() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.switchMode"].click()
+
+        let loggingToggle = app.buttons["timer.inputLoggingToggle"]
+        let modeSwitch = app.buttons["timer.switchMode"]
+        XCTAssertTrue(loggingToggle.waitForExistence(timeout: 2))
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertLessThan(loggingToggle.frame.maxX, modeSwitch.frame.minX)
+    }
+
+    @MainActor
     func testSettingsWindowOpensSeparatelyWithoutHidingOverlay() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
@@ -146,6 +195,7 @@ final class OverlayClockTimerUITests: XCTestCase {
 
         assertAccessibleButton(app.buttons["clock.settings"], label: "Settings")
         assertAccessibleButton(app.buttons["clock.hideOverlay"], label: "Hide Overlay")
+        assertAccessibleButton(app.buttons["clock.inputLoggingToggle"], label: "Show Input Event Log")
         assertAccessibleButton(app.buttons["clock.switchMode"], label: "Switch to Timer Mode")
 
         app.buttons["clock.switchMode"].click()
