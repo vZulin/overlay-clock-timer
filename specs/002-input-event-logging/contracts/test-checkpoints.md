@@ -61,3 +61,29 @@
 - Output marker: `** BUILD SUCCEEDED **`
 - App bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Build/Products/Debug/OverlayClockTimer.app`
 - Scope: Phase 6 build checkpoint for a fresh debug app bundle intended for manual validation.
+
+## Phase 6: Post-Format Whitespace
+
+- Date: 2026-06-11 18:30 +0200
+- Command: `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md`
+- Result: Passed
+- Output marker: no whitespace errors
+- Scope: Phase 6 post-format checkpoint after two-column table output, compact mouse and scroll labels, and tab-separated session log output.
+
+## Phase 6: Post-Format Build
+
+- Date: 2026-06-11 18:31 +0200
+- Command: `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: Passed
+- Output marker: `** BUILD SUCCEEDED **`
+- App bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Build/Products/Debug/OverlayClockTimer.app`
+- Scope: Phase 6 post-format build checkpoint after compact event labels, scroll capture, two-column table output, and minimal session log lines.
+
+## Phase 6: Final Test
+
+- Date: 2026-06-11 18:33 +0200
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Result: Passed
+- Output marker: `** TEST SUCCEEDED **`
+- Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_18-31-49-+0200.xcresult`
+- Scope: Final Phase 6 checkpoint after compact event labels, physical scroll gesture labels, two-column table output, minimal session log lines, and full unit/UI regression coverage.

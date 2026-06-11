@@ -81,9 +81,7 @@ final class InputEventStore: ObservableObject {
         let record = InputEventRecord(
             captureOrder: nextOrder(),
             timestamp: timestamp,
-            category: formattedEvent.category,
-            name: formattedEvent.name,
-            phase: formattedEvent.phase
+            eventName: formattedEvent.eventName
         )
 
         append(record)
@@ -99,9 +97,23 @@ final class InputEventStore: ObservableObject {
         let record = InputEventRecord(
             captureOrder: nextOrder(),
             timestamp: timestamp,
-            category: formattedEvent.category,
-            name: formattedEvent.name,
-            phase: formattedEvent.phase
+            eventName: formattedEvent.eventName
+        )
+
+        append(record)
+        appendLogRecord(record)
+    }
+
+    func recordScrollEvent(_ event: ScrollInputEvent, timestamp: String) {
+        guard isPanelOpen else {
+            return
+        }
+
+        let formattedEvent = eventNameFormatter.format(scroll: event)
+        let record = InputEventRecord(
+            captureOrder: nextOrder(),
+            timestamp: timestamp,
+            eventName: formattedEvent.eventName
         )
 
         append(record)

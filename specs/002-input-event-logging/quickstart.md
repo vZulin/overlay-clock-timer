@@ -90,12 +90,13 @@ rebuild/re-sign the app before launch.
    open.
 7. Generate left, right, third, and additional mouse-button down/up events while
    the panel is open.
-8. Generate scroll up and scroll down events while the panel is open.
+8. Generate physical scroll-up and scroll-down gestures while the panel is open.
 9. Confirm the event table shows only `Time` and `Event` columns.
 10. Confirm mouse rows use `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
     and numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, and
     `5M ↑`.
-11. Confirm scroll rows use `SM ↑` and `SM ↓`.
+11. Confirm scroll rows use `SM ↑` and `SM ↓` based on physical gesture
+    direction, independent of macOS natural scrolling settings.
 12. Close the panel and confirm no additional input is captured or written.
 13. Reopen the panel with default settings and confirm the table starts empty.
 14. Enable event table preservation in Settings, reopen the panel during the

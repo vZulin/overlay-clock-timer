@@ -25,58 +25,67 @@ final class InputEventRecordTests: XCTestCase {
             id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
             captureOrder: InputEventCaptureOrder(10),
             timestamp: "12:34:56.789",
-            category: .keyboard,
-            name: "s",
-            phase: .keyDown
+            eventName: "s"
         )
 
         let labels = Set(Mirror(reflecting: record).children.compactMap(\.label))
 
-        XCTAssertEqual(labels, ["id", "captureOrder", "timestamp", "category", "name", "phase"])
+        XCTAssertEqual(labels, ["id", "captureOrder", "timestamp", "eventName"])
         XCTAssertFalse(labels.contains("applicationName"))
         XCTAssertFalse(labels.contains("windowTitle"))
         XCTAssertFalse(labels.contains("coordinates"))
+        XCTAssertFalse(labels.contains("scrollCoordinates"))
+        XCTAssertFalse(labels.contains("scrollDeltaMagnitude"))
         XCTAssertFalse(labels.contains("clipboardContent"))
+        XCTAssertFalse(labels.contains("textFieldIdentifier"))
         XCTAssertFalse(labels.contains("processMetadata"))
         XCTAssertFalse(labels.contains("networkIdentifier"))
+        XCTAssertFalse(labels.contains("category"))
+        XCTAssertFalse(labels.contains("type"))
+        XCTAssertFalse(labels.contains("phase"))
     }
 
     func testLogLineContainsOnlyAllowedRecordData() {
         let record = InputEventRecord(
             captureOrder: InputEventCaptureOrder(42),
             timestamp: "00:00:01.234",
-            category: .mouse,
-            name: "Mouse Down",
-            phase: .mouseDown
+            eventName: "LM ↓"
         )
 
         let logLine = record.logLine
 
-        XCTAssertTrue(logLine.contains("order=42"))
-        XCTAssertTrue(logLine.contains("timestamp=00:00:01.234"))
-        XCTAssertTrue(logLine.contains("category=mouse"))
-        XCTAssertTrue(logLine.contains("name=Mouse Down"))
-        XCTAssertTrue(logLine.contains("phase=mouseDown"))
-        let fieldNames = Set(logLine.split(separator: "\t").compactMap { field in
-            field.split(separator: "=", maxSplits: 1).first.map(String.init)
-        })
+        XCTAssertEqual(logLine, "00:00:01.234\tLM ↓")
+        XCTAssertFalse(logLine.contains("order="))
+        XCTAssertFalse(logLine.contains("timestamp="))
+        XCTAssertFalse(logLine.contains("category="))
+        XCTAssertFalse(logLine.contains("type="))
+        XCTAssertFalse(logLine.contains("name="))
+        XCTAssertFalse(logLine.contains("phase="))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("app name"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("window title"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("coordinates"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("delta"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("clipboard"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("text field"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("process"))
+        XCTAssertFalse(logLine.localizedCaseInsensitiveContains("network"))
+    }
 
-        XCTAssertFalse(fieldNames.contains("app"))
-        XCTAssertFalse(fieldNames.contains("window"))
-        XCTAssertFalse(fieldNames.contains("x"))
-        XCTAssertFalse(fieldNames.contains("y"))
-        XCTAssertFalse(fieldNames.contains("clipboard"))
-        XCTAssertFalse(fieldNames.contains("process"))
-        XCTAssertFalse(fieldNames.contains("network"))
+    func testLogLineSanitizesTabsAndNewlinesInsideFields() {
+        let record = InputEventRecord(
+            captureOrder: InputEventCaptureOrder(1),
+            timestamp: "00:00:01.234\n",
+            eventName: "Command\tC"
+        )
+
+        XCTAssertEqual(record.logLine, "00:00:01.234 \tCommand C")
     }
 
     private func record(order: UInt64) -> InputEventRecord {
         InputEventRecord(
             captureOrder: InputEventCaptureOrder(order),
             timestamp: "12:34:56.789",
-            category: .keyboard,
-            name: "s",
-            phase: .keyDown
+            eventName: "s"
         )
     }
 }

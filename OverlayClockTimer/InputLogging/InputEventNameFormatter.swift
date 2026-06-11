@@ -46,48 +46,61 @@ struct KeyboardInputEvent: Equatable, Sendable {
     }
 }
 
+enum MouseInputEventButton: Equatable, Sendable {
+    case left
+    case right
+    case third
+    case additional(Int)
+}
+
 enum MouseInputEventPhase: Equatable, Sendable {
     case mouseDown
     case mouseUp
-
-    var recordPhase: InputEventPhase {
-        switch self {
-        case .mouseDown:
-            return .mouseDown
-        case .mouseUp:
-            return .mouseUp
-        }
-    }
 }
 
 struct MouseInputEvent: Equatable, Sendable {
+    let button: MouseInputEventButton
     let phase: MouseInputEventPhase
 
-    init(phase: MouseInputEventPhase) {
+    init(button: MouseInputEventButton, phase: MouseInputEventPhase) {
+        self.button = button
         self.phase = phase
     }
 }
 
+enum ScrollInputEventDirection: Equatable, Sendable {
+    case up
+    case down
+}
+
+struct ScrollInputEvent: Equatable, Sendable {
+    let direction: ScrollInputEventDirection
+
+    init(direction: ScrollInputEventDirection) {
+        self.direction = direction
+    }
+}
+
 struct FormattedInputEvent: Equatable, Sendable {
-    let category: InputEventCategory
-    let name: String
-    let phase: InputEventPhase?
+    let eventName: String
 }
 
 struct InputEventNameFormatter {
     func format(keyboard event: KeyboardInputEvent) -> FormattedInputEvent {
         FormattedInputEvent(
-            category: .keyboard,
-            name: keyboardEventName(for: event),
-            phase: event.isRepeat ? .repeatKeyDown : .keyDown
+            eventName: keyboardEventName(for: event)
         )
     }
 
     func format(mouse event: MouseInputEvent) -> FormattedInputEvent {
         FormattedInputEvent(
-            category: .mouse,
-            name: mouseEventName(for: event),
-            phase: event.phase.recordPhase
+            eventName: mouseEventName(for: event)
+        )
+    }
+
+    func format(scroll event: ScrollInputEvent) -> FormattedInputEvent {
+        FormattedInputEvent(
+            eventName: scrollEventName(for: event)
         )
     }
 
@@ -135,11 +148,34 @@ struct InputEventNameFormatter {
     }
 
     private func mouseEventName(for event: MouseInputEvent) -> String {
+        let buttonName = mouseButtonName(for: event.button)
         switch event.phase {
         case .mouseDown:
-            return "Mouse Down"
+            return "\(buttonName) ↓"
         case .mouseUp:
-            return "Mouse Up"
+            return "\(buttonName) ↑"
+        }
+    }
+
+    private func mouseButtonName(for button: MouseInputEventButton) -> String {
+        switch button {
+        case .left:
+            return "LM"
+        case .right:
+            return "RM"
+        case .third:
+            return "3M"
+        case .additional(let number):
+            return "\(number)M"
+        }
+    }
+
+    private func scrollEventName(for event: ScrollInputEvent) -> String {
+        switch event.direction {
+        case .up:
+            return "SM ↑"
+        case .down:
+            return "SM ↓"
         }
     }
 }

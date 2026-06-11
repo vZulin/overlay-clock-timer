@@ -55,7 +55,9 @@ toggle, expanded event table, table row lifecycle, and accessibility.
 - Third mouse-button events show `3M ↓` and `3M ↑`.
 - Additional mouse-button events include the button number, such as `4M ↓`,
   `4M ↑`, `5M ↓`, and `5M ↑`.
-- Scroll events show `SM ↑` for upward scroll and `SM ↓` for downward scroll.
+- Scroll events show `SM ↑` for physical upward scroll gestures and `SM ↓` for
+  physical downward scroll gestures, independent of content movement or macOS
+  natural scrolling settings.
 - Mouse and scroll rows must not expose coordinates, delta magnitudes, target
   view metadata, category/type, or phase.
 

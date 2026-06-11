@@ -125,12 +125,14 @@ Specialized input source event before conversion into `InputEventRecord`.
 
 ### Fields
 
-- `direction`: `up` or `down`.
+- `direction`: Physical gesture direction, `up` or `down`.
 
 ### Validation Rules
 
-- Upward scroll input maps to `SM ↑`.
-- Downward scroll input maps to `SM ↓`.
+- Physical upward scroll gesture maps to `SM ↑`.
+- Physical downward scroll gesture maps to `SM ↓`.
+- Scroll direction is independent of content movement and macOS natural
+  scrolling settings.
 - Scroll coordinates, delta magnitudes, and target view metadata are not stored.
 
 ## Entity: LogSessionFile

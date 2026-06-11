@@ -270,6 +270,16 @@ final class AppCoordinator: ObservableObject {
                     event,
                     timestamp: eventTimestampProvider.timestamp(for: displayMode)
                 )
+            },
+            scrollHandler: { [weak self] event in
+                guard let self else {
+                    return
+                }
+
+                inputEventStore.recordScrollEvent(
+                    event,
+                    timestamp: eventTimestampProvider.timestamp(for: displayMode)
+                )
             }
         )
         inputEventStore.setCaptureStatus(status)

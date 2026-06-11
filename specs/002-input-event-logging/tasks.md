@@ -139,30 +139,30 @@ phase.
 
 **Purpose**: Bring the completed input logging implementation into alignment with the clarified output format, then complete cross-story validation, privacy hardening, documentation, and final checkpoints.
 
-- [ ] T048 [P] Add privacy regression tests proving no app name, window title, coordinates, scroll coordinates, scroll delta magnitudes, clipboard content, text field identifier, process metadata, network identifier, category/type, phase, or log key-value fields are exposed in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
-- [ ] T049 [P] Add light/dark readability and accessibility regression coverage for the logging toggle, two-column table rows, compact event labels, empty state, and unavailable states in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T050 [P] Add maximum row-limit, nonblocking log append, and closed-panel idle observer performance coverage in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
+- [X] T048 [P] Add privacy regression tests proving no app name, window title, coordinates, scroll coordinates, scroll delta magnitudes, clipboard content, text field identifier, process metadata, network identifier, category/type, phase, or log key-value fields are exposed in `OverlayClockTimerTests/InputLoggingTests/InputEventRecordTests.swift`
+- [X] T049 [P] Add light/dark readability and accessibility regression coverage for the logging toggle, two-column table rows, compact event labels, empty state, and unavailable states in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T050 [P] Add maximum row-limit, nonblocking log append, and closed-panel idle observer performance coverage in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
 - [X] T051 Update manual validation guidance for input logging in `specs/002-input-event-logging/quickstart.md`
-- [ ] T052 Run requirements checklist review and record any remaining issues in `specs/002-input-event-logging/checklists/input-logging.md`
+- [X] T052 Run requirements checklist review and record any remaining issues in `specs/002-input-event-logging/checklists/input-logging.md`
 - [X] T053 Run pre-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` and record the historical whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 - [X] T054 Run pre-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` and record the historical build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T055 [P] [US1] Add UI automation proving the input event table shows exactly `Time` and `Event` columns and no `Type`, `Category`, or `Phase` columns in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T056 [P] [US3] Add compact mouse-button label tests for `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`, `4M ↓`, `4M ↑`, `5M ↓`, and `5M ↑` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
-- [ ] T057 [P] [US3] Add compact scroll label tests for `SM ↑` and `SM ↓` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
-- [ ] T058 [P] [US3] Add observer lifecycle tests for right, third, additional mouse buttons, scroll up/down, and no scroll capture while closed in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
-- [ ] T059 [P] [US3] Add store and writer tests proving session log lines are `<timestamp><TAB><event name>` only and exclude `order=`, `timestamp=`, `category=`, `type=`, `name=`, and `phase=` in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift` and `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`
-- [ ] T060 [P] [US3] Add UI automation for compact mouse-button rows and compact scroll rows in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T061 [P] Update `InputEventRecord` to expose `timestamp` and `eventName` as the public record projection while keeping capture order internal for sorting in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
-- [ ] T062 [P] [US3] Update `InputEventNameFormatter` to emit compact mouse-button and scroll event labels in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
-- [ ] T063 [P] [US3] Extend `InputEventObserver` source event mapping for right, third, additional mouse buttons, and scroll up/down events in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
-- [ ] T064 [US3] Update `InputEventStore` and `LogSessionWriter` to write exactly `timestamp`, one tab character, and `eventName` per log line in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
-- [ ] T065 [US1] Update `InputEventTableView` to render only `Time` and `Event` columns and remove `Type`, `Category`, and `Phase` UI output in `OverlayClockTimer/Overlay/InputEventTableView.swift`
-- [ ] T066 [US3] Update mock input capture fixtures for compact mouse-button and scroll events in `OverlayClockTimer/InputLogging/InputEventObserver.swift` and `OverlayClockTimer/App/OverlayClockTimerApp.swift`
-- [ ] T067 [US1] Update UI test accessibility identifiers and assertions for the two-column table shape in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T068 [US3] Update UI test accessibility identifiers and assertions for compact mouse-button and scroll event names in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
-- [ ] T069 Run post-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` after T055-T068 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T070 Run post-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T069 and record the build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [ ] T071 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T070 and record the final checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T055 [P] [US1] Add UI automation proving the input event table shows exactly `Time` and `Event` columns and no `Type`, `Category`, or `Phase` columns in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T056 [P] [US3] Add compact mouse-button label tests for `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`, `4M ↓`, `4M ↑`, `5M ↓`, and `5M ↑` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [X] T057 [P] [US3] Add compact scroll label tests for `SM ↑` and `SM ↓` in `OverlayClockTimerTests/InputLoggingTests/InputEventNameFormatterTests.swift`
+- [X] T058 [P] [US3] Add observer lifecycle tests for right, third, additional mouse buttons, scroll up/down, and no scroll capture while closed in `OverlayClockTimerTests/InputLoggingTests/InputEventObserverTests.swift`
+- [X] T059 [P] [US3] Add store and writer tests proving session log lines are `<timestamp><TAB><event name>` only and exclude `order=`, `timestamp=`, `category=`, `type=`, `name=`, and `phase=` in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift` and `OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift`
+- [X] T060 [P] [US3] Add UI automation for compact mouse-button rows and compact scroll rows in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T061 [P] Update `InputEventRecord` to expose `timestamp` and `eventName` as the public record projection while keeping capture order internal for sorting in `OverlayClockTimer/InputLogging/InputEventRecord.swift`
+- [X] T062 [P] [US3] Update `InputEventNameFormatter` to emit compact mouse-button and scroll event labels in `OverlayClockTimer/InputLogging/InputEventNameFormatter.swift`
+- [X] T063 [P] [US3] Extend `InputEventObserver` source event mapping for right, third, additional mouse buttons, and scroll up/down events in `OverlayClockTimer/InputLogging/InputEventObserver.swift`
+- [X] T064 [US3] Update `InputEventStore` and `LogSessionWriter` to write exactly `timestamp`, one tab character, and `eventName` per log line in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
+- [X] T065 [US1] Update `InputEventTableView` to render only `Time` and `Event` columns and remove `Type`, `Category`, and `Phase` UI output in `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [X] T066 [US3] Update mock input capture fixtures for compact mouse-button and scroll events in `OverlayClockTimer/InputLogging/InputEventObserver.swift` and `OverlayClockTimer/App/OverlayClockTimerApp.swift`
+- [X] T067 [US1] Update UI test accessibility identifiers and assertions for the two-column table shape in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T068 [US3] Update UI test accessibility identifiers and assertions for compact mouse-button and scroll event names in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+- [X] T069 Run post-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` after T055-T068 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T070 Run post-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T069 and record the build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T071 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T070 and record the final checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 ---
 

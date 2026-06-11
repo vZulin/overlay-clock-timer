@@ -94,7 +94,8 @@ files easy to scan or parse as two tab-separated fields.
 Represent mouse-button down/up and scroll direction with short labels before
 display or file writing: `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
 numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, `5M ↑`, and
-scroll labels `SM ↑` and `SM ↓`.
+scroll labels `SM ↑` and `SM ↓`. Scroll direction follows the physical gesture
+direction rather than content movement or macOS natural scrolling settings.
 
 **Rationale**: Left and right mouse input must be distinguishable, additional
 buttons must not collapse into the same event, and row text must fit inside the

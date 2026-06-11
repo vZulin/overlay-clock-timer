@@ -4,12 +4,14 @@ import Foundation
 
 typealias KeyboardInputEventHandler = @MainActor (KeyboardInputEvent) -> Void
 typealias MouseInputEventHandler = @MainActor (MouseInputEvent) -> Void
+typealias ScrollInputEventHandler = @MainActor (ScrollInputEvent) -> Void
 
 @MainActor
 protocol InputEventSource: AnyObject {
     func startObservation(
         keyboardHandler: @escaping KeyboardInputEventHandler,
-        mouseHandler: @escaping MouseInputEventHandler
+        mouseHandler: @escaping MouseInputEventHandler,
+        scrollHandler: @escaping ScrollInputEventHandler
     ) -> InputLoggingSessionStatus
     func stopObservation()
 }
@@ -27,7 +29,8 @@ final class InputEventObserver: ObservableObject {
     @discardableResult
     func startObservation(
         keyboardHandler: @escaping KeyboardInputEventHandler,
-        mouseHandler: @escaping MouseInputEventHandler
+        mouseHandler: @escaping MouseInputEventHandler,
+        scrollHandler: @escaping ScrollInputEventHandler
     ) -> InputLoggingSessionStatus {
         stopObservation()
 
@@ -45,6 +48,13 @@ final class InputEventObserver: ObservableObject {
                 }
 
                 mouseHandler(event)
+            },
+            scrollHandler: { [weak self] event in
+                guard self?.status == .active else {
+                    return
+                }
+
+                scrollHandler(event)
             }
         )
 
@@ -68,7 +78,8 @@ final class MockInputEventSource: InputEventSource {
 
     func startObservation(
         keyboardHandler: @escaping KeyboardInputEventHandler,
-        mouseHandler: @escaping MouseInputEventHandler
+        mouseHandler: @escaping MouseInputEventHandler,
+        scrollHandler: @escaping ScrollInputEventHandler
     ) -> InputLoggingSessionStatus {
         isObserving = true
 
@@ -85,8 +96,18 @@ final class MockInputEventSource: InputEventSource {
                     isRepeat: false
                 )
             )
-            mouseHandler(MouseInputEvent(phase: .mouseDown))
-            mouseHandler(MouseInputEvent(phase: .mouseUp))
+            mouseHandler(MouseInputEvent(button: .left, phase: .mouseDown))
+            mouseHandler(MouseInputEvent(button: .left, phase: .mouseUp))
+            mouseHandler(MouseInputEvent(button: .right, phase: .mouseDown))
+            mouseHandler(MouseInputEvent(button: .right, phase: .mouseUp))
+            mouseHandler(MouseInputEvent(button: .third, phase: .mouseDown))
+            mouseHandler(MouseInputEvent(button: .third, phase: .mouseUp))
+            mouseHandler(MouseInputEvent(button: .additional(4), phase: .mouseDown))
+            mouseHandler(MouseInputEvent(button: .additional(4), phase: .mouseUp))
+            mouseHandler(MouseInputEvent(button: .additional(5), phase: .mouseDown))
+            mouseHandler(MouseInputEvent(button: .additional(5), phase: .mouseUp))
+            scrollHandler(ScrollInputEvent(direction: .up))
+            scrollHandler(ScrollInputEvent(direction: .down))
         }
 
         return .active
@@ -103,10 +124,13 @@ private final class AppKitInputEventSource: InputEventSource {
     private var localKeyDownMonitor: Any?
     private var globalMouseMonitor: Any?
     private var localMouseMonitor: Any?
+    private var globalScrollMonitor: Any?
+    private var localScrollMonitor: Any?
 
     func startObservation(
         keyboardHandler: @escaping KeyboardInputEventHandler,
-        mouseHandler: @escaping MouseInputEventHandler
+        mouseHandler: @escaping MouseInputEventHandler,
+        scrollHandler: @escaping ScrollInputEventHandler
     ) -> InputLoggingSessionStatus {
         stopObservation()
 
@@ -165,11 +189,34 @@ private final class AppKitInputEventSource: InputEventSource {
             return event
         }
 
+        globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { event in
+            guard let scrollEvent = ScrollInputEvent(nsEvent: event) else {
+                return
+            }
+
+            Task { @MainActor in
+                scrollHandler(scrollEvent)
+            }
+        }
+
+        localScrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { event in
+            guard let scrollEvent = ScrollInputEvent(nsEvent: event) else {
+                return event
+            }
+
+            Task { @MainActor in
+                scrollHandler(scrollEvent)
+            }
+            return event
+        }
+
         guard
             globalKeyDownMonitor != nil
                 || localKeyDownMonitor != nil
                 || globalMouseMonitor != nil
                 || localMouseMonitor != nil
+                || globalScrollMonitor != nil
+                || localScrollMonitor != nil
         else {
             return .unavailable(reason: "Unable to install input event monitors.")
         }
@@ -197,17 +244,65 @@ private final class AppKitInputEventSource: InputEventSource {
             NSEvent.removeMonitor(localMouseMonitor)
             self.localMouseMonitor = nil
         }
+
+        if let globalScrollMonitor {
+            NSEvent.removeMonitor(globalScrollMonitor)
+            self.globalScrollMonitor = nil
+        }
+
+        if let localScrollMonitor {
+            NSEvent.removeMonitor(localScrollMonitor)
+            self.localScrollMonitor = nil
+        }
     }
 }
 
 private extension MouseInputEvent {
     init?(nsEvent event: NSEvent) {
         switch event.type {
-        case .leftMouseDown, .rightMouseDown, .otherMouseDown:
-            self.init(phase: .mouseDown)
-        case .leftMouseUp, .rightMouseUp, .otherMouseUp:
-            self.init(phase: .mouseUp)
+        case .leftMouseDown:
+            self.init(button: .left, phase: .mouseDown)
+        case .leftMouseUp:
+            self.init(button: .left, phase: .mouseUp)
+        case .rightMouseDown:
+            self.init(button: .right, phase: .mouseDown)
+        case .rightMouseUp:
+            self.init(button: .right, phase: .mouseUp)
+        case .otherMouseDown:
+            self.init(button: MouseInputEventButton(eventButtonNumber: event.buttonNumber), phase: .mouseDown)
+        case .otherMouseUp:
+            self.init(button: MouseInputEventButton(eventButtonNumber: event.buttonNumber), phase: .mouseUp)
         default:
+            return nil
+        }
+    }
+}
+
+private extension MouseInputEventButton {
+    init(eventButtonNumber: Int) {
+        if eventButtonNumber == 2 {
+            self = .third
+        } else {
+            self = .additional(eventButtonNumber + 1)
+        }
+    }
+}
+
+private extension ScrollInputEvent {
+    init?(nsEvent event: NSEvent) {
+        guard event.type == .scrollWheel else {
+            return nil
+        }
+
+        let physicalDeltaY = event.isDirectionInvertedFromDevice
+            ? -event.scrollingDeltaY
+            : event.scrollingDeltaY
+
+        if physicalDeltaY > 0 {
+            self.init(direction: .up)
+        } else if physicalDeltaY < 0 {
+            self.init(direction: .down)
+        } else {
             return nil
         }
     }

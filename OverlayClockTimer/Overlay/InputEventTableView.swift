@@ -17,7 +17,7 @@ struct InputEventTableView: View {
             }
             .frame(height: OverlayMetrics.inputLoggingTableHeight)
             .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("inputLogging.eventTable")
+            .accessibilityIdentifier("inputLogging.eventTableContainer")
         }
         .padding(.horizontal, OverlayMetrics.horizontalPadding)
         .padding(.bottom, OverlayMetrics.verticalPadding)
@@ -34,26 +34,15 @@ struct InputEventTableView: View {
             }
             .width(min: 92, ideal: 104, max: 120)
 
-            TableColumn("Type") { record in
-                Text(record.category.rawValue.capitalized)
-                    .lineLimit(1)
-            }
-            .width(min: 70, ideal: 76, max: 90)
-
             TableColumn("Event") { record in
-                Text(record.name)
+                Text(record.eventName)
                     .lineLimit(1)
                     .accessibilityIdentifier(
-                        "inputLogging.eventName.\(record.name.inputLoggingAccessibilityIdentifierComponent)"
+                        "inputLogging.eventName.\(record.eventName.inputLoggingAccessibilityIdentifierComponent)"
                     )
             }
-
-            TableColumn("Phase") { record in
-                Text(record.phase?.rawValue ?? "-")
-                    .lineLimit(1)
-            }
-            .width(min: 82, ideal: 92, max: 116)
         }
+        .accessibilityLabel("Input Event Table Columns Time Event")
         .accessibilityIdentifier("inputLogging.eventTable")
     }
 
@@ -107,15 +96,23 @@ struct InputEventTableView: View {
         }
         .foregroundStyle(status.isUnavailable ? Color.red : tokens.secondaryTextColor)
         .accessibilityLabel("\(title) \(status.title)")
+        .accessibilityIdentifier(identifier)
     }
 }
 
 private extension String {
     var inputLoggingAccessibilityIdentifierComponent: String {
-        let sanitized = lowercased().map { character -> Character in
+        let normalized = lowercased()
+            .replacingOccurrences(of: "↑", with: " up ")
+            .replacingOccurrences(of: "↓", with: " down ")
+            .replacingOccurrences(of: "+", with: " plus ")
+
+        let sanitized = normalized.map { character -> Character in
             character.isLetter || character.isNumber ? character : "-"
         }
-        return String(sanitized).trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+        return String(sanitized)
+            .split(separator: "-")
+            .joined(separator: "-")
     }
 }
 

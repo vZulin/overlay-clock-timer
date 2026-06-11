@@ -89,8 +89,9 @@ final class InputEventStoreTests: XCTestCase {
         }
 
         XCTAssertEqual(store.visibleRows.map(\.captureOrder.rawValue), [6, 5, 4, 3, 2])
-        XCTAssertEqual(store.visibleRows.first?.phase, .repeatKeyDown)
+        XCTAssertEqual(store.visibleRows.first?.eventName, "s")
         XCTAssertEqual(writer.appendedRecords.map(\.captureOrder.rawValue), [1, 2, 3, 4, 5, 6])
+        XCTAssertEqual(writer.appendedRecords.first?.logLine, "00:00:00.001\ts")
         XCTAssertEqual(store.fileRecordingStatus, .active)
     }
 
@@ -123,13 +124,13 @@ final class InputEventStoreTests: XCTestCase {
         )
 
         store.openPanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseDown), timestamp: "12:00:00.001")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
         store.closePanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseUp), timestamp: "12:00:00.002")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseUp), timestamp: "12:00:00.002")
 
         XCTAssertEqual(writer.openCallCount, 1)
         XCTAssertEqual(writer.closeCallCount, 1)
-        XCTAssertEqual(writer.appendedRecords.map(\.name), ["Mouse Down"])
+        XCTAssertEqual(writer.appendedRecords.map(\.eventName), ["LM ↓"])
         XCTAssertEqual(store.fileRecordingStatus, .inactive)
     }
 
@@ -141,13 +142,22 @@ final class InputEventStoreTests: XCTestCase {
         )
 
         store.openPanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseDown), timestamp: "12:00:00.001")
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseUp), timestamp: "12:00:00.002")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
+        store.recordMouseEvent(MouseInputEvent(button: .right, phase: .mouseUp), timestamp: "12:00:00.002")
+        store.recordScrollEvent(ScrollInputEvent(direction: .up), timestamp: "12:00:00.003")
+        store.recordScrollEvent(ScrollInputEvent(direction: .down), timestamp: "12:00:00.004")
 
-        XCTAssertEqual(store.visibleRows.map(\.name), ["Mouse Up", "Mouse Down"])
-        XCTAssertEqual(store.visibleRows.map(\.phase), [.mouseUp, .mouseDown])
-        XCTAssertEqual(writer.appendedRecords.map(\.name), ["Mouse Down", "Mouse Up"])
-        XCTAssertEqual(writer.appendedRecords.map(\.category), [.mouse, .mouse])
+        XCTAssertEqual(store.visibleRows.map(\.eventName), ["SM ↓", "SM ↑", "RM ↑", "LM ↓"])
+        XCTAssertEqual(writer.appendedRecords.map(\.eventName), ["LM ↓", "RM ↑", "SM ↑", "SM ↓"])
+        XCTAssertEqual(
+            writer.appendedRecords.map(\.logLine),
+            [
+                "12:00:00.001\tLM ↓",
+                "12:00:00.002\tRM ↑",
+                "12:00:00.003\tSM ↑",
+                "12:00:00.004\tSM ↓"
+            ]
+        )
     }
 
     func testPreservedRowsAreVisibleButExcludedFromNewSessionFile() {
@@ -158,13 +168,13 @@ final class InputEventStoreTests: XCTestCase {
         )
 
         store.openPanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseDown), timestamp: "12:00:00.001")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
         store.closePanel()
         writer.appendedRecords.removeAll()
 
         store.openPanel()
 
-        XCTAssertEqual(store.visibleRows.map(\.name), ["Mouse Down"])
+        XCTAssertEqual(store.visibleRows.map(\.eventName), ["LM ↓"])
         XCTAssertTrue(writer.appendedRecords.isEmpty)
         XCTAssertEqual(writer.openCallCount, 2)
     }
@@ -178,10 +188,10 @@ final class InputEventStoreTests: XCTestCase {
         )
 
         store.openPanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseDown), timestamp: "12:00:00.001")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseDown), timestamp: "12:00:00.001")
 
         XCTAssertEqual(store.fileRecordingStatus, .unavailable(reason: "Cannot create log file."))
-        XCTAssertEqual(store.visibleRows.map(\.name), ["Mouse Down"])
+        XCTAssertEqual(store.visibleRows.map(\.eventName), ["LM ↓"])
         XCTAssertTrue(writer.appendedRecords.isEmpty)
     }
 
@@ -194,10 +204,38 @@ final class InputEventStoreTests: XCTestCase {
         )
 
         store.openPanel()
-        store.recordMouseEvent(MouseInputEvent(phase: .mouseUp), timestamp: "12:00:00.001")
+        store.recordMouseEvent(MouseInputEvent(button: .left, phase: .mouseUp), timestamp: "12:00:00.001")
 
         XCTAssertEqual(store.fileRecordingStatus, .unavailable(reason: "Disk is full."))
-        XCTAssertEqual(store.visibleRows.map(\.name), ["Mouse Up"])
+        XCTAssertEqual(store.visibleRows.map(\.eventName), ["LM ↑"])
+    }
+
+    func testSessionLogLinesUseTimestampTabEventNameOnly() {
+        let writer = RecordingLogSessionWriter()
+        let store = InputEventStore(
+            preferences: preferences(rowLimit: 5, preservesRows: false),
+            logSessionWriter: writer
+        )
+
+        store.openPanel()
+        store.recordMouseEvent(MouseInputEvent(button: .additional(4), phase: .mouseDown), timestamp: "12:00:00.001")
+        store.recordScrollEvent(ScrollInputEvent(direction: .up), timestamp: "12:00:00.002")
+
+        XCTAssertEqual(
+            writer.appendedRecords.map(\.logLine),
+            [
+                "12:00:00.001\t4M ↓",
+                "12:00:00.002\tSM ↑"
+            ]
+        )
+        for line in writer.appendedRecords.map(\.logLine) {
+            XCTAssertFalse(line.contains("order="))
+            XCTAssertFalse(line.contains("timestamp="))
+            XCTAssertFalse(line.contains("category="))
+            XCTAssertFalse(line.contains("type="))
+            XCTAssertFalse(line.contains("name="))
+            XCTAssertFalse(line.contains("phase="))
+        }
     }
 
     private func preferences(rowLimit: Int, preservesRows: Bool) -> OverlayPreferences {
@@ -211,9 +249,7 @@ final class InputEventStoreTests: XCTestCase {
         InputEventRecord(
             captureOrder: InputEventCaptureOrder(order),
             timestamp: "12:34:56.789",
-            category: .keyboard,
-            name: "s",
-            phase: .keyDown
+            eventName: "s"
         )
     }
 }

@@ -150,6 +150,61 @@ final class OverlayClockTimerUITests: XCTestCase {
     }
 
     @MainActor
+    func testInputLoggingPanelAccessibilityStatesAndDarkAppearanceSmoke() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launchEnvironment["AppleInterfaceStyle"] = "Dark"
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        assertAccessibleButton(loggingToggle, label: "Show Input Event Log")
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+        XCTAssertTrue(
+            app.staticTexts["Capture Active"].exists
+                || app.staticTexts["Capture Unavailable"].exists
+                || app.staticTexts["Capture Inactive"].exists
+        )
+        XCTAssertTrue(
+            app.staticTexts["File Active"].exists
+                || app.staticTexts["File Unavailable"].exists
+                || app.staticTexts["File Inactive"].exists
+        )
+        XCTAssertTrue(app.staticTexts["0/15"].exists)
+    }
+
+    @MainActor
+    func testInputLoggingTableShowsOnlyTimeAndEventColumns() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.inputLoggingToggle"].click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        let table = app.outlines
+            .matching(NSPredicate(format: "label CONTAINS %@", "Input Event Table"))
+            .firstMatch
+        XCTAssertTrue(table.exists)
+        XCTAssertTrue(table.label.contains("Time"))
+        XCTAssertTrue(table.label.contains("Event"))
+        XCTAssertFalse(table.label.contains("Type"))
+        XCTAssertFalse(table.label.contains("Category"))
+        XCTAssertFalse(table.label.contains("Phase"))
+    }
+
+    @MainActor
     func testInputLoggingToggleIsLeftOfTimerModeSwitch() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
@@ -229,14 +284,49 @@ final class OverlayClockTimerUITests: XCTestCase {
 
         overlayWindow.click()
 
-        XCTAssertTrue(
-            app.descendants(matching: .any)["inputLogging.eventName.mouse-down"]
-                .waitForExistence(timeout: 2)
-        )
-        XCTAssertTrue(
-            app.descendants(matching: .any)["inputLogging.eventName.mouse-up"]
-                .waitForExistence(timeout: 2)
-        )
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.eventName.lm-down"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.eventName.lm-up"].waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testCompactMouseAndScrollRowsUseStableAccessibilityIdentifiers() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.inputLoggingToggle"].click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        let expectedIdentifiers = [
+            "inputLogging.eventName.lm-down",
+            "inputLogging.eventName.lm-up",
+            "inputLogging.eventName.rm-down",
+            "inputLogging.eventName.rm-up",
+            "inputLogging.eventName.3m-down",
+            "inputLogging.eventName.3m-up",
+            "inputLogging.eventName.4m-down",
+            "inputLogging.eventName.4m-up",
+            "inputLogging.eventName.5m-down",
+            "inputLogging.eventName.5m-up",
+            "inputLogging.eventName.sm-up",
+            "inputLogging.eventName.sm-down"
+        ]
+
+        for identifier in expectedIdentifiers {
+            XCTAssertTrue(
+                app.descendants(matching: .any)[identifier].waitForExistence(timeout: 2),
+                "Missing row identifier: \(identifier)"
+            )
+        }
     }
 
     @MainActor

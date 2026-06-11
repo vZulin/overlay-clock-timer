@@ -22,6 +22,8 @@ mode-specific timestamps, and per-panel-session log files."
   `<timestamp><TAB><event name>`. Mouse labels are `LM ↓`, `LM ↑`, `RM ↓`,
   `RM ↑`, `3M ↓`, `3M ↑`, and numbered additional-button labels such as
   `4M ↓`, `4M ↑`, `5M ↓`, `5M ↑`; scroll labels are `SM ↑` and `SM ↓`.
+- Q: How should upward/downward scroll direction be interpreted when macOS
+  natural scrolling is enabled? → A: By physical gesture direction.
 
 ## Constitutional Scope *(mandatory)*
 
@@ -177,7 +179,8 @@ occur after the panel closes.
 - A mouse has left, right, third, or additional buttons; down/up records
   distinguish the button with compact event names and do not store coordinates.
 - The user scrolls while the logging panel is open; scroll direction is recorded
-  as a compact event name and no scroll coordinates are stored.
+  from the physical gesture direction as a compact event name and no scroll
+  coordinates are stored.
 - The system clock changes while logging is open in Clock mode; subsequent
   Clock mode event timestamps reflect the updated system time.
 - The log directory or file cannot be created; the app keeps the panel usable,
@@ -253,8 +256,9 @@ occur after the panel closes.
 - **FR-025**: Each session log line MUST contain only the formatted timestamp, a
   single tab separator, and the event name. For example,
   `00:00:00.000\tCommand+C`, where `\t` denotes one tab character.
-- **FR-026**: Scroll logging MUST record upward and downward scroll input as
-  separate events with compact event names `SM ↑` and `SM ↓`.
+- **FR-026**: Scroll logging MUST record the user's physical upward or downward
+  scroll gesture as separate events with compact event names `SM ↑` and
+  `SM ↓`, independent of content movement or macOS natural scrolling settings.
 - **FR-027**: The expanded logging UI MUST preserve the overlay's always-on-top,
   titleless, draggable behavior, light/dark readability, icon accessibility
   labels, and tooltips.
@@ -292,7 +296,7 @@ occur after the panel closes.
   down/up event (`LM`, `RM`, `3M`, or numbered additional-button labels such as
   `4M` and `5M`).
 - **ScrollInputEvent**: A scroll record representing compact upward or downward
-  scroll direction events (`SM ↑` or `SM ↓`).
+  physical gesture direction events (`SM ↑` or `SM ↓`).
 - **LogSessionFile**: The local file created for one open-panel logging session.
 - **EventTimestampContext**: The mode-specific source used to format a record's
   timestamp as Clock time or Timer value.
@@ -320,8 +324,9 @@ occur after the panel closes.
 - **SC-007**: With event table preservation enabled, reopening the logging panel
   during the same app launch restores the previously visible rows in 10 out of
   10 trials without writing those rows into the new session log file.
-- **SC-008**: In 10 out of 10 scroll trials, upward and downward scroll actions
-  appear as `SM ↑` and `SM ↓`.
+- **SC-008**: In 10 out of 10 scroll trials, physical upward and downward scroll
+  gestures appear as `SM ↑` and `SM ↓`, regardless of macOS natural scrolling
+  settings.
 - **SC-009**: Clock mode and Timer mode timestamps match their required formats
   in 100% of automated timestamp-format test cases.
 - **SC-010**: Each session log line contains exactly one timestamp, one tab

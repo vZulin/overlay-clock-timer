@@ -12,9 +12,7 @@ final class InputEventNameFormatterTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(formatted.category, .keyboard)
-        XCTAssertEqual(formatted.name, "s")
-        XCTAssertEqual(formatted.phase, .keyDown)
+        XCTAssertEqual(formatted.eventName, "s")
     }
 
     func testRepeatCharacterKeyDownKeepsOneRecordShapeWithRepeatPhase() {
@@ -27,8 +25,7 @@ final class InputEventNameFormatterTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(formatted.name, "s")
-        XCTAssertEqual(formatted.phase, .repeatKeyDown)
+        XCTAssertEqual(formatted.eventName, "s")
     }
 
     func testNonCharacterKeyUsesKeyName() {
@@ -41,8 +38,7 @@ final class InputEventNameFormatterTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(formatted.name, "Escape")
-        XCTAssertEqual(formatted.phase, .keyDown)
+        XCTAssertEqual(formatted.eventName, "Escape")
     }
 
     func testModifierCombinationUsesCanonicalModifierOrder() {
@@ -55,8 +51,7 @@ final class InputEventNameFormatterTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(formatted.name, "Control+Option+Shift+Command+S")
-        XCTAssertEqual(formatted.phase, .keyDown)
+        XCTAssertEqual(formatted.eventName, "Control+Option+Shift+Command+S")
     }
 
     func testVisibleTextTakesPrecedenceOverModifierCombination() {
@@ -69,27 +64,38 @@ final class InputEventNameFormatterTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(formatted.name, "ß")
-        XCTAssertEqual(formatted.phase, .keyDown)
+        XCTAssertEqual(formatted.eventName, "ß")
     }
 
-    func testMouseDownUsesMouseCategoryAndMouseDownPhase() {
-        let formatted = InputEventNameFormatter().format(
-            mouse: MouseInputEvent(phase: .mouseDown)
-        )
+    func testCompactMouseButtonLabels() {
+        let cases: [(MouseInputEvent, String)] = [
+            (MouseInputEvent(button: .left, phase: .mouseDown), "LM ↓"),
+            (MouseInputEvent(button: .left, phase: .mouseUp), "LM ↑"),
+            (MouseInputEvent(button: .right, phase: .mouseDown), "RM ↓"),
+            (MouseInputEvent(button: .right, phase: .mouseUp), "RM ↑"),
+            (MouseInputEvent(button: .third, phase: .mouseDown), "3M ↓"),
+            (MouseInputEvent(button: .third, phase: .mouseUp), "3M ↑"),
+            (MouseInputEvent(button: .additional(4), phase: .mouseDown), "4M ↓"),
+            (MouseInputEvent(button: .additional(4), phase: .mouseUp), "4M ↑"),
+            (MouseInputEvent(button: .additional(5), phase: .mouseDown), "5M ↓"),
+            (MouseInputEvent(button: .additional(5), phase: .mouseUp), "5M ↑")
+        ]
 
-        XCTAssertEqual(formatted.category, .mouse)
-        XCTAssertEqual(formatted.name, "Mouse Down")
-        XCTAssertEqual(formatted.phase, .mouseDown)
+        for (event, expectedName) in cases {
+            XCTAssertEqual(InputEventNameFormatter().format(mouse: event).eventName, expectedName)
+        }
     }
 
-    func testMouseUpUsesMouseCategoryAndMouseUpPhase() {
-        let formatted = InputEventNameFormatter().format(
-            mouse: MouseInputEvent(phase: .mouseUp)
-        )
+    func testCompactScrollLabelsUsePhysicalGestureDirection() {
+        let formatter = InputEventNameFormatter()
 
-        XCTAssertEqual(formatted.category, .mouse)
-        XCTAssertEqual(formatted.name, "Mouse Up")
-        XCTAssertEqual(formatted.phase, .mouseUp)
+        XCTAssertEqual(
+            formatter.format(scroll: ScrollInputEvent(direction: .up)).eventName,
+            "SM ↑"
+        )
+        XCTAssertEqual(
+            formatter.format(scroll: ScrollInputEvent(direction: .down)).eventName,
+            "SM ↓"
+        )
     }
 }

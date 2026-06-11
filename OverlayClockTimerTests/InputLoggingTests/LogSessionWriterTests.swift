@@ -51,7 +51,13 @@ final class LogSessionWriterTests: XCTestCase {
         writer.close()
 
         let content = try String(contentsOf: session.url, encoding: .utf8)
-        XCTAssertEqual(content, "\(record().logLine)\n")
+        XCTAssertEqual(content, "12:34:56.789\ts\n")
+        XCTAssertFalse(content.contains("order="))
+        XCTAssertFalse(content.contains("timestamp="))
+        XCTAssertFalse(content.contains("category="))
+        XCTAssertFalse(content.contains("type="))
+        XCTAssertFalse(content.contains("name="))
+        XCTAssertFalse(content.contains("phase="))
     }
 
     func testClosePreventsAdditionalWrites() throws {
@@ -63,8 +69,7 @@ final class LogSessionWriterTests: XCTestCase {
 
         XCTAssertThrowsError(try writer.append(record(order: 2)))
         let content = try String(contentsOf: session.url, encoding: .utf8)
-        XCTAssertTrue(content.contains("order=1"))
-        XCTAssertFalse(content.contains("order=2"))
+        XCTAssertEqual(content, "12:34:56.789\ts\n")
         XCTAssertEqual(writer.currentSession?.status, .closed)
     }
 
@@ -91,9 +96,7 @@ final class LogSessionWriterTests: XCTestCase {
         InputEventRecord(
             captureOrder: InputEventCaptureOrder(order),
             timestamp: "12:34:56.789",
-            category: .keyboard,
-            name: "s",
-            phase: .keyDown
+            eventName: "s"
         )
     }
 

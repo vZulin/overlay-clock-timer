@@ -18,8 +18,9 @@ open. Rows are newest-first and show only two user-facing fields: `Time` and
 Keyboard events keep existing character and modifier-combination semantics.
 Mouse input is normalized into compact labels for left, right, third, and
 numbered additional buttons: `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
-and labels such as `4M ↓`, `4M ↑`, `5M ↓`, and `5M ↑`. Scroll direction is
-normalized as `SM ↑` and `SM ↓`. Internal capture order may still exist for
+and labels such as `4M ↓`, `4M ↑`, `5M ↓`, and `5M ↑`. Physical scroll gesture
+direction is normalized as `SM ↑` and `SM ↓`, independent of content movement or
+macOS natural scrolling settings. Internal capture order may still exist for
 stable sorting, but order, category/type, and phase are not displayed or written
 to session log files.
 
