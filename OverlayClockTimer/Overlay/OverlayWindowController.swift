@@ -65,22 +65,37 @@ final class OverlayWindowController: NSObject, NSWindowDelegate {
     }
 
     func apply(preferences: OverlayPreferences) {
+        apply(preferences: preferences, isLoggingPanelOpen: false)
+    }
+
+    func apply(preferences: OverlayPreferences, isLoggingPanelOpen: Bool) {
         defaultSize = preferences.windowSize
         guard let window else {
             return
         }
 
         window.minSize = OverlayPreferences.minimumWindowSize
-        window.maxSize = OverlayPreferences.maximumWindowSize
+        window.maxSize = isLoggingPanelOpen
+            ? OverlayMetrics.maximumExpandedSize
+            : OverlayPreferences.maximumWindowSize
 
-        guard window.frame.size != preferences.windowSize else {
+        let targetSize = targetWindowSize(
+            preferences: preferences,
+            isLoggingPanelOpen: isLoggingPanelOpen
+        )
+
+        guard window.frame.size != targetSize else {
             return
         }
 
         var frame = window.frame
-        frame.size = preferences.windowSize
+        let maxY = frame.maxY
+        frame.size = targetSize
+        frame.origin.y = maxY - targetSize.height
         window.setFrame(frame, display: true)
-        geometryStore.save(frame: frame)
+        if !isLoggingPanelOpen {
+            geometryStore.save(frame: frame)
+        }
     }
 
     func windowDidMove(_ notification: Notification) {
@@ -116,13 +131,30 @@ final class OverlayWindowController: NSObject, NSWindowDelegate {
         overlayWindow.hasShadow = true
         overlayWindow.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         overlayWindow.minSize = OverlayPreferences.minimumWindowSize
-        overlayWindow.maxSize = OverlayPreferences.maximumWindowSize
+        overlayWindow.maxSize = OverlayMetrics.maximumExpandedSize
         overlayWindow.isReleasedWhenClosed = false
         overlayWindow.contentView = contentView
         overlayWindow.delegate = self
 
         window = overlayWindow
         return overlayWindow
+    }
+
+    private func targetWindowSize(
+        preferences: OverlayPreferences,
+        isLoggingPanelOpen: Bool
+    ) -> CGSize {
+        guard isLoggingPanelOpen else {
+            return preferences.windowSize
+        }
+
+        return CGSize(
+            width: preferences.windowSize.width,
+            height: min(
+                preferences.windowSize.height + OverlayMetrics.inputLoggingExpandedHeightDelta,
+                OverlayMetrics.maximumExpandedSize.height
+            )
+        )
     }
 }
 

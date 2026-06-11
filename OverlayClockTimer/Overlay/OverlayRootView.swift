@@ -4,6 +4,7 @@ struct OverlayRootView: View {
     @ObservedObject var coordinator: AppCoordinator
     @ObservedObject var clockDisplayModel: ClockDisplayModel
     @ObservedObject var timerSessionStore: TimerSessionStore
+    @ObservedObject var inputEventStore: InputEventStore
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -22,21 +23,26 @@ struct OverlayRootView: View {
             OverlayToolbarView(
                 coordinator: coordinator,
                 timerSessionStore: timerSessionStore,
+                inputEventStore: inputEventStore,
                 tokens: tokens
             )
+            if inputEventStore.isPanelOpen {
+                InputEventTableView(store: inputEventStore, tokens: tokens)
+            }
         }
         .frame(
             minWidth: OverlayMetrics.minimumSize.width,
             idealWidth: preferences.windowSize.width,
             maxWidth: OverlayMetrics.maximumSize.width,
             minHeight: OverlayMetrics.minimumSize.height,
-            idealHeight: preferences.windowSize.height,
-            maxHeight: OverlayMetrics.maximumSize.height
+            idealHeight: idealHeight,
+            maxHeight: maximumHeight
         )
         .background(
             RoundedRectangle(cornerRadius: OverlayMetrics.cornerRadius, style: .continuous)
                 .fill(tokens.panelColor.opacity(preferences.backgroundOpacity))
         )
+        .animation(.easeInOut(duration: 0.16), value: inputEventStore.isPanelOpen)
         .preferredColorScheme(OverlayTheme.preferredColorScheme(for: preferences.theme))
     }
 
@@ -104,5 +110,21 @@ struct OverlayRootView: View {
 
     private var latestLoopFontSize: CGFloat {
         max(12, displayFontSize * 0.44)
+    }
+
+    private var idealHeight: CGFloat {
+        if inputEventStore.isPanelOpen {
+            return min(
+                preferences.windowSize.height + OverlayMetrics.inputLoggingExpandedHeightDelta,
+                OverlayMetrics.maximumExpandedSize.height
+            )
+        }
+        return preferences.windowSize.height
+    }
+
+    private var maximumHeight: CGFloat {
+        inputEventStore.isPanelOpen
+            ? OverlayMetrics.maximumExpandedSize.height
+            : OverlayMetrics.maximumSize.height
     }
 }

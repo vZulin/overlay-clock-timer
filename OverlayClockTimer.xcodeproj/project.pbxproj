@@ -64,6 +64,21 @@
 		00000000000000000000024E /* TimerAccuracyPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */; };
 		00000000000000000000024F /* PreferenceApplicationPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */; };
 		000000000000000000000250 /* OverlayTickerPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000150 /* OverlayTickerPerformanceTests.swift */; };
+		000000000000000000000251 /* EventTimestampProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000151 /* EventTimestampProvider.swift */; };
+		000000000000000000000252 /* InputEventNameFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000152 /* InputEventNameFormatter.swift */; };
+		000000000000000000000253 /* InputEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000153 /* InputEventObserver.swift */; };
+		000000000000000000000254 /* InputEventRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000154 /* InputEventRecord.swift */; };
+		000000000000000000000255 /* InputEventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000155 /* InputEventStore.swift */; };
+		000000000000000000000256 /* LogSessionWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000156 /* LogSessionWriter.swift */; };
+		000000000000000000000257 /* InputEventTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000157 /* InputEventTableView.swift */; };
+		000000000000000000000258 /* InputLoggingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000158 /* InputLoggingSettingsView.swift */; };
+		000000000000000000000259 /* EventTimestampProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000159 /* EventTimestampProviderTests.swift */; };
+		00000000000000000000025A /* InputEventNameFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015A /* InputEventNameFormatterTests.swift */; };
+		00000000000000000000025B /* InputEventObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015B /* InputEventObserverTests.swift */; };
+		00000000000000000000025C /* InputEventRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015C /* InputEventRecordTests.swift */; };
+		00000000000000000000025D /* InputEventStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015D /* InputEventStoreTests.swift */; };
+		00000000000000000000025E /* LogSessionWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015E /* LogSessionWriterTests.swift */; };
+		00000000000000000000025F /* InputLoggingPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015F /* InputLoggingPerformanceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +159,21 @@
 		00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAccuracyPerformanceTests.swift; sourceTree = "<group>"; };
 		00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceApplicationPerformanceTests.swift; sourceTree = "<group>"; };
 		000000000000000000000150 /* OverlayTickerPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayTickerPerformanceTests.swift; sourceTree = "<group>"; };
+		000000000000000000000151 /* EventTimestampProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTimestampProvider.swift; sourceTree = "<group>"; };
+		000000000000000000000152 /* InputEventNameFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventNameFormatter.swift; sourceTree = "<group>"; };
+		000000000000000000000153 /* InputEventObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventObserver.swift; sourceTree = "<group>"; };
+		000000000000000000000154 /* InputEventRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventRecord.swift; sourceTree = "<group>"; };
+		000000000000000000000155 /* InputEventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventStore.swift; sourceTree = "<group>"; };
+		000000000000000000000156 /* LogSessionWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSessionWriter.swift; sourceTree = "<group>"; };
+		000000000000000000000157 /* InputEventTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventTableView.swift; sourceTree = "<group>"; };
+		000000000000000000000158 /* InputLoggingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLoggingSettingsView.swift; sourceTree = "<group>"; };
+		000000000000000000000159 /* EventTimestampProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTimestampProviderTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015A /* InputEventNameFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventNameFormatterTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015B /* InputEventObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventObserverTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015C /* InputEventRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventRecordTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015D /* InputEventStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventStoreTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015E /* LogSessionWriterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSessionWriterTests.swift; sourceTree = "<group>"; };
+		00000000000000000000015F /* InputLoggingPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLoggingPerformanceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000005 /* App */,
+				00000000000000000000001D /* InputLogging */,
 				000000000000000000000006 /* Overlay */,
 				000000000000000000000007 /* Clock */,
 				000000000000000000000008 /* Timer */,
@@ -227,6 +258,7 @@
 				000000000000000000000111 /* DragRegionView.swift */,
 				000000000000000000000113 /* OverlayRootView.swift */,
 				000000000000000000000116 /* OverlayToolbarView.swift */,
+				000000000000000000000157 /* InputEventTableView.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -262,6 +294,7 @@
 				000000000000000000000133 /* HotkeySettingsView.swift */,
 				000000000000000000000134 /* StartupSettingsView.swift */,
 				000000000000000000000135 /* VisibilitySettingsView.swift */,
+				000000000000000000000158 /* InputLoggingSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -321,6 +354,7 @@
 				000000000000000000000019 /* TimerTests */,
 				00000000000000000000001A /* PreferencesTests */,
 				00000000000000000000001B /* OverlayTests */,
+				00000000000000000000001E /* InputLoggingTests */,
 				00000000000000000000001C /* PerformanceTests */,
 			);
 			path = OverlayClockTimerTests;
@@ -385,8 +419,35 @@
 				00000000000000000000014E /* TimerAccuracyPerformanceTests.swift */,
 				00000000000000000000014F /* PreferenceApplicationPerformanceTests.swift */,
 				000000000000000000000150 /* OverlayTickerPerformanceTests.swift */,
+				00000000000000000000015F /* InputLoggingPerformanceTests.swift */,
 			);
 			path = PerformanceTests;
+			sourceTree = "<group>";
+		};
+		00000000000000000000001D /* InputLogging */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000151 /* EventTimestampProvider.swift */,
+				000000000000000000000152 /* InputEventNameFormatter.swift */,
+				000000000000000000000153 /* InputEventObserver.swift */,
+				000000000000000000000154 /* InputEventRecord.swift */,
+				000000000000000000000155 /* InputEventStore.swift */,
+				000000000000000000000156 /* LogSessionWriter.swift */,
+			);
+			path = InputLogging;
+			sourceTree = "<group>";
+		};
+		00000000000000000000001E /* InputLoggingTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000159 /* EventTimestampProviderTests.swift */,
+				00000000000000000000015A /* InputEventNameFormatterTests.swift */,
+				00000000000000000000015B /* InputEventObserverTests.swift */,
+				00000000000000000000015C /* InputEventRecordTests.swift */,
+				00000000000000000000015D /* InputEventStoreTests.swift */,
+				00000000000000000000015E /* LogSessionWriterTests.swift */,
+			);
+			path = InputLoggingTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -543,12 +604,20 @@
 				000000000000000000000215 /* TimerSessionStore.swift in Sources */,
 				000000000000000000000216 /* OverlayToolbarView.swift in Sources */,
 				000000000000000000000217 /* ModeSwitchAction.swift in Sources */,
+				000000000000000000000251 /* EventTimestampProvider.swift in Sources */,
+				000000000000000000000252 /* InputEventNameFormatter.swift in Sources */,
+				000000000000000000000253 /* InputEventObserver.swift in Sources */,
+				000000000000000000000254 /* InputEventRecord.swift in Sources */,
+				000000000000000000000255 /* InputEventStore.swift in Sources */,
+				000000000000000000000256 /* LogSessionWriter.swift in Sources */,
+				000000000000000000000257 /* InputEventTableView.swift in Sources */,
 				000000000000000000000230 /* SettingsWindowView.swift in Sources */,
 				000000000000000000000231 /* AppearanceSettingsView.swift in Sources */,
 				000000000000000000000232 /* TimerSettingsView.swift in Sources */,
 				000000000000000000000233 /* HotkeySettingsView.swift in Sources */,
 				000000000000000000000234 /* StartupSettingsView.swift in Sources */,
 				000000000000000000000235 /* VisibilitySettingsView.swift in Sources */,
+				000000000000000000000258 /* InputLoggingSettingsView.swift in Sources */,
 				000000000000000000000236 /* LaunchAtLoginController.swift in Sources */,
 				000000000000000000000237 /* AppVisibilityController.swift in Sources */,
 				000000000000000000000238 /* HotkeyCommand.swift in Sources */,
@@ -582,6 +651,13 @@
 				00000000000000000000024E /* TimerAccuracyPerformanceTests.swift in Sources */,
 				00000000000000000000024F /* PreferenceApplicationPerformanceTests.swift in Sources */,
 				000000000000000000000250 /* OverlayTickerPerformanceTests.swift in Sources */,
+				000000000000000000000259 /* EventTimestampProviderTests.swift in Sources */,
+				00000000000000000000025A /* InputEventNameFormatterTests.swift in Sources */,
+				00000000000000000000025B /* InputEventObserverTests.swift in Sources */,
+				00000000000000000000025C /* InputEventRecordTests.swift in Sources */,
+				00000000000000000000025D /* InputEventStoreTests.swift in Sources */,
+				00000000000000000000025E /* LogSessionWriterTests.swift in Sources */,
+				00000000000000000000025F /* InputLoggingPerformanceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

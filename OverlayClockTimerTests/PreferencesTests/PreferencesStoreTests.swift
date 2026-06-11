@@ -25,6 +25,8 @@ final class PreferencesStoreTests: XCTestCase {
         XCTAssertEqual(store.preferences, OverlayPreferences.defaults)
         XCTAssertTrue(store.preferences.appVisibility.statusItemVisible)
         XCTAssertFalse(store.preferences.showDockIcon)
+        XCTAssertEqual(store.preferences.eventTableRowLimit, OverlayPreferences.defaultEventTableRowLimit)
+        XCTAssertFalse(store.preferences.preserveEventTableBetweenOpens)
     }
 
     func testClampsOutOfRangeAppearanceValues() {
@@ -112,5 +114,74 @@ final class PreferencesStoreTests: XCTestCase {
         XCTAssertEqual(reloaded.backgroundOpacity, OverlayPreferences.minimumBackgroundOpacity)
         XCTAssertEqual(reloaded.windowSize, OverlayPreferences.minimumWindowSize)
         XCTAssertEqual(reloaded.timerFontSize, OverlayPreferences.minimumTimerFontSize)
+    }
+
+    func testLoadsDefaultInputLoggingPreferences() {
+        let preferences = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+
+        XCTAssertEqual(preferences.eventTableRowLimit, 15)
+        XCTAssertFalse(preferences.preserveEventTableBetweenOpens)
+    }
+
+    func testClampsInputLoggingRowLimitFromPersistedValues() {
+        userDefaults.set(1, forKey: UserDefaultsPreferencesStore.Keys.eventTableRowLimit)
+
+        var preferences = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(preferences.eventTableRowLimit, OverlayPreferences.minimumEventTableRowLimit)
+
+        userDefaults.set(99, forKey: UserDefaultsPreferencesStore.Keys.eventTableRowLimit)
+
+        preferences = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(preferences.eventTableRowLimit, OverlayPreferences.maximumEventTableRowLimit)
+    }
+
+    func testPersistsInputLoggingPreferencesAcrossReload() {
+        let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
+        var preferences = store.preferences
+        preferences.eventTableRowLimit = 25
+        preferences.preserveEventTableBetweenOpens = true
+
+        store.save(preferences)
+
+        let reloaded = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(reloaded.eventTableRowLimit, 25)
+        XCTAssertTrue(reloaded.preserveEventTableBetweenOpens)
+    }
+
+    func testCorruptedInputLoggingPreferencesFallBackToSafeDefaults() {
+        userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.eventTableRowLimit)
+        userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.preserveEventTableBetweenOpens)
+
+        let preferences = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+
+        XCTAssertEqual(preferences.eventTableRowLimit, OverlayPreferences.defaultEventTableRowLimit)
+        XCTAssertEqual(
+            preferences.preserveEventTableBetweenOpens,
+            OverlayPreferences.defaults.preserveEventTableBetweenOpens
+        )
+    }
+
+    @MainActor
+    func testInputLoggingSettingsUpdatesCanApplyWhilePanelIsOpen() {
+        let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
+        let coordinator = AppCoordinator(
+            preferencesStore: store,
+            clockDisplayModel: ClockDisplayModel(ticker: DisplayTicker(maximumFramesPerSecond: 1)),
+            timerSessionStore: TimerSessionStore(ticker: DisplayTicker(maximumFramesPerSecond: 1))
+        )
+
+        coordinator.inputEventStore.openPanel()
+        coordinator.updatePreferences { preferences in
+            preferences.eventTableRowLimit = 22
+            preferences.preserveEventTableBetweenOpens = true
+        }
+
+        let reloaded = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
+        XCTAssertEqual(coordinator.preferences.eventTableRowLimit, 22)
+        XCTAssertTrue(coordinator.preferences.preserveEventTableBetweenOpens)
+        XCTAssertEqual(coordinator.inputEventStore.preferences.eventTableRowLimit, 22)
+        XCTAssertEqual(reloaded.eventTableRowLimit, 22)
+        XCTAssertTrue(reloaded.preserveEventTableBetweenOpens)
+        XCTAssertTrue(coordinator.inputEventStore.isPanelOpen)
     }
 }

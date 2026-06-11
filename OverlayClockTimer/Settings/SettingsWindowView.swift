@@ -28,6 +28,8 @@ struct SettingsWindowView: View {
             AppearanceSettingsView(coordinator: coordinator)
         case .timer:
             TimerSettingsView(coordinator: coordinator)
+        case .inputLogging:
+            InputLoggingSettingsView(coordinator: coordinator)
         case .hotkeys:
             HotkeySettingsView(coordinator: coordinator)
         case .startup:
@@ -41,6 +43,7 @@ struct SettingsWindowView: View {
 private enum SettingsCategory: String, CaseIterable, Identifiable, Hashable {
     case appearance
     case timer
+    case inputLogging
     case hotkeys
     case startup
     case visibility
@@ -55,6 +58,8 @@ private enum SettingsCategory: String, CaseIterable, Identifiable, Hashable {
             return "Appearance"
         case .timer:
             return "Timer"
+        case .inputLogging:
+            return "Input Logging"
         case .hotkeys:
             return "Hotkeys"
         case .startup:
@@ -70,6 +75,8 @@ private enum SettingsCategory: String, CaseIterable, Identifiable, Hashable {
             return "paintbrush"
         case .timer:
             return "timer"
+        case .inputLogging:
+            return "list.bullet.rectangle"
         case .hotkeys:
             return "keyboard"
         case .startup:

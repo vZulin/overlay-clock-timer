@@ -119,6 +119,265 @@ final class OverlayClockTimerUITests: XCTestCase {
     }
 
     @MainActor
+    func testInputLoggingToggleOpensClosesPanelAndPreservesModeSwitch() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        let modeSwitch = app.buttons["clock.switchMode"]
+        XCTAssertTrue(loggingToggle.exists)
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertLessThan(loggingToggle.frame.maxX, modeSwitch.frame.minX)
+
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+        let eventTable = app.outlines["inputLogging.eventTable"]
+        XCTAssertGreaterThanOrEqual(
+            eventTable.frame.height,
+            400
+        )
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertTrue(modeSwitch.isEnabled)
+
+        loggingToggle.click()
+        XCTAssertFalse(panel.waitForExistence(timeout: 1))
+
+        loggingToggle.click()
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+    }
+
+    @MainActor
+    func testInputLoggingPanelAccessibilityStatesAndDarkAppearanceSmoke() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launchEnvironment["AppleInterfaceStyle"] = "Dark"
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        assertAccessibleButton(loggingToggle, label: "Show Input Event Log")
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.emptyState"].exists)
+        XCTAssertTrue(
+            app.staticTexts["Capture Active"].exists
+                || app.staticTexts["Capture Unavailable"].exists
+                || app.staticTexts["Capture Inactive"].exists
+        )
+        XCTAssertTrue(
+            app.staticTexts["File Active"].exists
+                || app.staticTexts["File Unavailable"].exists
+                || app.staticTexts["File Inactive"].exists
+        )
+        XCTAssertTrue(app.staticTexts["0/15"].exists)
+    }
+
+    @MainActor
+    func testInputLoggingTableShowsOnlyTimeAndEventColumns() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.inputLoggingToggle"].click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        let table = app.outlines
+            .matching(NSPredicate(format: "label CONTAINS %@", "Input Event Table"))
+            .firstMatch
+        XCTAssertTrue(table.exists)
+        XCTAssertTrue(table.label.contains("Time"))
+        XCTAssertTrue(table.label.contains("Event"))
+        XCTAssertFalse(table.label.contains("Type"))
+        XCTAssertFalse(table.label.contains("Category"))
+        XCTAssertFalse(table.label.contains("Phase"))
+    }
+
+    @MainActor
+    func testInputLoggingToggleIsLeftOfTimerModeSwitch() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.switchMode"].click()
+
+        let loggingToggle = app.buttons["timer.inputLoggingToggle"]
+        let modeSwitch = app.buttons["timer.switchMode"]
+        XCTAssertTrue(loggingToggle.waitForExistence(timeout: 2))
+        XCTAssertTrue(modeSwitch.exists)
+        XCTAssertLessThan(loggingToggle.frame.maxX, modeSwitch.frame.minX)
+    }
+
+    @MainActor
+    func testKeyboardLoggingRecordsRowsAndStopsOnClose() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        overlayWindow.click()
+        overlayWindow.typeKey("s", modifierFlags: [])
+
+        XCTAssertTrue(
+            app.descendants(matching: .any)["inputLogging.eventName.s"]
+                .waitForExistence(timeout: 2)
+        )
+
+        loggingToggle.click()
+        XCTAssertFalse(panel.waitForExistence(timeout: 1))
+    }
+
+    @MainActor
+    func testMouseLoggingRowsAndFileState() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        let fileActive = app.staticTexts["File Active"]
+        let fileUnavailable = app.staticTexts["File Unavailable"]
+        guard fileActive.exists else {
+            XCTFail(
+                fileUnavailable.exists
+                    ? "File recording is unavailable; this test cannot verify persisted mouse events."
+                    : "File recording did not become active."
+            )
+            return
+        }
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        overlayWindow.click()
+
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.eventName.lm-down"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["inputLogging.eventName.lm-up"].waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testCompactMouseAndScrollRowsUseStableAccessibilityIdentifiers() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        app.buttons["clock.inputLoggingToggle"].click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        guard requireCaptureActive(app) else {
+            return
+        }
+
+        let expectedIdentifiers = [
+            "inputLogging.eventName.lm-down",
+            "inputLogging.eventName.lm-up",
+            "inputLogging.eventName.rm-down",
+            "inputLogging.eventName.rm-up",
+            "inputLogging.eventName.3m-down",
+            "inputLogging.eventName.3m-up",
+            "inputLogging.eventName.4m-down",
+            "inputLogging.eventName.4m-up",
+            "inputLogging.eventName.5m-down",
+            "inputLogging.eventName.5m-up",
+            "inputLogging.eventName.sm-up",
+            "inputLogging.eventName.sm-down"
+        ]
+
+        for identifier in expectedIdentifiers {
+            XCTAssertTrue(
+                app.descendants(matching: .any)[identifier].waitForExistence(timeout: 2),
+                "Missing row identifier: \(identifier)"
+            )
+        }
+    }
+
+    @MainActor
+    func testInputLoggingRowsAppearBeforeDelayedFileWritingCanBlockVisibility() {
+        let app = XCUIApplication()
+        app.launchArguments = inputCaptureTestLaunchArguments()
+            + ["--delayed-input-event-log-writing"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        let row = app.descendants(matching: .any)["inputLogging.eventName.s"]
+        let enforceStrictDisplayRefreshTarget =
+            ProcessInfo.processInfo.environment["OVERLAY_CLOCK_TIMER_STRICT_UI_REFRESH_SLA"] == "1"
+        var rowAppearanceDurations: [TimeInterval] = []
+
+        for trial in 1...10 {
+            loggingToggle.click()
+            XCTAssertTrue(panel.waitForExistence(timeout: 2), "Panel did not open in trial \(trial).")
+            guard requireCaptureActive(app) else {
+                return
+            }
+
+            let startedAt = Date()
+            XCTAssertTrue(
+                row.waitForExistence(timeout: 0.5),
+                "Input row did not appear before the delayed file writer could block visibility in trial \(trial)."
+            )
+            let elapsed = Date().timeIntervalSince(startedAt)
+            rowAppearanceDurations.append(elapsed)
+
+            if enforceStrictDisplayRefreshTarget {
+                XCTAssertLessThanOrEqual(elapsed, 0.016, "Trial \(trial) exceeded the display-refresh target.")
+            }
+
+            loggingToggle.click()
+            XCTAssertFalse(panel.waitForExistence(timeout: 1), "Panel did not close in trial \(trial).")
+        }
+
+        XCTAssertEqual(rowAppearanceDurations.count, 10)
+    }
+
+    @MainActor
     func testSettingsWindowOpensSeparatelyWithoutHidingOverlay() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
@@ -146,6 +405,7 @@ final class OverlayClockTimerUITests: XCTestCase {
 
         assertAccessibleButton(app.buttons["clock.settings"], label: "Settings")
         assertAccessibleButton(app.buttons["clock.hideOverlay"], label: "Hide Overlay")
+        assertAccessibleButton(app.buttons["clock.inputLoggingToggle"], label: "Show Input Event Log")
         assertAccessibleButton(app.buttons["clock.switchMode"], label: "Switch to Timer Mode")
 
         app.buttons["clock.switchMode"].click()
@@ -191,4 +451,34 @@ final class OverlayClockTimerUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(button.frame.width, 32, file: file, line: line)
         XCTAssertGreaterThanOrEqual(button.frame.height, 32, file: file, line: line)
     }
+
+    private func inputCaptureTestLaunchArguments() -> [String] {
+        var arguments = ["--ui-testing", "--show-overlay-on-launch"]
+        if ProcessInfo.processInfo.environment["OVERLAY_CLOCK_TIMER_REAL_INPUT_CAPTURE_TESTS"] != "1" {
+            arguments.append("--mock-input-event-capture")
+        }
+        return arguments
+    }
+
+    @MainActor
+    private func requireCaptureActive(
+        _ app: XCUIApplication,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> Bool {
+        let captureActive = app.staticTexts["Capture Active"]
+        let captureUnavailable = app.staticTexts["Capture Unavailable"]
+        guard captureActive.exists else {
+            XCTFail(
+                captureUnavailable.exists
+                ? "Capture is unavailable; grant Input Monitoring/Accessibility permission before running real capture UI tests."
+                : "Capture did not become active.",
+                file: file,
+                line: line
+            )
+            return false
+        }
+        return true
+    }
+
 }

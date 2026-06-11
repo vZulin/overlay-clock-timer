@@ -3,6 +3,7 @@ import SwiftUI
 struct OverlayToolbarView: View {
     @ObservedObject var coordinator: AppCoordinator
     @ObservedObject var timerSessionStore: TimerSessionStore
+    @ObservedObject var inputEventStore: InputEventStore
 
     let tokens: OverlayThemeTokens
 
@@ -38,6 +39,7 @@ struct OverlayToolbarView: View {
 
             Spacer(minLength: 16)
 
+            inputLoggingButton(identifier: "clock.inputLoggingToggle")
             modeSwitchButton(identifier: "clock.switchMode")
         }
     }
@@ -77,7 +79,19 @@ struct OverlayToolbarView: View {
 
             Spacer(minLength: 16)
 
+            inputLoggingButton(identifier: "timer.inputLoggingToggle")
             modeSwitchButton(identifier: "timer.switchMode")
+        }
+    }
+
+    private func inputLoggingButton(identifier: String) -> some View {
+        toolbarButton(
+            systemName: inputEventStore.isPanelOpen ? "list.bullet.rectangle.fill" : "list.bullet.rectangle",
+            label: inputEventStore.isPanelOpen ? "Hide Input Event Log" : "Show Input Event Log",
+            identifier: identifier,
+            isActive: inputEventStore.isPanelOpen
+        ) {
+            coordinator.toggleInputEventLoggingPanel()
         }
     }
 
@@ -99,6 +113,7 @@ struct OverlayToolbarView: View {
         label: String,
         identifier: String,
         isEnabled: Bool = true,
+        isActive: Bool = false,
         isModeSwitch: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
@@ -109,12 +124,14 @@ struct OverlayToolbarView: View {
         }
         .buttonStyle(
             SymbolButtonStyle(
-                backgroundColor: isModeSwitch ? tokens.primaryTextColor.opacity(0.16) : tokens.controlColor,
+                backgroundColor: isModeSwitch || isActive
+                    ? tokens.primaryTextColor.opacity(0.16)
+                    : tokens.controlColor,
                 buttonSize: OverlayMetrics.controlButtonSize
             )
         )
         .overlay {
-            if isModeSwitch {
+            if isModeSwitch || isActive {
                 RoundedRectangle(cornerRadius: OverlayMetrics.controlCornerRadius)
                     .stroke(tokens.secondaryTextColor.opacity(0.46), lineWidth: 1)
             }
