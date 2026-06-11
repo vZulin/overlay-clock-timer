@@ -87,3 +87,15 @@
 - Output marker: `** TEST SUCCEEDED **`
 - Result bundle: `/Users/Vladimir.Zulin/Library/Developer/Xcode/DerivedData/OverlayClockTimer-axoodzlmxznwhobrfzhbcxdvgyeo/Logs/Test/Test-OverlayClockTimer-2026.06.11_18-31-49-+0200.xcresult`
 - Scope: Final Phase 6 checkpoint after compact event labels, physical scroll gesture labels, two-column table output, minimal session log lines, and full unit/UI regression coverage.
+
+## Required Follow-Up: Visible Table Refresh SLA
+
+- Command: `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'`
+- Required before implementation is considered complete.
+- Scope: Add a performance or UI-level regression check proving that captured
+  events are inserted into the in-memory table model immediately and the newest
+  row becomes visible by the next display refresh, targeting `<=16 ms` on a
+  normally loaded 60 Hz display.
+- The check must fail when the timestamp is correct but the visible table update
+  is delayed by a timer tick, file write, debounce interval, or explicit batch
+  refresh.

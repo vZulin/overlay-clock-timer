@@ -9,7 +9,7 @@ active logging session.
 
 - `isOpen`: Boolean indicating whether the panel is expanded.
 - `activeSession`: Optional `LogSessionFile` for the current open-panel session.
-- `fileRecordingStatus`: `available`, `unavailable(reason)`, or `inactive`.
+- `fileRecordingStatus`: `active`, `unavailable(reason)`, or `inactive`.
 - `captureStatus`: `inactive`, `active`, or `unavailable(reason)`.
 - `visibleRows`: Newest-first list of `InputEventRecord`.
 - `preservedRows`: In-memory newest-first list retained only when preservation is
@@ -22,6 +22,10 @@ active logging session.
 - `activeSession` is present only while `isOpen` is true and file creation
   succeeded.
 - Closing the panel sets `captureStatus` to `inactive` and ends `activeSession`.
+- New captured records must be inserted into `visibleRows` before asynchronous
+  file append work starts.
+- Visible row changes must be published immediately and must not be delayed by
+  debounce, timer batching, or disk I/O.
 
 ### State Transitions
 
@@ -76,6 +80,7 @@ event.
   clipboard content, coordinates, or process metadata.
 - Visible table rows expose only `timestamp` and `eventName`.
 - Session log lines expose only `timestamp`, a tab separator, and `eventName`.
+- The `timestamp` records event time, not the later display refresh time.
 
 ## Entity: KeyboardInputEvent
 

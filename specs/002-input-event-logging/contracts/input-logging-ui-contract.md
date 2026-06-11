@@ -44,6 +44,11 @@ toggle, expanded event table, table row lifecycle, and accessibility.
 - Preserved rows clear when the app quits.
 - Preserved rows are visible UI history only and are not written into a new
   session log file.
+- Captured events must be inserted into the in-memory table model immediately.
+- The newest captured row should be rendered by the next display refresh,
+  targeting `<=16 ms` on a normally loaded 60 Hz display.
+- Table updates must not wait for session file writes, debounce intervals, or
+  timer-based batch refreshes.
 
 ## Event Name Contract
 
@@ -75,6 +80,8 @@ toggle, expanded event table, table row lifecycle, and accessibility.
 - Clock mode rows use current system time in `HH:MM:SS.mmm`.
 - Timer mode rows use the current visible timer value.
 - Timer idle/reset rows use `00:00:00.000`.
+- Timestamp text represents the captured event time, not the later table render
+  time.
 - Timestamp text must remain readable in light and dark appearance.
 
 ## Accessibility and Visual Contract

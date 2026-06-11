@@ -24,6 +24,10 @@ mode-specific timestamps, and per-panel-session log files."
   `4M ↓`, `4M ↑`, `5M ↓`, `5M ↑`; scroll labels are `SM ↑` and `SM ↓`.
 - Q: How should upward/downward scroll direction be interpreted when macOS
   natural scrolling is enabled? → A: By physical gesture direction.
+- Q: How quickly must a captured event become visible in the table? → A:
+  Insert into the in-memory model immediately and render in the visible table by
+  the next display refresh, targeting ≤16 ms under normal 60 Hz display
+  conditions.
 
 ## Constitutional Scope *(mandatory)*
 
@@ -66,7 +70,8 @@ settings and verify the table starts empty.
    captured or written for that session.
 3. **Given** the logging panel is open, **When** new input events arrive, **Then**
    the newest event is always shown as the first row and the visible row count
-   does not exceed the configured event table row limit.
+   does not exceed the configured event table row limit, with the visible row
+   update committed by the next display refresh.
 4. **Given** the logging panel is open, **When** the user switches between Clock
    and Timer, **Then** the logging control remains left of the Clock/Timer
    switch and the table remains usable.
@@ -275,10 +280,18 @@ occur after the panel closes.
   trimming at default, minimum, and maximum row limits, keyboard repeats,
   keyboard combinations, mouse-button-specific down/up records, scroll
   direction records, Clock timestamps, Timer timestamps, two-column table
-  display, tab-separated log output, file-session creation, and the
+  display, tab-separated log output, visible-row refresh SLA,
+  timestamp-not-render-time behavior, file-session creation, and the
   no-logging-while-closed invariant.
 - **FR-032**: Expected automated test results MUST NOT be changed to match
   incorrect app behavior.
+- **FR-033**: Captured events MUST be inserted into the in-memory event table
+  model before asynchronous file writes and MUST request a visible table update
+  immediately, so the new row is rendered by the next display refresh under
+  normal system scheduling.
+- **FR-034**: Closing the logging panel MUST prevent any pending asynchronous
+  log append work from writing records after close; only records successfully
+  accepted for the active open session before close may be written.
 
 ### Key Entities
 
@@ -333,6 +346,10 @@ occur after the panel closes.
   separator, and one event name, with no order, category/type, or phase fields.
 - **SC-011**: Automated tests cover every user story and pass after the feature
   is implemented.
+- **SC-012**: In 10 out of 10 visible-capture trials on a normally loaded 60 Hz
+  display, a captured event row becomes visible within 16 ms of the in-memory
+  record insertion, while the displayed timestamp remains the captured event
+  time.
 
 ## Assumptions
 

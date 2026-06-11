@@ -162,7 +162,31 @@ phase.
 - [X] T068 [US3] Update UI test accessibility identifiers and assertions for compact mouse-button and scroll event names in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
 - [X] T069 Run post-format-revision `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md` after T055-T068 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 - [X] T070 Run post-format-revision `xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T069 and record the build checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
-- [X] T071 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T070 and record the final checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [X] T071 Run format-revision final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T055-T070 and record the Phase 6 checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+
+---
+
+## Phase 7: Visible Table Refresh SLA Revision
+
+**Purpose**: Bring the completed implementation into alignment with FR-033 and SC-012: captured events update the in-memory table model immediately, render by the next display refresh, and do not wait for file writes, debounce intervals, timer ticks, or batch refreshes.
+
+**Clarified Scope Note**: The timestamp remains the captured event time. The new work is about when the row becomes visible, not about changing timestamp formatting.
+
+### Tests for Visible Table Refresh SLA (MANDATORY)
+
+- [ ] T072 [P] [US1] Add a store regression test proving `visibleRows` is updated before a deliberately delayed `LogSessionWriting.append(_:)` completes and before file status changes in `OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift`
+- [ ] T073 [P] [US1] Add SC-012 performance coverage that runs 10 mock visible-capture trials and measures event injection to published newest `visibleRows` entry within `<=16 ms`, while preserving the captured timestamp, in `OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift`
+- [ ] T074 [P] [US1] Add UI automation with mock input capture that measures event injection to row existence in 10 trials, verifies the row appears within the display-refresh target where UI automation timing is stable, and proves delayed file writing cannot block row visibility in `OverlayClockTimerUITests/OverlayClockTimerUITests.swift`
+
+### Implementation for Visible Table Refresh SLA
+
+- [ ] T075 [US1] Refactor `InputEventStore` so `recordKeyboardEvent(_:timestamp:)`, `recordMouseEvent(_:timestamp:)`, and `recordScrollEvent(_:timestamp:)` mutate and publish `visibleRows` before scheduling any session log append in `OverlayClockTimer/InputLogging/InputEventStore.swift`
+- [ ] T076 [US1] Move session log append work off the visible-row update path while preserving append failure reporting, session scoping, and close semantics that prevent pending writes from writing to a closed session in `OverlayClockTimer/InputLogging/InputEventStore.swift` and `OverlayClockTimer/InputLogging/LogSessionWriter.swift`
+- [ ] T077 [US1] Verify `InputEventTableView` reads directly from `InputEventStore.visibleRows` without debounce, timer batching, or a secondary cached row source in `OverlayClockTimer/Overlay/InputEventTableView.swift`
+- [ ] T078 [US1] Add or update mock launch/test wiring for delayed file writing used by the SLA UI test in `OverlayClockTimer/App/OverlayClockTimerApp.swift` and `OverlayClockTimer/App/AppCoordinator.swift`
+- [ ] T079 Update manual validation and checkpoint notes for the visible table refresh SLA in `specs/002-input-event-logging/quickstart.md` and `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [ ] T080 Run `git diff --check -- OverlayClockTimer OverlayClockTimerTests OverlayClockTimerUITests OverlayClockTimer.xcodeproj specs/002-input-event-logging/tasks.md specs/002-input-event-logging/quickstart.md specs/002-input-event-logging/contracts/test-checkpoints.md` after T072-T079 and record the whitespace checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
+- [ ] T081 Run final `xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'` after T072-T080 and record the visible-refresh SLA checkpoint in `specs/002-input-event-logging/contracts/test-checkpoints.md`
 
 ---
 
@@ -175,11 +199,12 @@ phase.
 - **User Story 1 (Phase 3)**: Depends on Foundation; MVP scope.
 - **User Story 2 (Phase 4)**: Depends on Foundation and uses US1 panel/store integration.
 - **User Story 3 (Phase 5)**: Depends on Foundation and uses US1 panel/store integration; can share observer work with US2 if implemented in parallel.
-- **Clarified Format Revision & Polish (Phase 6)**: Depends on selected user stories being complete and must run before the final checkpoint because the feature specification changed the public table/log format after the initial US3 implementation.
+- **Clarified Format Revision & Polish (Phase 6)**: Depends on selected user stories being complete and must run before the format-revision checkpoint because the feature specification changed the public table/log format after the initial US3 implementation.
+- **Visible Table Refresh SLA Revision (Phase 7)**: Depends on Phase 6 and must run before final completion because the feature specification now requires immediate in-memory insertion and visible rendering by the next display refresh.
 
 ### User Story Dependencies
 
-- **US1 (P1)**: Required first for the visible panel, settings, row storage, and open/close lifecycle.
+- **US1 (P1)**: Required first for the visible panel, settings, row storage, open/close lifecycle, and final visible-refresh SLA tasks T072-T081.
 - **US2 (P2)**: Requires the US1 store/panel lifecycle to display and persist keyboard rows.
 - **US3 (P3)**: Requires the US1 store/panel lifecycle and foundational file writer; the initial mouse/session behavior is complete, but final US3 acceptance now depends on T056-T064, T066, and T068 for compact mouse-button labels, scroll labels, and tab-separated log output.
 
@@ -208,6 +233,10 @@ phase.
 - T065 can run after T055; T064 can run after T059; T066 can run after T062-T063.
 - T067 and T068 can run after T065-T066.
 - T069, T070, and T071 must run sequentially after T055-T068 are complete.
+- T072, T073, and T074 can run in parallel because they target different test files.
+- T075 and T076 must run after T072-T073 fail for the intended reason.
+- T077 and T078 can run after T074 fails for the intended reason.
+- T079, T080, and T081 must run sequentially after T075-T078 are complete.
 
 ## Parallel Example: User Story 1
 
@@ -246,6 +275,14 @@ Task: "T058 [US3] Add observer lifecycle tests for mouse buttons and scroll in O
 Task: "T059 [US3] Add tab-separated log line tests in OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift and OverlayClockTimerTests/InputLoggingTests/LogSessionWriterTests.swift"
 ```
 
+## Parallel Example: Visible Table Refresh SLA
+
+```bash
+Task: "T072 [US1] Add store regression for UI-first visibleRows publication in OverlayClockTimerTests/InputLoggingTests/InputEventStoreTests.swift"
+Task: "T073 [US1] Add SC-012 performance coverage in OverlayClockTimerTests/PerformanceTests/InputLoggingPerformanceTests.swift"
+Task: "T074 [US1] Add delayed-file UI automation in OverlayClockTimerUITests/OverlayClockTimerUITests.swift"
+```
+
 ---
 
 ## Implementation Strategy
@@ -265,7 +302,9 @@ Task: "T059 [US3] Add tab-separated log line tests in OverlayClockTimerTests/Inp
 4. US3: mouse capture and session file integration.
 5. Clarified format revision: two-column table, compact mouse-button labels,
    scroll labels, and tab-separated log output.
-6. Polish: privacy, accessibility, performance, quickstart, and final build/test.
+6. Visible table refresh SLA revision: UI-first row publication, delayed-file
+   regression coverage, and final visible-refresh checkpoint.
+7. Polish: privacy, accessibility, performance, quickstart, and final build/test.
 
 ### Privacy Guardrails
 

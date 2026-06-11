@@ -118,6 +118,27 @@
 - [x] CHK072 Are historical Phase 5 checkpoint statements clearly separated from the final post-format-revision acceptance state? [Ambiguity, Tasks Phase 5, Tasks Phase 6]
 - [x] CHK073 Are final whitespace, build, and test checkpoint tasks defined after all post-format-revision tasks rather than before them? [Consistency, Tasks T069..T071]
 
+## Visible Table Refresh SLA Requirements
+
+- [ ] CHK074 Is the visible-row refresh SLA defined with both model insertion timing and visible table timing boundaries? [Clarity, Spec FR-033, Spec SC-012]
+- [ ] CHK075 Is the `<=16 ms` target scoped clearly enough to normal 60 Hz display conditions without implying impossible same-millisecond pixel commits? [Measurability, Spec Clarifications, Spec SC-012]
+- [ ] CHK076 Are timestamp requirements explicit that displayed row time is the captured event time rather than the later table render time? [Clarity, Spec FR-031, Spec SC-012]
+- [ ] CHK077 Are file-writing independence requirements complete enough to state that visible-row publication must not wait for disk I/O, debounce intervals, timer ticks, or batch refreshes? [Completeness, Spec FR-033, Plan Design Notes]
+- [ ] CHK078 Are UI-level and model-level latency requirements separated clearly enough to avoid treating in-memory publication as full visible-render evidence? [Ambiguity, Spec SC-012, Tasks T073..T074]
+
+## Async Session Close Semantics
+
+- [ ] CHK079 Are pending asynchronous log append semantics fully specified for panel close, including which accepted records may still be written and which writes must be prevented? [Completeness, Spec FR-034]
+- [ ] CHK080 Are close-session requirements consistent across immediate capture stop, file-write stop, pending async append handling, and no-logging-while-closed invariants? [Consistency, Spec FR-005, Spec FR-017, Spec FR-028, Spec FR-034]
+- [ ] CHK081 Are recovery requirements defined for asynchronous append failure after the visible row has already been published? [Coverage, Spec FR-029, Spec FR-033, Spec FR-034]
+- [ ] CHK082 Is the term "accepted for the active open session" defined clearly enough to avoid ambiguity between event capture, visible row insertion, and durable file append? [Ambiguity, Spec FR-034, Plan Design Notes]
+
+## Phase 7 Task Alignment Quality
+
+- [ ] CHK083 Are Phase 7 test tasks stated before production-change tasks and aligned to the test-first gate for changed performance behavior? [Consistency, Constitution IV, Tasks T072..T081]
+- [ ] CHK084 Are Phase 7 task descriptions traceable to FR-031, FR-033, FR-034, and SC-012 without leaving the visible refresh SLA only in narrative plan text? [Traceability, Spec FR-031, Spec FR-033, Spec FR-034, Spec SC-012, Tasks T072..T081]
+- [ ] CHK085 Are manual validation and checkpoint documentation tasks included for the visible refresh SLA without replacing automated coverage requirements? [Coverage, Quickstart, Tasks T079..T081]
+
 ## Notes
 
 - This checklist validates the written requirements, not the implementation.

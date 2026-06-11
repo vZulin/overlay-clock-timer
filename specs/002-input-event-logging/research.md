@@ -111,6 +111,29 @@ table.
 - Keep generic `Mouse Down` and `Mouse Up`: rejected because it loses button
   identity and fails the clarified requirement.
 
+## Decision: Publish Visible Table Rows Before File Writes
+
+Insert each captured event into the in-memory table model and publish the
+visible row change before starting asynchronous file append work for that event.
+The new row should render by the next display refresh, targeting `<=16 ms` on a
+normally loaded 60 Hz display.
+
+**Rationale**: The timestamp must remain the captured event time, but the user
+also needs the newest row to appear without waiting for disk I/O or another
+timer tick. Updating UI state first aligns with SwiftUI's render scheduling and
+keeps the performance target measurable without requiring impossible
+same-millisecond pixel commits.
+
+**Alternatives considered**:
+
+- Require exact same-millisecond visual rendering: rejected because AppKit and
+  SwiftUI commit pixels on display refresh boundaries, so this is not a stable
+  platform contract.
+- Append to the session file before updating the table: rejected because file
+  system latency can delay the visible row and does not improve user feedback.
+- Batch or debounce row updates: rejected because it would intentionally delay
+  the first visible row and fail the clarified refresh requirement.
+
 ## Decision: Reuse Existing Clock and Timer Display Sources for Timestamps
 
 Use the existing wall-clock formatter for Clock mode and the existing timer

@@ -92,14 +92,19 @@ rebuild/re-sign the app before launch.
    the panel is open.
 8. Generate physical scroll-up and scroll-down gestures while the panel is open.
 9. Confirm the event table shows only `Time` and `Event` columns.
-10. Confirm mouse rows use `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
+10. Confirm a newly captured row appears by the next display refresh under
+    normal load; on a 60 Hz display the target is `<=16 ms` from in-memory
+    record insertion to visible row rendering.
+11. Confirm the displayed timestamp remains the captured event time rather than
+    the later render time.
+12. Confirm mouse rows use `LM ↓`, `LM ↑`, `RM ↓`, `RM ↑`, `3M ↓`, `3M ↑`,
     and numbered additional-button labels such as `4M ↓`, `4M ↑`, `5M ↓`, and
     `5M ↑`.
-11. Confirm scroll rows use `SM ↑` and `SM ↓` based on physical gesture
+13. Confirm scroll rows use `SM ↑` and `SM ↓` based on physical gesture
     direction, independent of macOS natural scrolling settings.
-12. Close the panel and confirm no additional input is captured or written.
-13. Reopen the panel with default settings and confirm the table starts empty.
-14. Enable event table preservation in Settings, reopen the panel during the
+14. Close the panel and confirm no additional input is captured or written.
+15. Reopen the panel with default settings and confirm the table starts empty.
+16. Enable event table preservation in Settings, reopen the panel during the
     same app launch, and confirm visible rows restore without being copied into
     the new log file.
 
@@ -156,3 +161,7 @@ OverlayClockTimerUITests/
 xcodebuild build -scheme OverlayClockTimer -destination 'platform=macOS'
 xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 ```
+
+The final test suite must include a performance or UI-level check that fails if
+new rows are stored with correct timestamps but the visible table update is
+delayed beyond the display-refresh target.

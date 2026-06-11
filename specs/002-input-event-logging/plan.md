@@ -3,8 +3,10 @@
 **Branch**: `002-input-event-logging` | **Date**: 2026-06-11 | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/002-input-event-logging/spec.md`
 
-**Note**: This plan was updated after clarification changed the visible table and
-session log format to expose only `Time` and `Event`.
+**Note**: This plan was updated after clarification changed the visible table
+refresh requirement: captured events must enter the in-memory table model
+immediately and become visible by the next display refresh, targeting `<=16 ms`
+on a normally loaded 60 Hz display.
 
 ## Summary
 
@@ -24,6 +26,11 @@ macOS natural scrolling settings. Internal capture order may still exist for
 stable sorting, but order, category/type, and phase are not displayed or written
 to session log files.
 
+The event table update path must prioritize visible state before durable file
+writes. Each captured event is inserted into the in-memory table model
+synchronously on the UI update path, then file append work proceeds
+asynchronously so disk I/O cannot delay the newest visible row.
+
 ## Technical Context
 
 **Language/Version**: Swift 6 language mode with Xcode 26.x; use the Swift 6.3 compiler where available in the selected Xcode 26.x toolchain
@@ -32,8 +39,8 @@ to session log files.
 **Testing**: XCTest unit/integration tests, Xcode UI tests where practical, `xcodebuild test`
 **Target Platform**: macOS Tahoe 26.0+
 **Project Type**: Native macOS menu-bar app with floating overlay window
-**Performance Goals**: Panel open and empty table visible within 200 ms; input formatting and log append must not block overlay controls; no input observers while panel is closed; no busy-wait loops
-**Constraints**: Always-on-top compact overlay, custom drag region, light/dark theme support, local-only logs, no background input logging, no app/window/process/coordinate/clipboard/text-field/network metadata
+**Performance Goals**: Panel open and empty table visible within 200 ms; captured event row inserted into the in-memory table model immediately and visible by the next display refresh, targeting `<=16 ms` on a normally loaded 60 Hz display; input formatting and log append must not block overlay controls; no input observers while panel is closed; no busy-wait loops
+**Constraints**: Always-on-top compact overlay, custom drag region, light/dark theme support, local-only logs, no background input logging, no app/window/process/coordinate/clipboard/text-field/network metadata, no debouncing or batching that delays the first visible row update
 **Scale/Scope**: Single-user local desktop utility; visible row limit defaults to 15 and clamps to 5...50; session log line count is unbounded by the visible row limit
 
 ## Constitution Check
@@ -48,10 +55,12 @@ to session log files.
 - Overlay/menu-bar contract: PASS. The existing menu-bar status item and
   separate floating overlay remain intact; the logging panel expands downward
   from the overlay and collapses back to the compact Clock/Timer surface.
-- Dependency discipline: PASS. Apple-native event observation and file writing
-  cover the requirement; no dependency exception is needed.
+- Dependency discipline: PASS. Apple-native event observation, SwiftUI state
+  updates, and Foundation file writing cover the requirement; no dependency
+  exception is needed.
 - Theme and performance: PASS. The panel uses existing adaptive overlay styling,
-  scoped observers, no busy-wait loops, and measurable panel-open latency.
+  scoped observers, no busy-wait loops, measurable panel-open latency, and a
+  measurable visible-row update target.
 - Test-first gates: PASS. Unit, integration, and UI automation coverage are
   planned for every changed behavior, with `xcodebuild test` checkpoints.
 
@@ -119,6 +128,12 @@ No new target, package, or external module is required.
   fields.
 - `InputEventNameFormatter` owns canonical user-facing names for keyboard,
   mouse-button, and scroll events.
+- `InputEventStore` must mutate and publish `visibleRows` before starting any
+  asynchronous file append work for the same event.
+- Visible row publication must be main-actor safe and must not be delayed by
+  debounce, timer batching, file I/O, or observer cleanup.
+- Pending asynchronous log append work must be session-scoped and must not write
+  to a closed session after the logging panel closes.
 - `LogSessionWriter` writes exactly one line per event:
   `<timestamp><TAB><event name>\n`.
 - AppKit event observation is scoped to the logging panel open state and is
@@ -129,13 +144,15 @@ No new target, package, or external module is required.
 
 ## Phase 0: Research
 
-Research is complete in [research.md](./research.md). The format clarification
-adds two design decisions:
+Research is complete in [research.md](./research.md). Clarified design decisions
+include:
 
 - User-facing and file output use a minimal record projection: timestamp plus
   event name only.
 - Mouse buttons and scroll directions are normalized to compact event labels
   before rows are displayed or written.
+- Captured events update the in-memory table model first and defer disk append
+  work so file I/O cannot delay the visible newest row.
 
 No unresolved `NEEDS CLARIFICATION` items remain.
 
@@ -144,24 +161,31 @@ No unresolved `NEEDS CLARIFICATION` items remain.
 Design outputs updated by this planning pass:
 
 - [data-model.md](./data-model.md): revised `InputEventRecord`,
-  `MouseInputEvent`, and added scroll direction modeling.
+  `MouseInputEvent`, scroll direction modeling, and `LoggingPanelState` rules
+  for immediate visible-row publication.
 - [contracts/input-logging-ui-contract.md](./contracts/input-logging-ui-contract.md):
-  revised table columns and compact event naming expectations.
+  revised table columns, compact event naming expectations, visible-row refresh
+  SLA, and prohibited update batching that delays the first visible row.
 - [contracts/input-logging-file-contract.md](./contracts/input-logging-file-contract.md):
-  revised session line format to `<timestamp><TAB><event name>`.
-- [quickstart.md](./quickstart.md): revised manual checks and log-file examples.
+  revised session line format to `<timestamp><TAB><event name>` and keeps file
+  writes downstream from the UI model update.
+- [quickstart.md](./quickstart.md): revised manual checks, log-file examples,
+  and visible-refresh review steps.
 
 ## Post-Design Constitution Check
 
 - macOS-only scope: PASS.
 - Apple-native stack and dependency discipline: PASS.
 - Overlay/menu-bar contract: PASS.
-- Privacy and local-only logging: PASS. The new minimal log format removes
-  order, category/type, and phase from durable files.
-- Theme and performance: PASS.
+- Privacy and local-only logging: PASS. The minimal log format excludes order,
+  category/type, and phase from durable files.
+- Theme and performance: PASS. The table refresh path is bounded by display
+  scheduling and avoids busy-wait loops, fixed polling, and disk-before-UI
+  ordering.
 - Test-first gates: PASS. Existing tasks must be regenerated or updated before
-  implementation to cover compact mouse labels, scroll labels, two-column table
-  output, and tab-separated log lines.
+  implementation to cover the visible-row refresh SLA in addition to compact
+  mouse labels, scroll labels, two-column table output, and tab-separated log
+  lines.
 
 ## Complexity Tracking
 
