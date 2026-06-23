@@ -41,6 +41,79 @@ final class InputEventNameFormatterTests: XCTestCase {
         XCTAssertEqual(formatted.eventName, "Escape")
     }
 
+    func testKeyboardKeyNameUsesKeyCodeForFunctionKeys() {
+        let cases: [(UInt16, String?, String)] = [
+            (122, "\u{F704}", "F1"),
+            (120, "\u{F705}", "F2"),
+            (99, "\u{F706}", "F3"),
+            (118, "\u{F707}", "F4"),
+            (96, "\u{F708}", "F5"),
+            (97, "\u{F709}", "F6"),
+            (98, "\u{F70A}", "F7"),
+            (100, "\u{F70B}", "F8"),
+            (101, "\u{F70C}", "F9"),
+            (109, "\u{F70D}", "F10"),
+            (103, "\u{F70E}", "F11"),
+            (111, "\u{F70F}", "F12")
+        ]
+
+        for (keyCode, charactersIgnoringModifiers, expectedName) in cases {
+            XCTAssertEqual(
+                KeyboardKeyName.name(
+                    forKeyCode: keyCode,
+                    charactersIgnoringModifiers: charactersIgnoringModifiers
+                ),
+                expectedName
+            )
+        }
+    }
+
+    func testKeyboardKeyNameUsesKeyCodeForArrowKeysAndDeleteKeys() {
+        let cases: [(UInt16, String?, String)] = [
+            (126, "\u{F700}", "Up Arrow"),
+            (125, "\u{F701}", "Down Arrow"),
+            (123, "\u{F702}", "Left Arrow"),
+            (124, "\u{F703}", "Right Arrow"),
+            (51, "\u{7F}", "Backspace"),
+            (117, "\u{F728}", "Delete")
+        ]
+
+        for (keyCode, charactersIgnoringModifiers, expectedName) in cases {
+            XCTAssertEqual(
+                KeyboardKeyName.name(
+                    forKeyCode: keyCode,
+                    charactersIgnoringModifiers: charactersIgnoringModifiers
+                ),
+                expectedName
+            )
+        }
+    }
+
+    func testPrivateUseKeyboardCharactersFallBackToSpecialKeyNames() {
+        let cases: [(String, String, String)] = [
+            ("\u{F704}", "F1", "F1"),
+            ("\u{F70F}", "F12", "F12"),
+            ("\u{F700}", "Up Arrow", "Up Arrow"),
+            ("\u{F701}", "Down Arrow", "Down Arrow"),
+            ("\u{F702}", "Left Arrow", "Left Arrow"),
+            ("\u{F703}", "Right Arrow", "Right Arrow"),
+            ("\u{F728}", "Delete", "Delete")
+        ]
+
+        for (characters, key, expectedName) in cases {
+            let formatted = InputEventNameFormatter().format(
+                keyboard: KeyboardInputEvent(
+                    characters: characters,
+                    key: key,
+                    modifiers: [],
+                    isRepeat: false
+                )
+            )
+
+            XCTAssertEqual(formatted.eventName, expectedName)
+        }
+    }
+
     func testModifierCombinationUsesCanonicalModifierOrder() {
         let formatted = InputEventNameFormatter().format(
             keyboard: KeyboardInputEvent(

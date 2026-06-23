@@ -392,11 +392,15 @@ private extension Set where Element == InputEventModifier {
     }
 }
 
-private enum KeyboardKeyName {
+enum KeyboardKeyName {
     static func name(
         forKeyCode keyCode: UInt16,
         charactersIgnoringModifiers: String?
     ) -> String {
+        if let keyCodeName = keyCodeNames[keyCode] {
+            return keyCodeName
+        }
+
         if let specialName = specialName(for: charactersIgnoringModifiers) {
             return specialName
         }
@@ -408,7 +412,7 @@ private enum KeyboardKeyName {
             return charactersIgnoringModifiers.uppercased()
         }
 
-        return keyCodeNames[keyCode] ?? "Key \(keyCode)"
+        return "Key \(keyCode)"
     }
 
     private static func specialName(for characters: String?) -> String? {
@@ -432,8 +436,21 @@ private enum KeyboardKeyName {
         36: "Return",
         48: "Tab",
         49: "Space",
-        51: "Delete",
+        51: "Backspace",
         53: "Escape",
+        96: "F5",
+        97: "F6",
+        98: "F7",
+        99: "F3",
+        100: "F8",
+        101: "F9",
+        103: "F11",
+        109: "F10",
+        111: "F12",
+        117: "Delete",
+        118: "F4",
+        120: "F2",
+        122: "F1",
         123: "Left Arrow",
         124: "Right Arrow",
         125: "Down Arrow",

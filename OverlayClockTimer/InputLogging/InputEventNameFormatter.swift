@@ -130,16 +130,23 @@ struct InputEventNameFormatter {
             return "Space"
         }
 
-        let containsControlOrNewline = characters.unicodeScalars.contains { scalar in
+        let containsNonTextScalar = characters.unicodeScalars.contains { scalar in
             CharacterSet.controlCharacters.contains(scalar)
                 || CharacterSet.newlines.contains(scalar)
+                || isPrivateUseScalar(scalar)
         }
 
-        guard !containsControlOrNewline else {
+        guard !containsNonTextScalar else {
             return nil
         }
 
         return characters
+    }
+
+    private func isPrivateUseScalar(_ scalar: Unicode.Scalar) -> Bool {
+        (0xE000...0xF8FF).contains(scalar.value)
+            || (0xF0000...0xFFFFD).contains(scalar.value)
+            || (0x100000...0x10FFFD).contains(scalar.value)
     }
 
     private func normalizedKeyName(_ key: String) -> String {
