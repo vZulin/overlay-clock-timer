@@ -9,19 +9,27 @@ final class TimerSessionStore: ObservableObject {
     private let timeSource: MonotonicTimeSource
     private let formatter: DurationFormatter
     private let ticker: DisplayTicker
+    private var timeFormat: TimeFormatPreference
 
     init(
         session: TimerSession = TimerSession(),
         timeSource: MonotonicTimeSource = SystemMonotonicTimeSource(),
         formatter: DurationFormatter = DurationFormatter(),
+        timeFormat: TimeFormatPreference = TimeFormatPreference.defaultValue,
         ticker: DisplayTicker = DisplayTicker()
     ) {
         self.session = session
         self.timeSource = timeSource
         self.formatter = formatter
         self.ticker = ticker
-        self.elapsedDisplayText = formatter.string(from: session.elapsed(at: timeSource.now))
-        self.latestLoopDisplayText = session.latestLoop.map { formatter.string(from: $0.capturedElapsed) }
+        self.timeFormat = timeFormat
+        self.elapsedDisplayText = formatter.string(
+            from: session.elapsed(at: timeSource.now),
+            timeFormat: timeFormat
+        )
+        self.latestLoopDisplayText = session.latestLoop.map {
+            formatter.string(from: $0.capturedElapsed, timeFormat: timeFormat)
+        }
         updateTickerLifecycle()
     }
 
@@ -82,9 +90,26 @@ final class TimerSessionStore: ObservableObject {
         }
     }
 
+    func apply(timeFormat: TimeFormatPreference) {
+        self.timeFormat = timeFormat
+        refresh()
+    }
+
+    func elapsedTimestamp(timeFormat: TimeFormatPreference) -> String {
+        formatter.string(
+            from: session.elapsed(at: timeSource.now),
+            timeFormat: timeFormat
+        )
+    }
+
     func refresh() {
-        elapsedDisplayText = formatter.string(from: session.elapsed(at: timeSource.now))
-        latestLoopDisplayText = session.latestLoop.map { formatter.string(from: $0.capturedElapsed) }
+        elapsedDisplayText = formatter.string(
+            from: session.elapsed(at: timeSource.now),
+            timeFormat: timeFormat
+        )
+        latestLoopDisplayText = session.latestLoop.map {
+            formatter.string(from: $0.capturedElapsed, timeFormat: timeFormat)
+        }
     }
 
     private func updateTickerLifecycle() {

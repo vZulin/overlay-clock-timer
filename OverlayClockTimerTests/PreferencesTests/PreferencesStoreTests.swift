@@ -23,10 +23,22 @@ final class PreferencesStoreTests: XCTestCase {
         let store = UserDefaultsPreferencesStore(userDefaults: userDefaults)
 
         XCTAssertEqual(store.preferences, OverlayPreferences.defaults)
+        XCTAssertEqual(store.preferences.timeFormat, .standardMilliseconds)
         XCTAssertTrue(store.preferences.appVisibility.statusItemVisible)
         XCTAssertFalse(store.preferences.showDockIcon)
         XCTAssertEqual(store.preferences.eventTableRowLimit, OverlayPreferences.defaultEventTableRowLimit)
         XCTAssertFalse(store.preferences.preserveEventTableBetweenOpens)
+    }
+
+    func testTimeFormatPreferenceDefaultsToStandardMilliseconds() {
+        XCTAssertEqual(TimeFormatPreference.defaultValue, .standardMilliseconds)
+        XCTAssertEqual(TimeFormatPreference(storedValue: nil), .standardMilliseconds)
+    }
+
+    func testTimeFormatPreferenceValidatesStoredValues() {
+        XCTAssertEqual(TimeFormatPreference(storedValue: "standardMilliseconds"), .standardMilliseconds)
+        XCTAssertEqual(TimeFormatPreference(storedValue: "epochMilliseconds"), .epochMilliseconds)
+        XCTAssertEqual(TimeFormatPreference(storedValue: "unixMilliseconds"), .standardMilliseconds)
     }
 
     func testClampsOutOfRangeAppearanceValues() {
@@ -49,6 +61,7 @@ final class PreferencesStoreTests: XCTestCase {
         userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.lastDisplayMode)
         userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.timerOnModeSwitch)
         userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.showDockIcon)
+        userDefaults.set("invalid", forKey: UserDefaultsPreferencesStore.Keys.timeFormat)
 
         let preferences = UserDefaultsPreferencesStore(userDefaults: userDefaults).preferences
 
@@ -57,6 +70,7 @@ final class PreferencesStoreTests: XCTestCase {
         XCTAssertNil(preferences.lastDisplayMode)
         XCTAssertEqual(preferences.timerOnModeSwitch, OverlayPreferences.defaults.timerOnModeSwitch)
         XCTAssertEqual(preferences.showDockIcon, OverlayPreferences.defaults.showDockIcon)
+        XCTAssertEqual(preferences.timeFormat, OverlayPreferences.defaults.timeFormat)
     }
 
     func testStatusItemInvariantIgnoresLegacyHiddenPreference() {
@@ -89,6 +103,7 @@ final class PreferencesStoreTests: XCTestCase {
         preferences.timerFontSize = 58
         preferences.timerOnModeSwitch = .pause
         preferences.lastDisplayMode = .timer
+        preferences.timeFormat = .epochMilliseconds
 
         store.save(preferences)
 
@@ -99,6 +114,7 @@ final class PreferencesStoreTests: XCTestCase {
         XCTAssertEqual(reloaded.timerFontSize, 58)
         XCTAssertEqual(reloaded.timerOnModeSwitch, .pause)
         XCTAssertEqual(reloaded.lastDisplayMode, .timer)
+        XCTAssertEqual(reloaded.timeFormat, .epochMilliseconds)
     }
 
     func testClampsPersistedAppearanceLowerBoundsAcrossReload() {

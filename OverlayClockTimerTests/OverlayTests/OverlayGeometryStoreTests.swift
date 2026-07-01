@@ -46,4 +46,17 @@ final class OverlayGeometryStoreTests: XCTestCase {
             CGRect(x: 360, y: 320, width: 280, height: 160)
         )
     }
+
+    func testDefaultCollapsedSizeAndCompactToolbarMetricsStayWithinContract() {
+        XCTAssertEqual(OverlayMetrics.defaultSize, CGSize(width: 280, height: 160))
+        XCTAssertEqual(OverlayPreferences.defaultWindowSize, OverlayMetrics.defaultSize)
+        XCTAssertEqual(OverlayMetrics.controlButtonSize, 32)
+
+        let timerToolbarWidth =
+            OverlayMetrics.horizontalPadding * 2
+            + OverlayMetrics.controlButtonSize * 6
+            + OverlayMetrics.compactToolbarSpacing * 5
+
+        XCTAssertLessThanOrEqual(timerToolbarWidth, OverlayMetrics.defaultSize.width)
+    }
 }

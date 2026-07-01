@@ -79,6 +79,7 @@
 		00000000000000000000025D /* InputEventStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015D /* InputEventStoreTests.swift */; };
 		00000000000000000000025E /* LogSessionWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015E /* LogSessionWriterTests.swift */; };
 		00000000000000000000025F /* InputLoggingPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000015F /* InputLoggingPerformanceTests.swift */; };
+		000000000000000000000260 /* InputLoggingFormatSwitchReliabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000160 /* InputLoggingFormatSwitchReliabilityTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +175,7 @@
 		00000000000000000000015D /* InputEventStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEventStoreTests.swift; sourceTree = "<group>"; };
 		00000000000000000000015E /* LogSessionWriterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSessionWriterTests.swift; sourceTree = "<group>"; };
 		00000000000000000000015F /* InputLoggingPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLoggingPerformanceTests.swift; sourceTree = "<group>"; };
+		000000000000000000000160 /* InputLoggingFormatSwitchReliabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLoggingFormatSwitchReliabilityTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -445,6 +447,7 @@
 				00000000000000000000015B /* InputEventObserverTests.swift */,
 				00000000000000000000015C /* InputEventRecordTests.swift */,
 				00000000000000000000015D /* InputEventStoreTests.swift */,
+				000000000000000000000160 /* InputLoggingFormatSwitchReliabilityTests.swift */,
 				00000000000000000000015E /* LogSessionWriterTests.swift */,
 			);
 			path = InputLoggingTests;
@@ -656,6 +659,7 @@
 				00000000000000000000025B /* InputEventObserverTests.swift in Sources */,
 				00000000000000000000025C /* InputEventRecordTests.swift in Sources */,
 				00000000000000000000025D /* InputEventStoreTests.swift in Sources */,
+				000000000000000000000260 /* InputLoggingFormatSwitchReliabilityTests.swift in Sources */,
 				00000000000000000000025E /* LogSessionWriterTests.swift in Sources */,
 				00000000000000000000025F /* InputLoggingPerformanceTests.swift in Sources */,
 			);

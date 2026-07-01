@@ -87,6 +87,29 @@ DMG creation is best-effort and can be disabled:
 CREATE_DMG=0 ./scripts/build-release.sh
 ```
 
+## macOS Sequoia 15 Build
+
+Create a custom universal Release build with `LSMinimumSystemVersion` set to
+`15.0`:
+
+```bash
+./scripts/build-release-macos15.sh
+```
+
+Expected outputs:
+
+```text
+dist/macos-sequoia-15/OverlayClockTimer.app
+dist/macos-sequoia-15/OverlayClockTimer-1.0-macOS15.0-universal.zip
+```
+
+DMG creation follows the same best-effort behavior as the default release
+script and can be disabled:
+
+```bash
+CREATE_DMG=0 ./scripts/build-release-macos15.sh
+```
+
 ## CI Pipeline
 
 Run tests and build the release artifact:

@@ -20,6 +20,7 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         static let hotkeyBindings = "hotkeys.bindings"
         static let eventTableRowLimit = "inputLogging.eventTableRowLimit"
         static let preserveEventTableBetweenOpens = "inputLogging.preserveEventTableBetweenOpens"
+        static let timeFormat = "overlay.timeFormat"
     }
 
     private let userDefaults: UserDefaults
@@ -50,7 +51,8 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
             hotkeyBindings: readHotkeyBindings(),
             eventTableRowLimit: intValue(forKey: Keys.eventTableRowLimit) ?? defaults.eventTableRowLimit,
             preserveEventTableBetweenOpens: boolValue(forKey: Keys.preserveEventTableBetweenOpens)
-                ?? defaults.preserveEventTableBetweenOpens
+                ?? defaults.preserveEventTableBetweenOpens,
+            timeFormat: TimeFormatPreference(storedValue: userDefaults.string(forKey: Keys.timeFormat))
         ).validated()
 
         userDefaults.removeObject(forKey: Keys.legacyStatusItemVisible)
@@ -69,6 +71,7 @@ final class UserDefaultsPreferencesStore: PreferencesStore {
         userDefaults.set(validated.showDockIcon, forKey: Keys.showDockIcon)
         userDefaults.set(validated.launchAtLoginEnabled, forKey: Keys.launchAtLoginEnabled)
         userDefaults.set(validated.eventTableRowLimit, forKey: Keys.eventTableRowLimit)
+        userDefaults.set(validated.timeFormat.rawValue, forKey: Keys.timeFormat)
         userDefaults.set(
             validated.preserveEventTableBetweenOpens,
             forKey: Keys.preserveEventTableBetweenOpens

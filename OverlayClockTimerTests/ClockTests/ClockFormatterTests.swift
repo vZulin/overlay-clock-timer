@@ -15,4 +15,25 @@ final class ClockFormatterTests: XCTestCase {
 
         XCTAssertEqual(formatter.string(from: date), "12:34:56.789")
     }
+
+    func testFormatsWallClockDateAsEpochMilliseconds() {
+        let formatter = ClockFormatter(timeZone: TimeZone(secondsFromGMT: 0)!)
+        let date = Date(timeIntervalSince1970: 1_782_918_314.123)
+
+        let timestamp = formatter.string(from: date, timeFormat: .epochMilliseconds)
+
+        XCTAssertEqual(timestamp, "1782918314123")
+        XCTAssertEqual(timestamp.count, 13)
+        XCTAssertTrue(timestamp.allSatisfy(\.isNumber))
+    }
+
+    func testPreservesStandardMillisecondsFormatWhenExplicitlySelected() {
+        let formatter = ClockFormatter(timeZone: TimeZone(secondsFromGMT: 0)!)
+        let date = Date(timeIntervalSince1970: 1_782_918_314.123)
+
+        XCTAssertEqual(
+            formatter.string(from: date, timeFormat: .standardMilliseconds),
+            "15:05:14.123"
+        )
+    }
 }

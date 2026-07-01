@@ -26,8 +26,10 @@ struct OverlayRootView: View {
                 inputEventStore: inputEventStore,
                 tokens: tokens
             )
+            .layoutPriority(1)
             if inputEventStore.isPanelOpen {
                 InputEventTableView(store: inputEventStore, tokens: tokens)
+                    .layoutPriority(0)
             }
         }
         .frame(
@@ -64,10 +66,11 @@ struct OverlayRootView: View {
                 Text(clockDisplayModel.displayText)
                     .accessibilityIdentifier("clock.display")
                     .accessibilityLabel("Current time")
+                    .accessibilityValue(clockDisplayModel.displayText)
                     .font(.system(size: displayFontSize, weight: .semibold, design: .monospaced))
                     .monospacedDigit()
                     .lineLimit(1)
-                    .minimumScaleFactor(0.62)
+                    .minimumScaleFactor(clockDisplayMinimumScaleFactor)
                     .foregroundStyle(tokens.primaryTextColor)
             } else {
                 timerDisplayArea
@@ -82,20 +85,22 @@ struct OverlayRootView: View {
             Text(timerSessionStore.elapsedDisplayText)
                 .accessibilityIdentifier("timer.display")
                 .accessibilityLabel("Timer elapsed time")
+                .accessibilityValue(timerSessionStore.elapsedDisplayText)
                 .font(.system(size: displayFontSize, weight: .semibold, design: .monospaced))
                 .monospacedDigit()
                 .lineLimit(1)
-                .minimumScaleFactor(0.62)
+                .minimumScaleFactor(timerDisplayMinimumScaleFactor)
                 .foregroundStyle(tokens.primaryTextColor)
 
-            Text(timerSessionStore.latestLoopDisplayText ?? "00:00:00.000")
+            Text(timerSessionStore.latestLoopDisplayText ?? latestLoopPlaceholderText)
                 .accessibilityIdentifier("timer.latestLoop")
                 .accessibilityLabel("Latest loop")
+                .accessibilityValue(timerSessionStore.latestLoopDisplayText ?? "")
                 .accessibilityHidden(timerSessionStore.latestLoopDisplayText == nil)
                 .font(.system(size: latestLoopFontSize, weight: .medium, design: .monospaced))
                 .monospacedDigit()
                 .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .minimumScaleFactor(latestLoopMinimumScaleFactor)
                 .foregroundStyle(tokens.secondaryTextColor)
                 .opacity(timerSessionStore.latestLoopDisplayText == nil ? 0 : 1)
         }
@@ -106,6 +111,22 @@ struct OverlayRootView: View {
             return min(CGFloat(preferences.timerFontSize), 46)
         }
         return min(CGFloat(preferences.timerFontSize), 34)
+    }
+
+    private var clockDisplayMinimumScaleFactor: CGFloat {
+        preferences.timeFormat == .epochMilliseconds ? 0.52 : 0.62
+    }
+
+    private var timerDisplayMinimumScaleFactor: CGFloat {
+        preferences.timeFormat == .epochMilliseconds ? 0.52 : 0.62
+    }
+
+    private var latestLoopMinimumScaleFactor: CGFloat {
+        preferences.timeFormat == .epochMilliseconds ? 0.58 : 0.7
+    }
+
+    private var latestLoopPlaceholderText: String {
+        preferences.timeFormat == .epochMilliseconds ? "0000000000000" : "00:00:00.000"
     }
 
     private var latestLoopFontSize: CGFloat {

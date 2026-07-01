@@ -31,6 +31,8 @@ struct InputEventTableView: View {
                 Text(record.timestamp)
                     .monospacedDigit()
                     .lineLimit(1)
+                    .accessibilityValue(record.timestamp)
+                    .accessibilityIdentifier("inputLogging.eventTimestamp.\(record.captureOrder.rawValue)")
             }
             .width(min: 92, ideal: 104, max: 120)
 

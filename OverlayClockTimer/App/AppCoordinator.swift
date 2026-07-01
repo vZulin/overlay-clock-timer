@@ -79,6 +79,8 @@ final class AppCoordinator: ObservableObject {
             timerSessionStore: timerSessionStore
         )
         self.preferences = preferencesStore.preferences
+        self.clockDisplayModel.apply(timeFormat: preferencesStore.preferences.timeFormat)
+        self.timerSessionStore.apply(timeFormat: preferencesStore.preferences.timeFormat)
         self.isOverlayVisible = false
         self.isSettingsPresented = isSettingsPresented
         self.displayMode = preferencesStore.preferences.lastDisplayMode ?? displayMode
@@ -203,6 +205,14 @@ final class AppCoordinator: ObservableObject {
         )
     }
 
+    func toggleTimeFormat() {
+        updatePreferences { preferences in
+            preferences.timeFormat = preferences.timeFormat == .standardMilliseconds
+                ? .epochMilliseconds
+                : .standardMilliseconds
+        }
+    }
+
     func handle(_ command: HotkeyCommand) {
         switch command {
         case .start:
@@ -241,6 +251,8 @@ final class AppCoordinator: ObservableObject {
     }
 
     private func applyLivePreferences() {
+        clockDisplayModel.apply(timeFormat: preferences.timeFormat)
+        timerSessionStore.apply(timeFormat: preferences.timeFormat)
         overlayWindowController.apply(
             preferences: preferences,
             isLoggingPanelOpen: inputEventStore.isPanelOpen
@@ -258,7 +270,10 @@ final class AppCoordinator: ObservableObject {
 
                 inputEventStore.recordKeyboardEvent(
                     event,
-                    timestamp: eventTimestampProvider.timestamp(for: displayMode)
+                    timestamp: eventTimestampProvider.timestamp(
+                        for: displayMode,
+                        timeFormat: preferences.timeFormat
+                    )
                 )
             },
             mouseHandler: { [weak self] event in
@@ -268,7 +283,10 @@ final class AppCoordinator: ObservableObject {
 
                 inputEventStore.recordMouseEvent(
                     event,
-                    timestamp: eventTimestampProvider.timestamp(for: displayMode)
+                    timestamp: eventTimestampProvider.timestamp(
+                        for: displayMode,
+                        timeFormat: preferences.timeFormat
+                    )
                 )
             },
             scrollHandler: { [weak self] event in
@@ -278,7 +296,10 @@ final class AppCoordinator: ObservableObject {
 
                 inputEventStore.recordScrollEvent(
                     event,
-                    timestamp: eventTimestampProvider.timestamp(for: displayMode)
+                    timestamp: eventTimestampProvider.timestamp(
+                        for: displayMode,
+                        timeFormat: preferences.timeFormat
+                    )
                 )
             }
         )

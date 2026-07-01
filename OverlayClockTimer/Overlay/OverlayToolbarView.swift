@@ -20,7 +20,7 @@ struct OverlayToolbarView: View {
     }
 
     private var clockToolbar: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: OverlayMetrics.toolbarGroupSpacing) {
             toolbarButton(
                 systemName: "gearshape",
                 label: "Settings",
@@ -37,7 +37,9 @@ struct OverlayToolbarView: View {
                 coordinator.hideOverlay()
             }
 
-            Spacer(minLength: 16)
+            timeFormatButton(identifier: "clock.timeFormatToggle")
+
+            Spacer(minLength: OverlayMetrics.toolbarGroupSpacing)
 
             inputLoggingButton(identifier: "clock.inputLoggingToggle")
             modeSwitchButton(identifier: "clock.switchMode")
@@ -45,7 +47,7 @@ struct OverlayToolbarView: View {
     }
 
     private var timerToolbar: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: OverlayMetrics.compactToolbarSpacing) {
             toolbarButton(
                 systemName: "stop.fill",
                 label: "Stop and Reset",
@@ -77,8 +79,9 @@ struct OverlayToolbarView: View {
                 timerSessionStore.loop()
             }
 
-            Spacer(minLength: 16)
+            Spacer(minLength: OverlayMetrics.compactToolbarSpacing)
 
+            timeFormatButton(identifier: "timer.timeFormatToggle")
             inputLoggingButton(identifier: "timer.inputLoggingToggle")
             modeSwitchButton(identifier: "timer.switchMode")
         }
@@ -92,6 +95,18 @@ struct OverlayToolbarView: View {
             isActive: inputEventStore.isPanelOpen
         ) {
             coordinator.toggleInputEventLoggingPanel()
+        }
+    }
+
+    private func timeFormatButton(identifier: String) -> some View {
+        let isEpochSelected = coordinator.preferences.timeFormat == .epochMilliseconds
+        return toolbarButton(
+            icon: .epochToggle,
+            label: isEpochSelected ? "Switch to Standard Time Format" : "Switch to Epoch Milliseconds",
+            identifier: identifier,
+            isActive: isEpochSelected
+        ) {
+            coordinator.toggleTimeFormat()
         }
     }
 
@@ -117,10 +132,37 @@ struct OverlayToolbarView: View {
         isModeSwitch: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(tokens.primaryTextColor.opacity(isEnabled ? 1 : 0.42))
+        toolbarButton(
+            icon: .system(systemName),
+            label: label,
+            identifier: identifier,
+            isEnabled: isEnabled,
+            isActive: isActive,
+            isModeSwitch: isModeSwitch,
+            action: action
+        )
+    }
+
+    private func toolbarButton(
+        icon: ToolbarButtonIcon,
+        label: String,
+        identifier: String,
+        isEnabled: Bool = true,
+        isActive: Bool = false,
+        isModeSwitch: Bool = false,
+        action: @escaping () -> Void
+    ) -> some View {
+        let iconColor = tokens.primaryTextColor.opacity(isEnabled ? 1 : 0.42)
+
+        return Button(action: action) {
+            switch icon {
+            case .system(let systemName):
+                Image(systemName: systemName)
+                    .font(.system(size: OverlayMetrics.toolbarIconSize, weight: .semibold))
+                    .foregroundStyle(iconColor)
+            case .epochToggle:
+                EpochToggleIcon(color: iconColor)
+            }
         }
         .buttonStyle(
             SymbolButtonStyle(
@@ -140,5 +182,74 @@ struct OverlayToolbarView: View {
         .help(label)
         .accessibilityLabel(label)
         .accessibilityIdentifier(identifier)
+    }
+}
+
+private enum ToolbarButtonIcon {
+    case system(String)
+    case epochToggle
+}
+
+private struct EpochToggleIcon: View {
+    let color: Color
+
+    var body: some View {
+        ZStack {
+            clockCue
+            timestampCue
+            conversionCue
+        }
+        .frame(
+            width: OverlayMetrics.epochToggleIconSize,
+            height: OverlayMetrics.epochToggleIconSize
+        )
+        .accessibilityHidden(true)
+    }
+
+    private var clockCue: some View {
+        ZStack {
+            Circle()
+                .stroke(color, style: strokeStyle)
+                .frame(width: 7.5, height: 7.5)
+                .position(x: 5.2, y: 7.2)
+
+            Path { path in
+                path.move(to: CGPoint(x: 5.2, y: 7.2))
+                path.addLine(to: CGPoint(x: 5.2, y: 4.9))
+                path.move(to: CGPoint(x: 5.2, y: 7.2))
+                path.addLine(to: CGPoint(x: 7.1, y: 7.2))
+            }
+            .stroke(color, style: strokeStyle)
+        }
+    }
+
+    private var timestampCue: some View {
+        ZStack {
+            ForEach(0..<3, id: \.self) { row in
+                Capsule(style: .continuous)
+                    .fill(color)
+                    .frame(width: row == 1 ? 6.8 : 5.8, height: 1.45)
+                    .position(x: 13.1, y: 4.7 + CGFloat(row) * 4.1)
+            }
+        }
+    }
+
+    private var conversionCue: some View {
+        Path { path in
+            path.move(to: CGPoint(x: 7.9, y: 11.5))
+            path.addQuadCurve(
+                to: CGPoint(x: 12.4, y: 14.0),
+                control: CGPoint(x: 10.0, y: 13.7)
+            )
+            path.move(to: CGPoint(x: 12.4, y: 14.0))
+            path.addLine(to: CGPoint(x: 11.0, y: 14.2))
+            path.move(to: CGPoint(x: 12.4, y: 14.0))
+            path.addLine(to: CGPoint(x: 11.8, y: 12.7))
+        }
+        .stroke(color, style: strokeStyle)
+    }
+
+    private var strokeStyle: StrokeStyle {
+        StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round)
     }
 }

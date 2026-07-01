@@ -14,11 +14,18 @@ final class EventTimestampProvider {
     }
 
     func timestamp(for displayMode: DisplayMode) -> String {
+        timestamp(for: displayMode, timeFormat: TimeFormatPreference.defaultValue)
+    }
+
+    func timestamp(
+        for displayMode: DisplayMode,
+        timeFormat: TimeFormatPreference
+    ) -> String {
         switch displayMode {
         case .clock:
-            clockDisplayModel.displayText
+            clockDisplayModel.timestamp(timeFormat: timeFormat)
         case .timer:
-            timerSessionStore.elapsedDisplayText
+            timerSessionStore.elapsedTimestamp(timeFormat: timeFormat)
         }
     }
 }

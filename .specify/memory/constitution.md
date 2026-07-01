@@ -1,15 +1,16 @@
 <!--
 Sync Impact Report
-Version change: 1.0.0 -> 1.1.0
+Version change: 1.1.0 -> 2.0.0
 Modified principles:
-- V. Performance, Theme, and Maintainability (logging privacy constraint expanded)
+- III. Floating Overlay and Menu Bar Contract (explicit alternate millisecond
+  display formats allowed when user-selected)
 Added sections:
 - None
 Removed sections:
 - None
 Templates requiring updates:
-- ✅ .specify/templates/plan-template.md (checked; no update required)
-- ✅ .specify/templates/spec-template.md (checked; no update required)
+- ✅ .specify/templates/plan-template.md (updated overlay contract wording)
+- ✅ .specify/templates/spec-template.md (updated constitutional scope wording)
 - ✅ .specify/templates/tasks-template.md (checked; no update required)
 - ✅ .specify/templates/commands/*.md (not present in this repository)
 - ✅ Runtime guidance docs (AGENTS.md checked; no update required)
@@ -45,7 +46,11 @@ The product MUST run as a menu-bar application with a visible status item and a
 separate floating overlay window. The overlay MUST default to a compact footprint near
 280x160 px, use `NSWindow.Level.floating` or `NSWindow.Level.statusBar`, remain
 draggable without a standard title bar, and provide a custom drag area. The overlay
-MUST display current time in `HH:mm:ss.SSS` precision and provide a timer mode.
+MUST display current time with millisecond precision, MUST support `HH:mm:ss.SSS` as
+the default visible clock format, and MAY provide explicit user-selected alternate
+millisecond display formats such as epoch milliseconds. Alternate display formats
+MUST remain display-only and MUST NOT change clock source, timer state, logging
+ownership, or overlay window behavior. The overlay MUST provide a timer mode.
 
 Rationale: these behaviors define the product identity and must remain stable across
 features.
@@ -79,6 +84,9 @@ and predictable.
   Apple frameworks, test framework, and any build tooling.
 - The overlay window MUST be titleless or visually titleless, draggable through a
   custom region, always on top, and sized for a compact default around 280x160 px.
+- The overlay clock MUST support `HH:mm:ss.SSS` as the default visible format and MAY
+  support explicit alternate millisecond formats, including epoch milliseconds, when
+  a feature spec defines display-only state behavior and regression tests.
 - The application MUST expose menu-bar controls for showing, hiding, and quitting the
   app at minimum.
 - Light and dark appearances MUST be verified by automated tests where feasible and by
@@ -122,4 +130,4 @@ with the macOS-only scope, stack declaration, overlay/menu-bar contract, depende
 policy, testing gates, performance constraints, and theme support. Work MUST NOT proceed
 past a stage checkpoint while required automated tests are failing.
 
-**Version**: 1.1.0 | **Ratified**: 2026-06-03 | **Last Amended**: 2026-06-11
+**Version**: 2.0.0 | **Ratified**: 2026-06-03 | **Last Amended**: 2026-07-01

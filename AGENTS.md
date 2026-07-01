@@ -69,7 +69,7 @@ write professional-grade code.
 
 # overlay-clock-timer Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-06-11
+Auto-generated from all feature plans. Last updated: 2026-07-01
 
 ## Active Technologies
 - Swift 6 language mode with Xcode 26.x; use the Swift 6.3 compiler where
@@ -79,6 +79,12 @@ Auto-generated from all feature plans. Last updated: 2026-06-11
 - UserDefaults for input logging preferences; in-memory table rows for
   visible/preserved UI history; local session log files under
   `~/Library/Logs/OverlayClockTimer/` (002-input-event-logging)
+- Swift 6 language mode with Xcode 26.x; use the Swift 6.3 compiler where
+  available in the selected Xcode 26.x toolchain + SwiftUI, AppKit, Foundation,
+  XCTest; no third-party dependencies (003-time-format-toggle)
+- UserDefaults for the selected time format preference; existing local input log
+  files remain under `~/Library/Logs/OverlayClockTimer/`
+  (003-time-format-toggle)
 
 - Swift 6 language mode with Xcode 26.x, using the Swift 6.3 compiler where
   available + SwiftUI, AppKit, Foundation, ServiceManagement, XCTest; no
@@ -117,6 +123,9 @@ xcodebuild test -scheme OverlayClockTimer -destination 'platform=macOS'
 - Write automated tests before implementation for changed behavior.
 
 ## Recent Changes
+- 003-time-format-toggle: Added Swift 6 language mode with Xcode 26.x; use the
+  Swift 6.3 compiler where available in the selected Xcode 26.x toolchain,
+  SwiftUI, AppKit, Foundation, XCTest; no third-party dependencies
 - 002-input-event-logging: Added Swift 6 language mode with Xcode 26.x; use the
   Swift 6.3 compiler where available in the selected Xcode 26.x toolchain,
   SwiftUI, AppKit, CoreGraphics, Foundation, XCTest; no third-party

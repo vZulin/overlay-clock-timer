@@ -6,8 +6,12 @@ enum OverlayMetrics {
     static let minimumSize = OverlayPreferences.minimumWindowSize
     static let maximumSize = OverlayPreferences.maximumWindowSize
     static let cornerRadius: CGFloat = 24
-    static let controlButtonSize: CGFloat = 36
+    static let controlButtonSize: CGFloat = 32
     static let controlCornerRadius: CGFloat = 8
+    static let compactToolbarSpacing: CGFloat = 4
+    static let toolbarGroupSpacing: CGFloat = 8
+    static let toolbarIconSize: CGFloat = 15
+    static let epochToggleIconSize: CGFloat = 18
     static let horizontalPadding: CGFloat = 12
     static let verticalPadding: CGFloat = 10
     static let defaultTimerFontSize: CGFloat = CGFloat(OverlayPreferences.defaultTimerFontSize)

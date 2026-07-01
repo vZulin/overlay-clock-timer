@@ -11,6 +11,9 @@
 - **Application Model**: Native menu-bar app with a separate floating overlay window.
 - **Overlay Contract**: Compact default size near 280x160 px, always-on-top window
   level, titleless draggable behavior, and custom drag area remain required.
+- **Time Display Contract**: `HH:mm:ss.SSS` remains the default visible clock
+  format; any alternate millisecond format must be explicit, user-selected, and
+  display-only.
 - **Technology Boundary**: Implementation plan must select an Apple-native Swift
   stack and justify any third-party dependency.
 - **Quality Boundary**: Every user story must include automated tests and a

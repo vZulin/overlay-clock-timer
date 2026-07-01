@@ -24,6 +24,17 @@ enum OverlayThemePreference: String, CaseIterable, Equatable {
     }
 }
 
+enum TimeFormatPreference: String, CaseIterable, Equatable {
+    case standardMilliseconds
+    case epochMilliseconds
+
+    static let defaultValue: TimeFormatPreference = .standardMilliseconds
+
+    init(storedValue: String?) {
+        self = storedValue.flatMap(TimeFormatPreference.init(rawValue:)) ?? Self.defaultValue
+    }
+}
+
 struct AppVisibilityPreference: Equatable {
     var showDockIcon: Bool
     var statusItemVisible: Bool {
@@ -60,6 +71,7 @@ struct OverlayPreferences: Equatable {
     var hotkeyBindings: [HotkeyBinding]
     var eventTableRowLimit: Int
     var preserveEventTableBetweenOpens: Bool
+    var timeFormat: TimeFormatPreference
 
     var appVisibility: AppVisibilityPreference {
         AppVisibilityPreference(showDockIcon: showDockIcon)
@@ -77,7 +89,8 @@ struct OverlayPreferences: Equatable {
         launchAtLoginEnabled: false,
         hotkeyBindings: [],
         eventTableRowLimit: defaultEventTableRowLimit,
-        preserveEventTableBetweenOpens: false
+        preserveEventTableBetweenOpens: false,
+        timeFormat: TimeFormatPreference.defaultValue
     )
 
     func validated() -> OverlayPreferences {
@@ -96,7 +109,8 @@ struct OverlayPreferences: Equatable {
             launchAtLoginEnabled: launchAtLoginEnabled,
             hotkeyBindings: HotkeyBindingSet.validated(hotkeyBindings),
             eventTableRowLimit: Self.clampedEventTableRowLimit(eventTableRowLimit),
-            preserveEventTableBetweenOpens: preserveEventTableBetweenOpens
+            preserveEventTableBetweenOpens: preserveEventTableBetweenOpens,
+            timeFormat: timeFormat
         )
     }
 

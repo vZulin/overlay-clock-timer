@@ -185,6 +185,63 @@ final class InputEventStoreTests: XCTestCase {
         XCTAssertEqual(writer.openCallCount, 2)
     }
 
+    func testExistingVisibleRowsKeepTimestampStringsAfterFormatSwitch() async {
+        let writer = RecordingLogSessionWriter()
+        let store = InputEventStore(
+            preferences: preferences(rowLimit: 5, preservesRows: false),
+            logSessionWriter: writer
+        )
+
+        store.openPanel()
+        store.recordKeyboardEvent(
+            KeyboardInputEvent(characters: "s", key: "S", modifiers: [], isRepeat: false),
+            timestamp: "12:34:56.789"
+        )
+
+        var switchedPreferences = preferences(rowLimit: 5, preservesRows: false)
+        switchedPreferences.timeFormat = .epochMilliseconds
+        store.apply(preferences: switchedPreferences)
+        store.recordMouseEvent(
+            MouseInputEvent(button: .left, phase: .mouseDown),
+            timestamp: "1782918314123"
+        )
+
+        let appendedRecords = await writer.waitForAppendedRecords(count: 2)
+
+        XCTAssertEqual(store.visibleRows.map(\.timestamp), ["1782918314123", "12:34:56.789"])
+        XCTAssertEqual(appendedRecords.map(\.timestamp), ["12:34:56.789", "1782918314123"])
+    }
+
+    func testPreservedRowsKeepTimestampStringsAfterFormatSwitchAndPanelReopen() async {
+        let writer = RecordingLogSessionWriter()
+        let store = InputEventStore(
+            preferences: preferences(rowLimit: 5, preservesRows: true),
+            logSessionWriter: writer
+        )
+
+        store.openPanel()
+        store.recordKeyboardEvent(
+            KeyboardInputEvent(characters: "s", key: "S", modifiers: [], isRepeat: false),
+            timestamp: "12:34:56.789"
+        )
+        _ = await writer.waitForAppendedRecords(count: 1)
+        store.closePanel()
+
+        var switchedPreferences = preferences(rowLimit: 5, preservesRows: true)
+        switchedPreferences.timeFormat = .epochMilliseconds
+        store.apply(preferences: switchedPreferences)
+        store.openPanel()
+        store.recordMouseEvent(
+            MouseInputEvent(button: .left, phase: .mouseDown),
+            timestamp: "1782918314123"
+        )
+
+        let appendedRecords = await writer.waitForAppendedRecords(count: 2)
+
+        XCTAssertEqual(store.visibleRows.map(\.timestamp), ["1782918314123", "12:34:56.789"])
+        XCTAssertEqual(appendedRecords.map(\.timestamp), ["12:34:56.789", "1782918314123"])
+    }
+
     func testFileOpenFailureKeepsRowsUsableAndReportsUnavailableStatus() {
         let writer = RecordingLogSessionWriter()
         writer.openError = LogSessionWriterError.failedToOpen("Cannot create log file.")

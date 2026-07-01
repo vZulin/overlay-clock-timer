@@ -37,7 +37,8 @@
   requirement, Apple frameworks, test framework, and build tooling are named.
 - Overlay/menu-bar contract: plan preserves a menu-bar status item plus a
   compact floating overlay near 280x160 px, always-on-top window level, titleless
-  draggable behavior, custom drag area, clock display, and timer mode.
+  draggable behavior, custom drag area, default clock display format support,
+  any explicit display-only alternate formats, and timer mode.
 - Dependency discipline: no third-party dependency is introduced without a
   documented Apple-framework limitation, cost, and removal strategy.
 - Theme and performance: light/dark appearance support, refresh cadence, timer

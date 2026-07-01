@@ -60,6 +60,34 @@ final class LogSessionWriterTests: XCTestCase {
         XCTAssertFalse(content.contains("phase="))
     }
 
+    func testAppendKeepsExistingLinesAndWritesMixedTimestampFormats() async throws {
+        let writer = writer()
+        let session = try writer.open()
+
+        try await writer.append(record(order: 1, timestamp: "12:34:56.789", eventName: "s"))
+        try await writer.append(record(order: 2, timestamp: "1782918314123", eventName: "LM ↓"))
+        writer.close()
+
+        let content = try String(contentsOf: session.url, encoding: .utf8)
+        XCTAssertEqual(content, "12:34:56.789\ts\n1782918314123\tLM ↓\n")
+    }
+
+    func testSessionFileNameDoesNotChangeWhenMixedTimestampFormatsAreAppended() async throws {
+        let writer = writer(date: date(year: 2026, month: 7, day: 1, hour: 15, minute: 5, second: 14))
+        let session = try writer.open()
+
+        try await writer.append(record(order: 1, timestamp: "15:05:14.123", eventName: "s"))
+        let urlAfterStandardAppend = writer.currentSession?.url
+        try await writer.append(record(order: 2, timestamp: "1782918314123", eventName: "LM ↓"))
+        let urlAfterEpochAppend = writer.currentSession?.url
+        writer.close()
+
+        XCTAssertEqual(session.url.lastPathComponent, "2026-07-01_15-05-14.log")
+        XCTAssertEqual(urlAfterStandardAppend, session.url)
+        XCTAssertEqual(urlAfterEpochAppend, session.url)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: session.url.path))
+    }
+
     func testClosePreventsAdditionalWrites() async throws {
         let writer = writer()
         let session = try writer.open()
@@ -97,11 +125,15 @@ final class LogSessionWriterTests: XCTestCase {
         )
     }
 
-    private func record(order: UInt64 = 1) -> InputEventRecord {
+    private func record(
+        order: UInt64 = 1,
+        timestamp: String = "12:34:56.789",
+        eventName: String = "s"
+    ) -> InputEventRecord {
         InputEventRecord(
             captureOrder: InputEventCaptureOrder(order),
-            timestamp: "12:34:56.789",
-            eventName: "s"
+            timestamp: timestamp,
+            eventName: eventName
         )
     }
 

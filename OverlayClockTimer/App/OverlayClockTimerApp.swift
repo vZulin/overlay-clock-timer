@@ -10,12 +10,15 @@ struct OverlayClockTimerApp: App {
 
         if
             arguments.contains("--ui-testing"),
+            !arguments.contains("--preserve-ui-testing-preferences"),
             let bundleIdentifier = Bundle.main.bundleIdentifier
         {
             UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
         }
 
         let shouldShowOverlayOnLaunch = !arguments.contains("--hide-overlay-on-launch")
+        let preferencesStore = UserDefaultsPreferencesStore()
+        Self.applyUITestingPreferenceOverrides(arguments: arguments, preferencesStore: preferencesStore)
         let inputEventObserver = arguments.contains("--mock-input-event-capture")
             ? InputEventObserver(eventSource: MockInputEventSource())
             : InputEventObserver()
@@ -28,6 +31,7 @@ struct OverlayClockTimerApp: App {
         _coordinator = StateObject(
             wrappedValue: AppCoordinator(
                 launchOverlayOnStart: shouldShowOverlayOnLaunch,
+                preferencesStore: preferencesStore,
                 inputEventObserver: inputEventObserver,
                 logSessionWriter: logSessionWriter
             )
@@ -46,5 +50,49 @@ struct OverlayClockTimerApp: App {
                 .keyboardShortcut(",", modifiers: .command)
             }
         }
+    }
+
+    private static func applyUITestingPreferenceOverrides(
+        arguments: [String],
+        preferencesStore: UserDefaultsPreferencesStore
+    ) {
+        guard arguments.contains("--ui-testing") else {
+            return
+        }
+
+        var preferences = preferencesStore.preferences
+        var didChangePreferences = false
+
+        if arguments.contains("--preserve-input-event-table-between-opens") {
+            preferences.eventTableRowLimit = OverlayPreferences.maximumEventTableRowLimit
+            preferences.preserveEventTableBetweenOpens = true
+            didChangePreferences = true
+        }
+
+        if
+            let rawTheme = launchArgumentValue(prefix: "--ui-testing-theme=", in: arguments),
+            let theme = OverlayThemePreference(rawValue: rawTheme)
+        {
+            preferences.theme = theme
+            didChangePreferences = true
+        }
+
+        if
+            let rawOpacity = launchArgumentValue(prefix: "--ui-testing-background-opacity=", in: arguments),
+            let opacity = Double(rawOpacity)
+        {
+            preferences.backgroundOpacity = opacity
+            didChangePreferences = true
+        }
+
+        if didChangePreferences {
+            preferencesStore.save(preferences)
+        }
+    }
+
+    private static func launchArgumentValue(prefix: String, in arguments: [String]) -> String? {
+        arguments
+            .first { $0.hasPrefix(prefix) }
+            .map { String($0.dropFirst(prefix.count)) }
     }
 }

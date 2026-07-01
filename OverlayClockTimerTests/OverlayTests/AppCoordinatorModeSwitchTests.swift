@@ -102,6 +102,90 @@ final class AppCoordinatorModeSwitchTests: XCTestCase {
         XCTAssertEqual(preferencesStore.saveCount, 0)
     }
 
+    func testToggleTimeFormatPersistsPreferenceAndRefreshesClockDisplay() {
+        let clockSource = ManualWallClockTimeSource(now: Date(timeIntervalSince1970: 1_782_918_314.123))
+        let clockDisplayModel = ClockDisplayModel(
+            timeSource: clockSource,
+            formatter: ClockFormatter(timeZone: TimeZone(secondsFromGMT: 0)!),
+            ticker: DisplayTicker(maximumFramesPerSecond: 1)
+        )
+        let preferencesStore = InMemoryPreferencesStore()
+        let coordinator = AppCoordinator(
+            preferencesStore: preferencesStore,
+            clockDisplayModel: clockDisplayModel,
+            timerSessionStore: TimerSessionStore(ticker: DisplayTicker(maximumFramesPerSecond: 1))
+        )
+
+        XCTAssertEqual(clockDisplayModel.displayText, "15:05:14.123")
+
+        coordinator.toggleTimeFormat()
+
+        XCTAssertEqual(coordinator.preferences.timeFormat, .epochMilliseconds)
+        XCTAssertEqual(preferencesStore.preferences.timeFormat, .epochMilliseconds)
+        XCTAssertEqual(preferencesStore.saveCount, 1)
+        XCTAssertEqual(clockDisplayModel.displayText, "1782918314123")
+
+        coordinator.toggleTimeFormat()
+
+        XCTAssertEqual(coordinator.preferences.timeFormat, .standardMilliseconds)
+        XCTAssertEqual(preferencesStore.preferences.timeFormat, .standardMilliseconds)
+        XCTAssertEqual(preferencesStore.saveCount, 2)
+        XCTAssertEqual(clockDisplayModel.displayText, "15:05:14.123")
+    }
+
+    func testToggleTimeFormatRefreshesRunningTimerDisplayWithoutChangingState() {
+        let timeSource = ManualMonotonicTimeSource(now: 20)
+        let timerSessionStore = TimerSessionStore(
+            timeSource: timeSource,
+            ticker: DisplayTicker(maximumFramesPerSecond: 1)
+        )
+        let preferencesStore = InMemoryPreferencesStore()
+        let coordinator = AppCoordinator(
+            displayMode: .timer,
+            preferencesStore: preferencesStore,
+            timerSessionStore: timerSessionStore
+        )
+
+        timerSessionStore.start()
+        timeSource.advance(by: 1.25)
+        timerSessionStore.refresh()
+
+        XCTAssertEqual(timerSessionStore.elapsedDisplayText, "00:00:01.250")
+
+        coordinator.toggleTimeFormat()
+
+        XCTAssertEqual(coordinator.preferences.timeFormat, .epochMilliseconds)
+        XCTAssertTrue(timerSessionStore.session.isRunning)
+        XCTAssertEqual(timerSessionStore.elapsedDisplayText, "0000000001250")
+
+        timeSource.advance(by: 0.125)
+        coordinator.toggleTimeFormat()
+
+        XCTAssertEqual(coordinator.preferences.timeFormat, .standardMilliseconds)
+        XCTAssertTrue(timerSessionStore.session.isRunning)
+        XCTAssertEqual(timerSessionStore.elapsedDisplayText, "00:00:01.375")
+    }
+
+    func testPersistedEpochFormatAppliesToClockDisplayOnCoordinatorCreation() {
+        let clockSource = ManualWallClockTimeSource(now: Date(timeIntervalSince1970: 1_782_918_314.123))
+        let clockDisplayModel = ClockDisplayModel(
+            timeSource: clockSource,
+            formatter: ClockFormatter(timeZone: TimeZone(secondsFromGMT: 0)!),
+            ticker: DisplayTicker(maximumFramesPerSecond: 1)
+        )
+        var preferences = OverlayPreferences.defaults
+        preferences.timeFormat = .epochMilliseconds
+        let preferencesStore = InMemoryPreferencesStore(preferences: preferences)
+
+        _ = AppCoordinator(
+            preferencesStore: preferencesStore,
+            clockDisplayModel: clockDisplayModel,
+            timerSessionStore: TimerSessionStore(ticker: DisplayTicker(maximumFramesPerSecond: 1))
+        )
+
+        XCTAssertEqual(clockDisplayModel.displayText, "1782918314123")
+    }
+
     private func preferences(timerOnModeSwitch: ModeSwitchAction) -> OverlayPreferences {
         var preferences = OverlayPreferences.defaults
         preferences.timerOnModeSwitch = timerOnModeSwitch

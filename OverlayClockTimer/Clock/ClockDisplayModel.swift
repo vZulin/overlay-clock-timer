@@ -7,17 +7,20 @@ final class ClockDisplayModel: ObservableObject {
     private let timeSource: WallClockTimeSource
     private let formatter: ClockFormatter
     private let ticker: DisplayTicker
+    private var timeFormat: TimeFormatPreference
     private var isStarted = false
 
     init(
         timeSource: WallClockTimeSource = SystemWallClockTimeSource(),
         formatter: ClockFormatter = ClockFormatter(),
-        ticker: DisplayTicker = DisplayTicker()
+        ticker: DisplayTicker = DisplayTicker(),
+        timeFormat: TimeFormatPreference = TimeFormatPreference.defaultValue
     ) {
         self.timeSource = timeSource
         self.formatter = formatter
         self.ticker = ticker
-        self.displayText = formatter.string(from: timeSource.now)
+        self.timeFormat = timeFormat
+        self.displayText = formatter.string(from: timeSource.now, timeFormat: timeFormat)
     }
 
     func start() {
@@ -44,6 +47,15 @@ final class ClockDisplayModel: ObservableObject {
     }
 
     func refresh() {
-        displayText = formatter.string(from: timeSource.now)
+        displayText = formatter.string(from: timeSource.now, timeFormat: timeFormat)
+    }
+
+    func apply(timeFormat: TimeFormatPreference) {
+        self.timeFormat = timeFormat
+        refresh()
+    }
+
+    func timestamp(timeFormat: TimeFormatPreference) -> String {
+        formatter.string(from: timeSource.now, timeFormat: timeFormat)
     }
 }
