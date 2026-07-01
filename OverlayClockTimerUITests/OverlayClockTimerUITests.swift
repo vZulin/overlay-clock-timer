@@ -221,6 +221,79 @@ final class OverlayClockTimerUITests: XCTestCase {
     }
 
     @MainActor
+    func testModeSwitchKeepsDisplayAndToolbarSlotsStable() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+        let clockDisplay = app.staticTexts["clock.display"]
+        XCTAssertTrue(clockDisplay.waitForExistence(timeout: 2))
+
+        let clockDisplayMidY = clockDisplay.frame.midY
+        let clockHideMinX = app.buttons["clock.hideOverlay"].frame.minX
+        let clockFormatMinX = app.buttons["clock.timeFormatToggle"].frame.minX
+        let clockLoggingMinX = app.buttons["clock.inputLoggingToggle"].frame.minX
+        let clockModeMinX = app.buttons["clock.switchMode"].frame.minX
+        let clockLoggingToModeGap =
+            app.buttons["clock.switchMode"].frame.minX
+            - app.buttons["clock.inputLoggingToggle"].frame.maxX
+
+        app.buttons["clock.switchMode"].click()
+
+        let timerDisplay = app.staticTexts["timer.display"]
+        XCTAssertTrue(timerDisplay.waitForExistence(timeout: 2))
+        let timerStart = app.buttons["timer.start"]
+        XCTAssertTrue(timerStart.waitForExistence(timeout: 2))
+
+        XCTAssertEqual(timerDisplay.frame.midY, clockDisplayMidY, accuracy: 1.5)
+        XCTAssertEqual(timerStart.frame.minX, clockHideMinX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["timer.timeFormatToggle"].frame.minX, clockFormatMinX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["timer.inputLoggingToggle"].frame.minX, clockLoggingMinX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["timer.switchMode"].frame.minX, clockModeMinX, accuracy: 1.5)
+
+        let timerLoggingToModeGap =
+            app.buttons["timer.switchMode"].frame.minX
+            - app.buttons["timer.inputLoggingToggle"].frame.maxX
+        XCTAssertEqual(timerLoggingToModeGap, clockLoggingToModeGap, accuracy: 1.5)
+    }
+
+    @MainActor
+    func testInputLoggingExpansionKeepsCollapsedHeaderFramesStable() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]
+        app.launch()
+
+        let overlayWindow = app.windows["Overlay Clock Timer Overlay"]
+        XCTAssertTrue(overlayWindow.waitForExistence(timeout: 5))
+        let clockDisplay = app.staticTexts["clock.display"]
+        XCTAssertTrue(clockDisplay.waitForExistence(timeout: 2))
+        let loggingToggle = app.buttons["clock.inputLoggingToggle"]
+
+        let displayFrame = clockDisplay.frame
+        let hideFrame = app.buttons["clock.hideOverlay"].frame
+        let formatFrame = app.buttons["clock.timeFormatToggle"].frame
+        let loggingFrame = loggingToggle.frame
+        let modeFrame = app.buttons["clock.switchMode"].frame
+
+        loggingToggle.click()
+
+        let panel = app.descendants(matching: .any)["inputLogging.panel"]
+        XCTAssertTrue(panel.waitForExistence(timeout: 2))
+
+        XCTAssertEqual(clockDisplay.frame.midY, displayFrame.midY, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.hideOverlay"].frame.midY, hideFrame.midY, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.timeFormatToggle"].frame.midY, formatFrame.midY, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.inputLoggingToggle"].frame.midY, loggingFrame.midY, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.switchMode"].frame.midY, modeFrame.midY, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.hideOverlay"].frame.minX, hideFrame.minX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.timeFormatToggle"].frame.minX, formatFrame.minX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.inputLoggingToggle"].frame.minX, loggingFrame.minX, accuracy: 1.5)
+        XCTAssertEqual(app.buttons["clock.switchMode"].frame.minX, modeFrame.minX, accuracy: 1.5)
+    }
+
+    @MainActor
     func testFormatToggleRemainsVisibleWhenInputLoggingIsExpanded() {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--show-overlay-on-launch"]

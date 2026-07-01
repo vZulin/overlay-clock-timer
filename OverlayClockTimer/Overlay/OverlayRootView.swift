@@ -18,15 +18,9 @@ struct OverlayRootView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            dragRegion
-            displayArea
-            OverlayToolbarView(
-                coordinator: coordinator,
-                timerSessionStore: timerSessionStore,
-                inputEventStore: inputEventStore,
-                tokens: tokens
-            )
-            .layoutPriority(1)
+            collapsedContent
+                .frame(height: preferences.windowSize.height, alignment: .top)
+
             if inputEventStore.isPanelOpen {
                 InputEventTableView(store: inputEventStore, tokens: tokens)
                     .layoutPriority(0)
@@ -38,19 +32,33 @@ struct OverlayRootView: View {
             maxWidth: OverlayMetrics.maximumSize.width,
             minHeight: OverlayMetrics.minimumSize.height,
             idealHeight: idealHeight,
-            maxHeight: maximumHeight
+            maxHeight: maximumHeight,
+            alignment: .top
         )
         .background(
             RoundedRectangle(cornerRadius: OverlayMetrics.cornerRadius, style: .continuous)
                 .fill(tokens.panelColor.opacity(preferences.backgroundOpacity))
         )
-        .animation(.easeInOut(duration: 0.16), value: inputEventStore.isPanelOpen)
         .preferredColorScheme(OverlayTheme.preferredColorScheme(for: preferences.theme))
+    }
+
+    private var collapsedContent: some View {
+        VStack(spacing: 0) {
+            dragRegion
+            displayArea
+            OverlayToolbarView(
+                coordinator: coordinator,
+                timerSessionStore: timerSessionStore,
+                inputEventStore: inputEventStore,
+                tokens: tokens
+            )
+            .layoutPriority(1)
+        }
     }
 
     private var dragRegion: some View {
         DragRegionView()
-            .frame(height: 34)
+            .frame(height: OverlayMetrics.dragRegionHeight)
             .overlay(alignment: .trailing) {
                 Text(coordinator.displayMode == .clock ? "CLOCK" : "TIMER")
                     .font(.system(size: 10, weight: .bold, design: .rounded))
@@ -76,12 +84,13 @@ struct OverlayRootView: View {
                 timerDisplayArea
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .frame(height: displayAreaHeight)
         .padding(.horizontal, OverlayMetrics.horizontalPadding)
     }
 
     private var timerDisplayArea: some View {
-        VStack(spacing: 5) {
+        ZStack {
             Text(timerSessionStore.elapsedDisplayText)
                 .accessibilityIdentifier("timer.display")
                 .accessibilityLabel("Timer elapsed time")
@@ -91,18 +100,23 @@ struct OverlayRootView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(timerDisplayMinimumScaleFactor)
                 .foregroundStyle(tokens.primaryTextColor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
-            Text(timerSessionStore.latestLoopDisplayText ?? latestLoopPlaceholderText)
-                .accessibilityIdentifier("timer.latestLoop")
-                .accessibilityLabel("Latest loop")
-                .accessibilityValue(timerSessionStore.latestLoopDisplayText ?? "")
-                .accessibilityHidden(timerSessionStore.latestLoopDisplayText == nil)
-                .font(.system(size: latestLoopFontSize, weight: .medium, design: .monospaced))
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(latestLoopMinimumScaleFactor)
-                .foregroundStyle(tokens.secondaryTextColor)
-                .opacity(timerSessionStore.latestLoopDisplayText == nil ? 0 : 1)
+            if let latestLoopDisplayText = timerSessionStore.latestLoopDisplayText {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 0)
+                    Text(latestLoopDisplayText)
+                        .accessibilityIdentifier("timer.latestLoop")
+                        .accessibilityLabel("Latest loop")
+                        .accessibilityValue(latestLoopDisplayText)
+                        .font(.system(size: latestLoopFontSize, weight: .medium, design: .monospaced))
+                        .monospacedDigit()
+                        .lineLimit(1)
+                        .minimumScaleFactor(latestLoopMinimumScaleFactor)
+                        .foregroundStyle(tokens.secondaryTextColor)
+                        .padding(.bottom, 2)
+                }
+            }
         }
     }
 
@@ -125,12 +139,12 @@ struct OverlayRootView: View {
         preferences.timeFormat == .epochMilliseconds ? 0.58 : 0.7
     }
 
-    private var latestLoopPlaceholderText: String {
-        preferences.timeFormat == .epochMilliseconds ? "0000000000000" : "00:00:00.000"
-    }
-
     private var latestLoopFontSize: CGFloat {
         max(12, displayFontSize * 0.44)
+    }
+
+    private var displayAreaHeight: CGFloat {
+        OverlayMetrics.displayAreaHeight(for: preferences.windowSize.height)
     }
 
     private var idealHeight: CGFloat {

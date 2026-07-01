@@ -20,7 +20,7 @@ struct OverlayToolbarView: View {
     }
 
     private var clockToolbar: some View {
-        HStack(spacing: OverlayMetrics.toolbarGroupSpacing) {
+        HStack(spacing: OverlayMetrics.compactToolbarSpacing) {
             toolbarButton(
                 systemName: "gearshape",
                 label: "Settings",
@@ -37,10 +37,9 @@ struct OverlayToolbarView: View {
                 coordinator.hideOverlay()
             }
 
-            timeFormatButton(identifier: "clock.timeFormatToggle")
-
             Spacer(minLength: OverlayMetrics.toolbarGroupSpacing)
 
+            timeFormatButton(identifier: "clock.timeFormatToggle")
             inputLoggingButton(identifier: "clock.inputLoggingToggle")
             modeSwitchButton(identifier: "clock.switchMode")
         }

@@ -14,6 +14,8 @@ enum OverlayMetrics {
     static let epochToggleIconSize: CGFloat = 18
     static let horizontalPadding: CGFloat = 12
     static let verticalPadding: CGFloat = 10
+    static let dragRegionHeight: CGFloat = 34
+    static let toolbarHeight: CGFloat = controlButtonSize + verticalPadding
     static let defaultTimerFontSize: CGFloat = CGFloat(OverlayPreferences.defaultTimerFontSize)
     static let inputLoggingTableHeaderHeight: CGFloat = 28
     static let inputLoggingTableRowHeight: CGFloat = 25
@@ -28,4 +30,8 @@ enum OverlayMetrics {
     static let minimumBackgroundOpacity = OverlayPreferences.minimumBackgroundOpacity
     static let defaultBackgroundOpacity = OverlayPreferences.defaultBackgroundOpacity
     static let maximumBackgroundOpacity = OverlayPreferences.maximumBackgroundOpacity
+
+    static func displayAreaHeight(for windowHeight: CGFloat) -> CGFloat {
+        max(0, windowHeight - dragRegionHeight - toolbarHeight)
+    }
 }
